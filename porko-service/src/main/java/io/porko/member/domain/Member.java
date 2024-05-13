@@ -50,7 +50,7 @@ public class Member extends TimeMetaFields {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public Member(
+    private Member(
         String memberId,
         String password,
         String name,
