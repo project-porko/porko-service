@@ -39,6 +39,7 @@ subprojects {
         compileOnly("org.projectlombok:lombok")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.14")
     }
 }
 
