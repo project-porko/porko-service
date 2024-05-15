@@ -2,9 +2,10 @@ package io.porko.member.controller;
 
 import static io.porko.member.controller.MemberController.MEMBER_BASE_URI;
 
-import io.porko.member.controller.model.SignUpRequest;
-import io.porko.member.controller.model.ValidateDuplicateRequest;
-import io.porko.member.controller.model.ValidateDuplicateResponse;
+import io.porko.member.controller.model.signup.SignUpRequest;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
 import io.porko.member.facade.ValidateDuplicateFacade;
 import io.porko.member.service.MemberService;
 import io.porko.utils.ResponseEntityUtils;
@@ -35,14 +36,13 @@ public class MemberController {
 
     @GetMapping("validate")
     ResponseEntity<ValidateDuplicateResponse> validateDuplicate(
-        @RequestParam(name = "memberId", required = false) String memberId,
-        @RequestParam(name = "email", required = false) String email
+        @RequestParam(name = "type", required = false) ValidateDuplicateType requestType,
+        @RequestParam(name = "value", required = false) String value
     ) {
-        System.out.println(memberId);
-        ValidateDuplicateResponse duplicated = validateDuplicateFacade.isDuplicated(
-            ValidateDuplicateRequest.of(memberId, email)
-        );
-        return ResponseEntity.ok(duplicated);
+        ValidateDuplicateRequest request = ValidateDuplicateRequest.of(requestType, value);
+        ValidateDuplicateResponse response = validateDuplicateFacade.isDuplicated(request);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("sign-up")

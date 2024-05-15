@@ -2,8 +2,9 @@ package io.porko.member.service;
 
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_EMAIL;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_MEMBER_ID;
+import static io.porko.member.exception.MemberErrorCode.DUPLICATED_PHONE_NUMBER;
 
-import io.porko.member.controller.model.SignUpRequest;
+import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.exception.MemberException;
 import io.porko.member.repo.MemberRepo;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,15 @@ public class MemberService {
         return memberRepo.existsByEmail(email);
     }
 
+    public boolean isDuplicatedPhoneNumber(String phoneNumber) {
+        return memberRepo.existsByPhoneNumber(phoneNumber);
+    }
+
     @Transactional
     public Long createMember(SignUpRequest signUpRequest) {
         checkDuplicatedMemberId(signUpRequest.memberId());
         checkDuplicatedEmail(signUpRequest.email());
+        checkDuplicatePhoneNumber(signUpRequest.phoneNumber());
         String encryptedPassword = encryptPassword(signUpRequest.password());
 
         return memberRepo.save(signUpRequest.toEntity(encryptedPassword)).getId();
@@ -44,6 +50,12 @@ public class MemberService {
     private void checkDuplicatedEmail(String email) {
         if (isDuplicatedEmail(email)) {
             throw new MemberException(DUPLICATED_EMAIL, email);
+        }
+    }
+
+    private void checkDuplicatePhoneNumber(String phoneNumber) {
+        if (isDuplicatedPhoneNumber(phoneNumber)) {
+            throw new MemberException(DUPLICATED_PHONE_NUMBER, phoneNumber);
         }
     }
 

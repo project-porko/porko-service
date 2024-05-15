@@ -1,4 +1,4 @@
-package io.porko.member.controller.model;
+package io.porko.member.controller.model.validateduplicate;
 
 public enum AvailabilityStatus {
     AVAILABLE, UNAVAILABLE;

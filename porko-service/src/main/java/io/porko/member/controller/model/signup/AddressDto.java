@@ -1,4 +1,4 @@
-package io.porko.member.controller.model;
+package io.porko.member.controller.model.signup;
 
 import io.porko.member.domain.Address;
 
