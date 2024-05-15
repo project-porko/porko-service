@@ -43,4 +43,8 @@ public class FixtureCommon {
     public static StringArbitrary randomString() {
         return Arbitraries.strings();
     }
+
+    public static StringArbitrary randomAlpha() {
+        return Arbitraries.strings().alpha();
+    }
 }

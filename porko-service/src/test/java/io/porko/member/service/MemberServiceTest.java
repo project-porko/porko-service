@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import io.porko.config.base.business.ServiceTestBase;
 import io.porko.config.fixture.FixtureCommon;
-import io.porko.member.controller.model.SignUpRequest;
+import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.domain.Member;
 import io.porko.member.exception.MemberErrorCode;
 import io.porko.member.exception.MemberException;

@@ -1,6 +1,6 @@
 package io.porko.member.facade.strategy;
 
-import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
+import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.PHONE_NUMBER;
 
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MemberIdDuplicateStrategy implements ValidateDuplicateStrategy {
+public class PhoneNumberDuplicateStrategy implements ValidateDuplicateStrategy {
     private final MemberService memberService;
 
     @Override
     public ValidateDuplicateResponse isDuplicated(ValidateDuplicateRequest request) {
         return ValidateDuplicateResponse.of(
             request,
-            memberService.isDuplicatedMemberId(request.value())
+            memberService.isDuplicatedPhoneNumber(request.value())
         );
     }
 
     @Override
     public boolean isSupport(ValidateDuplicateType requestType) {
-        return requestType == MEMBER_ID;
+        return requestType == PHONE_NUMBER;
     }
 }
