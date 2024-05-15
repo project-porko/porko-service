@@ -1,76 +1,69 @@
 package io.porko.member.controller;
 
+import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.AVAILABLE;
+import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.UNAVAILABLE;
+import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.EMAIL;
+import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 import io.porko.config.fixture.FixtureCommon;
-import io.porko.member.controller.model.AvailabilityStatus;
-import io.porko.member.controller.model.SignUpRequest;
-import io.porko.member.controller.model.ValidateDuplicateRequest;
-import io.porko.member.controller.model.ValidateDuplicateResponse;
-import io.porko.member.facade.dto.ValidateDuplicateRequestField;
-import io.porko.member.facade.dto.ValidateDuplicateRequestType;
-import java.util.AbstractMap.SimpleEntry;
+import io.porko.member.controller.model.signup.SignUpRequest;
+import io.porko.member.controller.model.validateduplicate.AvailabilityStatus;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.test.web.servlet.ResultActions;
 
 @DisplayName("Controller:Member")
 class MemberControllerTest extends MemberControllerTestHelper {
-
-    @Test
-    @DisplayName("[GET:200]회원 아이디 중복 검사 : 아이디가 중복되지 않은 경우")
-    void validateMemberIdDuplicate_WhenNotDuplicatedMemberId() throws Exception {
+    @ParameterizedTest(name = "[{index}] 요청:[타입:{0}, 요청값:{1}], 중복 여부:{2}, 사용 가능 상태:{3}")
+    @MethodSource
+    @DisplayName("[GET:200]중복 검사")
+    void validateDuplicate(
+        ValidateDuplicateType 중복_검사_요청_타입,
+        String 중복_검사_요청값,
+        boolean 중복_여부,
+        AvailabilityStatus 사용_가능_상태
+    ) throws Exception {
         // Given
-        String 중복_검사_요청_항목_명 = "memberId";
-        String 중복_검사_요청_항목 = "porkoId";
-        ValidateDuplicateRequest 중복_검사_요청_객체 = ValidateDuplicateRequest.of(중복_검사_요청_항목, null);
-        ValidateDuplicateRequestField 중목_검사_요청_항목 = ValidateDuplicateRequestField.of(new SimpleEntry<>(중복_검사_요청_항목_명, 중복_검사_요청_항목));
-
+        ValidateDuplicateRequest 중복_검사_요청_객체 = ValidateDuplicateRequest.of(중복_검사_요청_타입, 중복_검사_요청값);
         given(validateDuplicateFacade.isDuplicated(중복_검사_요청_객체))
-            .willReturn(ValidateDuplicateResponse.of(중목_검사_요청_항목, false));
+            .willReturn(ValidateDuplicateResponse.of(중복_검사_요청_객체, 중복_여부));
 
         // When
-        ResultActions 중복_검사_요청_결과 = 중복_검사_요청(중복_검사_요청_항목_명, 중복_검사_요청_항목).ok();
+        ResultActions 중복_검사_요청_결과 = 중복_검사_요청(중복_검사_요청_객체.type(), 중복_검사_요청_객체.value()).ok();
 
         // Then
         verify(validateDuplicateFacade).isDuplicated(중복_검사_요청_객체);
 
         ValidateDuplicateResponse 중복_검사_요청_응답 = andReturn(중복_검사_요청_결과, ValidateDuplicateResponse.class);
         assertAll(
-            () -> assertThat(중복_검사_요청_응답.requestType()).isEqualTo(ValidateDuplicateRequestType.MEMBER_ID),
-            () -> assertThat(중복_검사_요청_응답.requestValue()).isEqualTo(중복_검사_요청_항목),
-            () -> assertThat(중복_검사_요청_응답.isDuplicated()).isFalse(),
-            () -> assertThat(중복_검사_요청_응답.availabilityStatus()).isEqualTo(AvailabilityStatus.AVAILABLE)
+            () -> assertThat(중복_검사_요청_응답.requestType()).isEqualTo(중복_검사_요청_객체.type()),
+            () -> assertThat(중복_검사_요청_응답.requestValue()).isEqualTo(중복_검사_요청_객체.value()),
+            () -> assertThat(중복_검사_요청_응답.availabilityStatus()).isEqualTo(사용_가능_상태)
         );
     }
 
-    @Test
-    @DisplayName("[GET:200]회원 아이디 중복 검사 : 아이디가 중복된 경우")
-    void validateMemberIdDuplicate_WhenDuplicatedMemberId() throws Exception {
-        // Given
-        String 중복_검사_요청_항목_명 = "memberId";
-        String 중복_검사_요청_항목 = "porkoId";
-        ValidateDuplicateRequest 중복_검사_요청_객체 = ValidateDuplicateRequest.of(중복_검사_요청_항목, null);
-        ValidateDuplicateRequestField 중목_검사_요청_항목 = ValidateDuplicateRequestField.of(new SimpleEntry<>(중복_검사_요청_항목_명, 중복_검사_요청_항목));
+    private static Stream<Arguments> validateDuplicate() {
+        String memberId = "porkoMemberId";
+        String email = "porkoMember@porko.info";
 
-        given(validateDuplicateFacade.isDuplicated(중복_검사_요청_객체))
-            .willReturn(ValidateDuplicateResponse.of(중목_검사_요청_항목, true));
-
-        // When
-        ResultActions 중복_검사_요청_결과 = 중복_검사_요청(중복_검사_요청_항목_명, 중복_검사_요청_항목).ok();
-
-        // Then
-        verify(validateDuplicateFacade).isDuplicated(중복_검사_요청_객체);
-
-        ValidateDuplicateResponse validateDuplicateResponse = andReturn(중복_검사_요청_결과, ValidateDuplicateResponse.class);
-        assertAll(
-            () -> assertThat(validateDuplicateResponse.requestType()).isEqualTo(ValidateDuplicateRequestType.MEMBER_ID),
-            () -> assertThat(validateDuplicateResponse.requestValue()).isEqualTo(중복_검사_요청_항목),
-            () -> assertThat(validateDuplicateResponse.isDuplicated()).isTrue(),
-            () -> assertThat(validateDuplicateResponse.availabilityStatus()).isEqualTo(AvailabilityStatus.UNAVAILABLE)
+        return Stream.of(
+            Arguments.of(MEMBER_ID, memberId, true, UNAVAILABLE),
+            Arguments.of(MEMBER_ID, memberId, false, AVAILABLE),
+            Arguments.of(EMAIL, email, true, UNAVAILABLE),
+            Arguments.of(EMAIL, email, false, AVAILABLE)
         );
     }
 

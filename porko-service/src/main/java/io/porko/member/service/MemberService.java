@@ -3,7 +3,7 @@ package io.porko.member.service;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_EMAIL;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_MEMBER_ID;
 
-import io.porko.member.controller.model.SignUpRequest;
+import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.exception.MemberException;
 import io.porko.member.repo.MemberRepo;
 import lombok.RequiredArgsConstructor;

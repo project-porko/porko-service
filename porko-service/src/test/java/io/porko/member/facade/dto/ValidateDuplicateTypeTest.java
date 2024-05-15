@@ -1,9 +1,10 @@
 package io.porko.member.facade.dto;
 
 import static io.porko.config.fixture.FixtureCommon.randomString;
-import static io.porko.member.exception.MemberErrorCode.INVALID_VALIDATE_DUPLICATE_TARGET_FORMAT;
+import static io.porko.member.exception.MemberErrorCode.INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
 import io.porko.member.exception.MemberException;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("Facade:DTO:ValidateDuplicateRequestType")
-class ValidateDuplicateRequestTypeTest {
+class ValidateDuplicateTypeTest {
     @ParameterizedTest
     @MethodSource
     @NullAndEmptySource
@@ -23,9 +24,9 @@ class ValidateDuplicateRequestTypeTest {
     void throwMemberException_GivenInvalidFormatValidateDuplicatedTypeValue(String given) {
         // When & Then
         assertThatExceptionOfType(MemberException.class)
-            .isThrownBy(() -> ValidateDuplicateRequestType.MEMBER_ID.validateFormat(given))
+            .isThrownBy(() -> ValidateDuplicateType.MEMBER_ID.validateFormat(given))
             .extracting(MemberException::getCode)
-            .isEqualTo(INVALID_VALIDATE_DUPLICATE_TARGET_FORMAT.name())
+            .isEqualTo(INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT.name())
         ;
     }
 

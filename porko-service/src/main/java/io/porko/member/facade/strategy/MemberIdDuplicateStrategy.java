@@ -1,8 +1,10 @@
 package io.porko.member.facade.strategy;
 
-import io.porko.member.controller.model.ValidateDuplicateResponse;
-import io.porko.member.facade.dto.ValidateDuplicateRequestField;
-import io.porko.member.facade.dto.ValidateDuplicateRequestType;
+import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
+
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
 import io.porko.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,15 +15,15 @@ public class MemberIdDuplicateStrategy implements ValidateDuplicateStrategy {
     private final MemberService memberService;
 
     @Override
-    public ValidateDuplicateResponse isDuplicated(ValidateDuplicateRequestField requestField) {
+    public ValidateDuplicateResponse isDuplicated(ValidateDuplicateRequest request) {
         return ValidateDuplicateResponse.of(
-            requestField,
-            memberService.isDuplicatedMemberId(requestField.value())
+            request,
+            memberService.isDuplicatedMemberId(request.value())
         );
     }
 
     @Override
-    public boolean isSupport(ValidateDuplicateRequestType requestType) {
-        return requestType.isMemberId();
+    public boolean isSupport(ValidateDuplicateType requestType) {
+        return requestType == MEMBER_ID;
     }
 }

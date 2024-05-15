@@ -4,13 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import io.porko.config.base.business.ServiceTestBase;
-import io.porko.member.controller.model.AvailabilityStatus;
-import io.porko.member.controller.model.ValidateDuplicateRequest;
-import io.porko.member.controller.model.ValidateDuplicateResponse;
+import io.porko.member.controller.model.validateduplicate.AvailabilityStatus;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
 import io.porko.member.exception.MemberErrorCode;
 import io.porko.member.exception.MemberException;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,7 +29,7 @@ class ValidateDuplicateFacadeTest extends ServiceTestBase {
 
     @ParameterizedTest
     @MethodSource
-    @DisplayName("중복 검사 요청 타입을 선별하고 각 타입에 적절한 중복 검사 실시 후 결과를 반환한다.")
+    @DisplayName("중복 검사 요청 타입별 유효성 검사 및 중복 검사 후 결과 반환")
     void isDuplicated(final ValidateDuplicateRequest given) {
         // When
         ValidateDuplicateResponse actual = validateDuplicateFacade.isDuplicated(given);
@@ -39,28 +41,22 @@ class ValidateDuplicateFacadeTest extends ServiceTestBase {
 
     private static Stream<Arguments> isDuplicated() {
         return Stream.of(
-            Arguments.of(ValidateDuplicateRequest.of("porkoMemberId", null)),
-            Arguments.of(ValidateDuplicateRequest.of(null, "testMember@porko.info"))
+            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.MEMBER_ID, "porkoMemberId")),
+            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.EMAIL, "testMember@porko.info"))
         );
     }
 
-    @ParameterizedTest
-    @MethodSource
-    @DisplayName("[예외]중복 여부 검사 요청 값의 형식이 유효하지 않은 경우")
-    void throwMemberException_WhenValidateDuplicateRequest(ValidateDuplicateRequest given) {
+    @Test
+    @DisplayName("[예외]중복 여부 검사 타입이 유효하지 않은 경우")
+    void throwMemberException_WhenValidateDuplicateRequest() {
+        // Given
+        ValidateDuplicateRequest given = ValidateDuplicateRequest.of(null, null);
+
         // When & Then
         assertThatExceptionOfType(MemberException.class)
             .isThrownBy(() -> validateDuplicateFacade.isDuplicated(given))
             .extracting(MemberException::getCode)
-            .isEqualTo(MemberErrorCode.INVALID_VALIDATE_DUPLICATE_TARGET_FORMAT.name())
+            .isEqualTo(MemberErrorCode.UNSUPPORTED_VALIDATE_DUPLICATE_TYPE.name())
         ;
-    }
-
-    private static Stream<Arguments> throwMemberException_WhenValidateDuplicateRequest() {
-        return Stream.of(
-            Arguments.of(ValidateDuplicateRequest.of("", null)),
-            Arguments.of(ValidateDuplicateRequest.of(null, "some email request")),
-            Arguments.of(ValidateDuplicateRequest.of(null, null))
-        );
     }
 }
