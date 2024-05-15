@@ -1,0 +1,8 @@
+spring:
+  config:
+    import:
+      - classpath:properties/datasource.yml
+      - classpath:properties/jpa.yml
+  profiles:
+    group:
+      test: h2-test, jpa-test
