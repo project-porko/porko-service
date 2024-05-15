@@ -33,8 +33,10 @@ public class RequestBuilder {
 
     private HttpMethod method;
 
-    private final Map<String, Object> headers = new HashMap<>();
-    private MediaType contentType;
+    private final Map<String, Object> headers = new HashMap<>() {{
+        put("Content-Type", MediaType.APPLICATION_JSON);
+        put("Accept", MediaType.APPLICATION_JSON);
+    }};
 
     private Object content;
 
@@ -111,7 +113,6 @@ public class RequestBuilder {
 
     public class Content {
         public Expect jsonContent(final Object object) {
-            contentType = MediaType.APPLICATION_JSON;
             content = object;
             return new Expect();
         }
@@ -181,13 +182,12 @@ public class RequestBuilder {
                 urlVariables.toArray()
             );
 
-        for (String header : headers.keySet()) {
-            request.header(header, headers.get(header));
+        for (String key : headers.keySet()) {
+            request.header(key, headers.get(key));
         }
 
         if (content != null) {
-            request.contentType(contentType)
-                .content(objectMapper.writeValueAsString(content));
+            request.content(objectMapper.writeValueAsString(content));
         }
 
         return mockMvc.perform(request)

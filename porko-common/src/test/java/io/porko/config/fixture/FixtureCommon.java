@@ -6,6 +6,8 @@ import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin;
+import net.jqwik.api.Arbitraries;
+import net.jqwik.api.arbitraries.StringArbitrary;
 
 public class FixtureCommon {
     private static final FixtureMonkeyBuilder builder = FixtureMonkey.builder();
@@ -36,5 +38,9 @@ public class FixtureCommon {
         return builder
             .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
             .build();
+    }
+
+    public static StringArbitrary randomString() {
+        return Arbitraries.strings();
     }
 }

@@ -1,5 +1,6 @@
 package io.porko.exception.response;
 
+import static io.porko.utils.ConvertUtils.convertToConstants;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
@@ -45,12 +46,7 @@ public enum ErrorCode {
     }
 
     private static String convertToErrorCodeName(String className) {
-        String regex = "([a-z])([A-Z])";
-        String replacement = "$1_$2";
         String exceptKeyword = "_Exception";
-
-        return className.replaceAll(regex, replacement)
-            .replace(exceptKeyword, "")
-            .toUpperCase();
+        return convertToConstants(className).replace(exceptKeyword, "");
     }
 }
