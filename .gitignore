@@ -224,4 +224,7 @@ gradle-app.setting
 ### fixture-monkey
 .jqwik-database
 
+### intellij qodana plugin
+qodana.yaml
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
