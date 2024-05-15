@@ -41,4 +41,8 @@ public abstract class WebMvcTestBase extends TestBase {
     private String extractResponseBody(ResultActions resultActions) throws UnsupportedEncodingException {
         return resultActions.andReturn().getResponse().getContentAsString();
     }
+
+    protected String extractResponseHeader(ResultActions resultActions, String key) {
+        return resultActions.andReturn().getResponse().getHeader(key);
+    }
 }

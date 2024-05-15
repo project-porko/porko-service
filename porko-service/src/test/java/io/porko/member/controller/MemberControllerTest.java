@@ -72,9 +72,14 @@ class MemberControllerTest extends MemberControllerTestHelper {
     void signUp() throws Exception {
         // Given
         SignUpRequest 회원_가입_요청_객체 = FixtureCommon.withValidated().giveMeOne(SignUpRequest.class);
+        long anyLong = anyLong();
+        given(memberService.createMember(회원_가입_요청_객체)).willReturn(anyLong);
 
-        // When & Then
-        회원_가입_요청(회원_가입_요청_객체).created();
+        // When
+        ResultActions resultActions = 회원_가입_요청(회원_가입_요청_객체).created();
+
+        // Then
+        assertThat(extractResponseHeader(resultActions, LOCATION)).isEqualTo("/member/" + anyLong);
         verify(memberService).createMember(회원_가입_요청_객체);
     }
 
