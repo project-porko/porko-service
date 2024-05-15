@@ -10,7 +10,7 @@ import io.porko.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Domain:Member")
+@DisplayName("Repo:Member")
 class MemberRepoTest extends JpaTestBase {
     private final MemberRepo memberRepo;
 

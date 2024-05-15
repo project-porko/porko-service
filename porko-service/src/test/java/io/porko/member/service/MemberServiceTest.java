@@ -64,7 +64,7 @@ class MemberServiceTest extends ServiceTestBase {
     }
 
     @Test
-    @DisplayName("회원 생성 실패: 중복된 아이디")
+    @DisplayName("[예외]회원 생성 실패: 중복된 아이디")
     void throwMemberException_GivenDuplicatedMemberId() {
         // Given
         String 중복된_회원_아이디 = 회원_가입_요청_객체.memberId();
@@ -85,7 +85,7 @@ class MemberServiceTest extends ServiceTestBase {
     }
 
     @Test
-    @DisplayName("회원 생성 실패: 중복된 이메일")
+    @DisplayName("[예외]회원 생성 실패: 중복된 이메일")
     void throwMemberException_GivenDuplicatedEmail() {
         // Given
         String 중복된_회원_이메일 = 회원_가입_요청_객체.email();
