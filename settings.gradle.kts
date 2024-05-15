@@ -1,2 +1,2 @@
 rootProject.name = "porko"
-include("porko-common")
+include("porko-common", "porko-service")
