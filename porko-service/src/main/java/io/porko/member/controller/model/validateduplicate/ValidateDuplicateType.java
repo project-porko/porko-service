@@ -8,7 +8,9 @@ import java.util.regex.Pattern;
 
 public enum ValidateDuplicateType {
     MEMBER_ID(compile("^[a-zA-Z0-9]{6,20}$")),
-    EMAIL(compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"));
+    EMAIL(compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")),
+    PHONE_NUMBER(compile("^[0-9]{11}$"))
+    ;
 
     private final Pattern pattern;
 

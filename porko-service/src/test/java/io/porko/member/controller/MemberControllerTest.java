@@ -4,6 +4,7 @@ import static io.porko.member.controller.model.validateduplicate.AvailabilitySta
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.UNAVAILABLE;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.EMAIL;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
+import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.PHONE_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -58,12 +59,15 @@ class MemberControllerTest extends MemberControllerTestHelper {
     private static Stream<Arguments> validateDuplicate() {
         String memberId = "porkoMemberId";
         String email = "porkoMember@porko.info";
+        String phoneNumber = "01012345678";
 
         return Stream.of(
             Arguments.of(MEMBER_ID, memberId, true, UNAVAILABLE),
             Arguments.of(MEMBER_ID, memberId, false, AVAILABLE),
             Arguments.of(EMAIL, email, true, UNAVAILABLE),
-            Arguments.of(EMAIL, email, false, AVAILABLE)
+            Arguments.of(EMAIL, email, false, AVAILABLE),
+            Arguments.of(PHONE_NUMBER, phoneNumber, true, UNAVAILABLE),
+            Arguments.of(PHONE_NUMBER, phoneNumber, false, AVAILABLE)
         );
     }
 
