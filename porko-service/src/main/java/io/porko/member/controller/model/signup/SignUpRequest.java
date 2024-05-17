@@ -28,6 +28,7 @@ public record SignUpRequest(
     @Size(max = 11)
     String phoneNumber,
 
+    @NotNull
     AddressDto address,
 
     @NotNull
