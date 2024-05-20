@@ -1,4 +1,5 @@
 val testSourceSet: SourceSetOutput = project(":porko-common").sourceSets["test"].output
+val queryDslVersion = dependencyManagement.importedProperties["querydsl.version"]
 
 object DependencyVersions {
     const val JJWT_VERSION = "0.11.5"
@@ -15,9 +16,37 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:${DependencyVersions.JJWT_VERSION}")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:${DependencyVersions.JJWT_VERSION}")
 
+    implementation("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
     testRuntimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(testSourceSet)
+}
+
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+val qClassGeneratedPath: String = layout.projectDirectory.dir("src/main/generated").asFile.path
+
+sourceSets {
+    main {
+        java.srcDirs(qClassGeneratedPath)
+    }
+}
+
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.file(qClassGeneratedPath)
+    options.compilerArgs.add("-Aquerydsl.generatedAnnotationClass=javax.annotation.Generated")
+}
+
+tasks {
+    getByName<Delete>("clean") {
+        delete.add(qClassGeneratedPath) // add accepts argument with Any type
+    }
 }
