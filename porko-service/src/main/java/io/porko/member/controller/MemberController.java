@@ -2,6 +2,8 @@ package io.porko.member.controller;
 
 import static io.porko.member.controller.MemberController.MEMBER_BASE_URI;
 
+import io.porko.auth.controller.model.LoginMember;
+import io.porko.member.controller.model.MemberResponse;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
@@ -51,5 +53,11 @@ public class MemberController {
             GET_AN_MEMBER_URI_FORMAT,
             memberService.createMember(signUpRequest)
         );
+    }
+
+    @GetMapping("me")
+    ResponseEntity<MemberResponse> me(@LoginMember Long loginMemberId) {
+        MemberResponse memberResponse = memberService.loadMemberById(loginMemberId);
+        return ResponseEntity.ok(memberResponse);
     }
 }
