@@ -3,14 +3,11 @@ package io.porko.config.base.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.porko.config.base.TestBase;
-import io.porko.config.security.TestSecurityConfig;
 import jakarta.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@Import(TestSecurityConfig.class)
 public abstract class WebMvcTestBase extends TestBase {
     @Resource
     protected MockMvc mockMvc;

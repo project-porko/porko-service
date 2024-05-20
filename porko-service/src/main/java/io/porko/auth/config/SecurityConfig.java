@@ -1,4 +1,4 @@
-package io.porko.config.security;
+package io.porko.auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
