@@ -6,3 +6,4 @@ spring:
   profiles:
     group:
       test: h2-test, jpa-test
+      local: mysql-local, jpa-local, p6spy-local, logging-local

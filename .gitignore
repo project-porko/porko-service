@@ -227,4 +227,7 @@ gradle-app.setting
 ### intellij qodana plugin
 qodana.yaml
 
+### Docker:MySQL
+.db/**
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
