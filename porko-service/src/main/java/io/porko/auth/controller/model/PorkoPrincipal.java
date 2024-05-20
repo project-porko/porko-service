@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.User;
 
 @Getter
 public class PorkoPrincipal extends User {
-    private Long id;
+    private final Long id;
 
     private PorkoPrincipal(Long id, String memberId) {
         super(memberId, "", Collections.emptySet());

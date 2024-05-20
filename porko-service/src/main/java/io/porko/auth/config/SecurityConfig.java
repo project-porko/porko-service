@@ -1,5 +1,6 @@
 package io.porko.auth.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.porko.auth.config.jwt.JwtProperties;
 import io.porko.auth.filter.TokenVerifyFilter;
 import io.porko.auth.service.AuthService;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final AuthService authService;
     private final JwtProperties jwtProperties;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,6 +39,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/member/sign-up", "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/member/validate").permitAll()
                 .anyRequest().authenticated()
+            )
+            // [TODO:Feature] : 403 권한 없음 예외 처리를 위한 AccessDeniedHandler 구현 및 등록
+            .exceptionHandling(exceptionHandlingConfigurer ->
+                exceptionHandlingConfigurer.authenticationEntryPoint(new UnauthorizedEntryPoint(objectMapper))
             )
             .addFilterBefore(
                 new TokenVerifyFilter(authService, jwtProperties),
