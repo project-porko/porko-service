@@ -12,7 +12,7 @@ import org.hibernate.engine.jdbc.internal.Formatter;
 import org.springframework.boot.test.context.TestComponent;
 
 @TestComponent
-public class P6spySqlFormatConfiguration extends JdbcEventListener implements MessageFormattingStrategy {
+public class P6spySqlFormatConfig extends JdbcEventListener implements MessageFormattingStrategy {
     public static final String CREATE = "create";
     public static final String ALTER = "alter";
     public static final String COMMENT = "comment";
