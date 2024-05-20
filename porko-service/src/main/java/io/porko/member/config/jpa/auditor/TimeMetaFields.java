@@ -1,4 +1,4 @@
-package io.porko.config.jpa.auditor;
+package io.porko.member.config.jpa.auditor;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
