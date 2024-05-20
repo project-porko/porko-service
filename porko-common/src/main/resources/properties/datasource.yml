@@ -16,3 +16,10 @@ spring:
   test.database.replace: none
   sql.init.mode: never
 ---
+spring:
+  config.activate.on-profile: mysql-local
+  datasource:
+    url: jdbc:mysql://localhost:3306/porko?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: porko-local
+    password: porko-local-pw

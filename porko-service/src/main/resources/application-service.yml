@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: porko-service-api
+
+  profiles:
+    active: local
+
+server:
+  port: 8080
+
+jwt:
+  issuer: porko.info
+  secret-key: porko-service-local-secret-key
+  expire-period: 10
+  audience: porko-service
