@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("Domain:TokenResolver")
 class TokenResolverTest extends TokenTestHelper {
-    private String token = TokenProvider.generate(testPorkoPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
+    private final String token = TokenProvider.generate(testPorkoPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
 
     @Test
     @DisplayName("토큰 검증")

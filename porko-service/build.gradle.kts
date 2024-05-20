@@ -16,5 +16,6 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:${DependencyVersions.JJWT_VERSION}")
 
     testRuntimeOnly("com.h2database:h2")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation(testSourceSet)
 }
