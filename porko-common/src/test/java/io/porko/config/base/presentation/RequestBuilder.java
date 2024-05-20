@@ -1,5 +1,6 @@
 package io.porko.config.base.presentation;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -104,9 +105,25 @@ public class RequestBuilder {
     }
 
     public class EndPoint {
-        public Content url(final String urlInput, final Object... urlVariablesInput) {
+        //        public Content url(final String urlInput, final Object... urlVariablesInput) {
+//            url = urlInput;
+//            urlVariables = Arrays.asList(urlVariablesInput);
+//            return new Content();
+//        }
+        public Header url(final String urlInput, final Object... urlVariablesInput) {
             url = urlInput;
             urlVariables = Arrays.asList(urlVariablesInput);
+            return new Header();
+        }
+    }
+
+    public class Header {
+        public Content authentication(final String token) {
+            headers.put(AUTHORIZATION, "Bearer ".concat(token));
+            return new Content();
+        }
+
+        public Content noAuthentication() {
             return new Content();
         }
     }
