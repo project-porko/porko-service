@@ -1,5 +1,7 @@
 package io.porko.member.controller;
 
+import static io.porko.config.security.TestSecurityConfig.testMember;
+import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.AVAILABLE;
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.UNAVAILABLE;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.EMAIL;
@@ -13,6 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 import io.porko.config.fixture.FixtureCommon;
+import io.porko.config.security.TestSecurityConfig;
+import io.porko.member.controller.model.MemberResponse;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.controller.model.validateduplicate.AvailabilityStatus;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
@@ -24,13 +28,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 
 @DisplayName("Controller:Member")
+@Import(TestSecurityConfig.class)
 class MemberControllerTest extends MemberControllerTestHelper {
     @ParameterizedTest(name = "[{index}] 요청:[타입:{0}, 요청값:{1}], 중복 여부:{2}, 사용 가능 상태:{3}")
     @MethodSource
-    @DisplayName("[GET:200]중복 검사")
+    @DisplayName("[회원 가입 항목 중복 검사][GET:200]")
     void validateDuplicate(
         ValidateDuplicateType 중복_검사_요청_타입,
         String 중복_검사_요청값,
@@ -72,7 +81,7 @@ class MemberControllerTest extends MemberControllerTestHelper {
     }
 
     @Test
-    @DisplayName("[POST:201]회원 가입")
+    @DisplayName("[회원 가입][POST:201]")
     void signUp() throws Exception {
         // Given
         SignUpRequest 회원_가입_요청_객체 = FixtureCommon.withValidated().giveMeOne(SignUpRequest.class);
@@ -88,9 +97,40 @@ class MemberControllerTest extends MemberControllerTestHelper {
     }
 
     @Test
-    @DisplayName("[POST:400]회원 가입 실패:값이 잘못된 요청")
+    @DisplayName("[회원 가입][POST:400]요청값이 유효하지 않은 경우")
     void throwException_WhenInvalidMethodArgument() throws Exception {
         // When & Then
         회원_가입_요청(유효_하지_않은_회원_가입_요청_객체).badRequest();
+    }
+
+    @Test
+    @WithUserDetails(value = "porkoTestMemberId", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[내 정보 조회][GET:200]")
+    void me() throws Exception {
+        // Given
+        given(memberService.loadMemberById(testPorkoPrincipal.getId()))
+            .willReturn(MemberResponse.of(testMember));
+
+        // When & Then
+        내_정보_조회().ok();
+        verify(memberService).loadMemberById(testPorkoPrincipal.getId());
+    }
+
+    @Test
+    @WithAnonymousUser(setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[내 정보 조회][GET:403]로그인 사용자 정보가 없는 경우")
+    void throwAuthException_WhenNotExistAuthentication() throws Exception {
+        // When & Then
+        내_정보_조회().unAuthorized();
+    }
+
+    @Test
+    @DisplayName("[내 정보 조회][GET:403]엑세스 토큰 형식이 유효하지 않은 경우")
+    void throwAuthException_WhenInvalidAccessTokenFormat() throws Exception {
+        // When & Then
+        get()
+            .url("/member/me")
+            .authentication("aaa.aaaa.aaaa")
+            .expect().unAuthorized();
     }
 }
