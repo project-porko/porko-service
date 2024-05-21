@@ -105,11 +105,6 @@ public class RequestBuilder {
     }
 
     public class EndPoint {
-        //        public Content url(final String urlInput, final Object... urlVariablesInput) {
-//            url = urlInput;
-//            urlVariables = Arrays.asList(urlVariablesInput);
-//            return new Content();
-//        }
         public Header url(final String urlInput, final Object... urlVariablesInput) {
             url = urlInput;
             urlVariables = Arrays.asList(urlVariablesInput);
