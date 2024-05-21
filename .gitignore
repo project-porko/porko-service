@@ -228,7 +228,7 @@ gradle-app.setting
 qodana.yaml
 
 ### Docker:MySQL volume
-.db/**
+db/**
 
 ### Querydsl q-class
 porko-service/src/main/generated/**
