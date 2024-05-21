@@ -1,0 +1,5 @@
+spring.config.activate.on-profile: p6spy-local
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

@@ -1,0 +1,6 @@
+spring.config.activate.on-profile: logging-local
+logging:
+  level:
+    io.porko: debug
+    org.springframework.web.servlet: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace

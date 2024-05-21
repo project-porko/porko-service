@@ -1,0 +1,6 @@
+spring.config.activate.on-profile: jwt-local
+jwt:
+  issuer: porko.info
+  secret-key: porko-service-local-secret-key
+  expire-period: 10
+  audience: porko-service
