@@ -8,6 +8,7 @@ import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
+import io.porko.member.controller.model.validateduplicate.ValidateDuplicateTypeResponse;
 import io.porko.member.facade.ValidateDuplicateFacade;
 import io.porko.member.service.MemberService;
 import io.porko.utils.ResponseEntityUtils;
@@ -35,6 +36,11 @@ public class MemberController {
 
     private final ValidateDuplicateFacade validateDuplicateFacade;
     private final MemberService memberService;
+
+    @GetMapping("validate/types")
+    ResponseEntity<ValidateDuplicateTypeResponse> getValidateDuplicateTypes() {
+        return ResponseEntity.ok(ValidateDuplicateTypeResponse.create());
+    }
 
     @GetMapping("validate")
     ResponseEntity<ValidateDuplicateResponse> validateDuplicate(
