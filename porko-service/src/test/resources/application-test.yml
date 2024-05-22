@@ -1,5 +1,0 @@
-jwt:
-  issuer: porko.info
-  secret-key: porko-service-test-secret-key
-  expire-period: 10
-  audience: porko-service
