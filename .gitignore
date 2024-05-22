@@ -236,4 +236,7 @@ porko-service/src/main/generated/**
 ### application environment properties
 porko-common/src/main/resources/environment/**
 
+### docker environment properties
+.env
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
