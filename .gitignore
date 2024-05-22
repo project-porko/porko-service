@@ -233,4 +233,7 @@ db/**
 ### Querydsl q-class
 porko-service/src/main/generated/**
 
+### application environment properties
+porko-common/src/main/resources/environment/**
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
