@@ -1,6 +1,5 @@
 package io.porko.history.domain;
 
-import io.porko.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
