@@ -28,7 +28,6 @@ class MemberControllerTestHelper extends WebMvcTestBase {
         "",
         "",
         "",
-        "",
         new AddressDto("", ""),
         null
     );
@@ -47,7 +46,7 @@ class MemberControllerTestHelper extends WebMvcTestBase {
             .expect();
     }
 
-    protected Expect 내_정보_조회(){
+    protected Expect 내_정보_조회() {
         return get()
             .url(ME_URI)
             .noAuthentication()

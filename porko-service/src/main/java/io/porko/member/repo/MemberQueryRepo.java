@@ -18,7 +18,6 @@ public class MemberQueryRepo {
         return Optional.ofNullable(queryFactory.select(
                 new QMemberResponse(
                     member.id,
-                    member.memberId,
                     member.name,
                     member.email,
                     member.createdAt

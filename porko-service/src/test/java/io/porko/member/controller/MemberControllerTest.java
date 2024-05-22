@@ -1,5 +1,6 @@
 package io.porko.member.controller;
 
+import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.AVAILABLE;
@@ -131,7 +132,7 @@ class MemberControllerTest extends MemberControllerTestHelper {
     }
 
     @Test
-    @WithUserDetails(value = "porkoTestMemberId", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @WithUserDetails(value = TEST_PORKO_MEMBER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[내 정보 조회][GET:200]")
     void me() throws Exception {
         // Given

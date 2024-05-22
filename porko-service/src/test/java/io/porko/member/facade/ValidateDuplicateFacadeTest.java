@@ -37,8 +37,8 @@ class ValidateDuplicateFacadeTest extends ServiceTestBase {
 
     private static Stream<Arguments> isDuplicated() {
         return Stream.of(
-            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.MEMBER_ID, "porkoMemberId")),
-            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.EMAIL, "testMember@porko.info"))
+            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.EMAIL, "testMember@porko.info")),
+            Arguments.of(ValidateDuplicateRequest.of(ValidateDuplicateType.PHONE_NUMBER, "01011112222"))
         );
     }
 }
