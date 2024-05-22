@@ -10,8 +10,8 @@ spring:
   datasource:
     platform: mysql
     hikari:
-      jdbc-url: jdbc:h2:mem:test_db;MODE=MySql
-    username: sa
+      jdbc-url: ${datasource.url}
+    username: ${datasource.username}
     password:
   test.database.replace: none
   sql.init.mode: never
@@ -19,7 +19,7 @@ spring:
 spring:
   config.activate.on-profile: mysql-local
   datasource:
-    url: jdbc:mysql://localhost:3306/porko?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+    url: ${datasource.url}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: porko-local
-    password: porko-local-pw
+    username: ${datasource.username}
+    password: ${datasource.password}
