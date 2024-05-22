@@ -9,7 +9,6 @@ import lombok.Getter;
 
 @Getter
 public enum ValidateDuplicateType {
-    MEMBER_ID(compile("^[a-zA-Z0-9]{6,20}$"), "아이디"),
     EMAIL(compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"), "이메일"),
     PHONE_NUMBER(compile("^[0-9]{11}$"), "휴대폰 번호");
 

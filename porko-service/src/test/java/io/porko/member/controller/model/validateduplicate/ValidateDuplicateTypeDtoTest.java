@@ -25,7 +25,6 @@ class ValidateDuplicateTypeDtoTest {
 
     private static Stream<Arguments> create() {
         return Stream.of(
-            Arguments.of(ValidateDuplicateType.MEMBER_ID),
             Arguments.of(ValidateDuplicateType.EMAIL),
             Arguments.of(ValidateDuplicateType.PHONE_NUMBER)
         );
