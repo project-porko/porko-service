@@ -29,14 +29,14 @@ public class AuthService {
     }
 
     private PorkoPrincipal verifyMember(LoginRequest loginRequest) {
-        Member member = loadUserByUsername(loginRequest.memberId());
+        Member member = loadUserByUsername(loginRequest.email());
         checkPasswordIsMatched(loginRequest.password(), member.getPassword());
 
-        return PorkoPrincipal.of(member.getId(), member.getMemberId());
+        return PorkoPrincipal.of(member.getId(), member.getEmail());
     }
 
-    public Member loadUserByUsername(String memberId) {
-        return memberRepo.findByMemberId(memberId)
+    public Member loadUserByUsername(String email) {
+        return memberRepo.findByEmail(email)
             .orElseThrow(() -> new AuthException(BAD_CREDENTIALS));
     }
 

@@ -9,8 +9,9 @@ import jakarta.validation.constraints.Size;
 
 public record SignUpRequest(
     @NotBlank
-    @Size(min = 6, max = 20)
-    String memberId,
+    @Size(max = 40)
+    @Email
+    String email,
 
     @NotBlank
     String password,
@@ -18,11 +19,6 @@ public record SignUpRequest(
     @NotBlank
     @Size(max = 10)
     String name,
-
-    @NotBlank
-    @Size(max = 40)
-    @Email
-    String email,
 
     @NotBlank
     @Size(max = 11)
@@ -36,10 +32,9 @@ public record SignUpRequest(
 ) {
     public Member toEntity(String encodedPassword) {
         return Member.of(
-            memberId,
+            email,
             encodedPassword,
             name,
-            email,
             phoneNumber,
             address.toEntity(),
             gender
