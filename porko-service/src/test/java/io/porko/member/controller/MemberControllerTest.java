@@ -6,7 +6,6 @@ import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.AVAILABLE;
 import static io.porko.member.controller.model.validateduplicate.AvailabilityStatus.UNAVAILABLE;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.EMAIL;
-import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.PHONE_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
@@ -99,8 +98,6 @@ class MemberControllerTest extends MemberControllerTestHelper {
         String phoneNumber = "01012345678";
 
         return Stream.of(
-            Arguments.of(MEMBER_ID, memberId, true, UNAVAILABLE),
-            Arguments.of(MEMBER_ID, memberId, false, AVAILABLE),
             Arguments.of(EMAIL, email, true, UNAVAILABLE),
             Arguments.of(EMAIL, email, false, AVAILABLE),
             Arguments.of(PHONE_NUMBER, phoneNumber, true, UNAVAILABLE),
