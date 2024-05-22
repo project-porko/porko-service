@@ -11,11 +11,7 @@ public record MemberResponse(
     LocalDateTime registeredAt
 ) {
     @QueryProjection
-    public MemberResponse(Long id, String name, String email, LocalDateTime registeredAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.registeredAt = registeredAt;
+    public MemberResponse {
     }
 
     public static MemberResponse of(Member member) {
