@@ -3,6 +3,7 @@ package io.porko.budget.domain;
 import io.porko.utils.ConvertUtils;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.time.YearMonth;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
