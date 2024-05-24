@@ -1,6 +1,6 @@
 package io.porko.member.domain;
 
-import io.porko.member.config.jpa.auditor.TimeMetaFields;
+import io.porko.config.jpa.auditor.TimeMetaFields;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
