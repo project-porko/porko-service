@@ -1,6 +1,6 @@
 package io.porko.widget.service;
 
-import static io.porko.widget.service.WidgetTestHelper.widgets;
+import static io.porko.widget.controller.WidgetControllerTestHelper.widgets;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
