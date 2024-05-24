@@ -4,6 +4,9 @@ import static io.porko.widget.domain.WidgetType.DEFAULT;
 import static io.porko.widget.domain.WidgetType.FIXED;
 import static io.porko.widget.domain.WidgetType.OPTIONAL;
 
+import lombok.Getter;
+
+@Getter
 public enum WidgetCode {
     TODAY_CONSUMPTION_WEATHER(FIXED, "오늘 소비 날씨"),
 
