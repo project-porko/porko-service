@@ -8,7 +8,6 @@ public record WidgetDto(
     String type,
     String description
 ) {
-
     public static WidgetDto from(Widget widget) {
         return new WidgetDto(
             widget.getId(),
