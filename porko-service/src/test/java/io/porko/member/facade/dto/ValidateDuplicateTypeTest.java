@@ -1,9 +1,7 @@
 package io.porko.member.facade.dto;
 
-import static io.porko.config.fixture.FixtureCommon.randomAlpha;
 import static io.porko.config.fixture.FixtureCommon.randomString;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.EMAIL;
-import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.MEMBER_ID;
 import static io.porko.member.controller.model.validateduplicate.ValidateDuplicateType.PHONE_NUMBER;
 import static io.porko.member.exception.MemberErrorCode.INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -49,8 +47,6 @@ class ValidateDuplicateTypeTest {
 
     private static Stream<Arguments> throwMemberException_GivenInvalidMemberIdFormat() {
         return Stream.of(
-            Arguments.of(MEMBER_ID, randomAlpha().ofMaxLength(5).sample()),
-            Arguments.of(MEMBER_ID, randomAlpha().ofMinLength(21).sample()),
             Arguments.of(EMAIL, randomString().alpha().sample()),
             Arguments.of(PHONE_NUMBER, randomString().numeric().ofMaxLength(10).sample()),
             Arguments.of(PHONE_NUMBER, randomString().numeric().ofMinLength(12).sample())

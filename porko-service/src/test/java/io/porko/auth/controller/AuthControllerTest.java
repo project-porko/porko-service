@@ -1,7 +1,7 @@
 package io.porko.auth.controller;
 
 import static io.porko.auth.exception.AuthErrorCode.BAD_CREDENTIALS;
-import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_ID;
+import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
 import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -31,7 +31,7 @@ class AuthControllerTest extends WebMvcTestBase {
     JwtProperties jwtProperties;
 
     private static final String LOGIN_URI = "/login";
-    private static final LoginRequest loginRequest = new LoginRequest(TEST_PORKO_MEMBER_ID, "password");
+    private static final LoginRequest loginRequest = new LoginRequest(TEST_PORKO_MEMBER_EMAIL, "password");
 
     @Test
     @DisplayName("[로그인][POST:200]")

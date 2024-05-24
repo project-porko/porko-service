@@ -38,15 +38,14 @@ public class TestSecurityConfig {
     }
 
     public static final Long TEST_PORKO_ID = 1L;
-    public static final String TEST_PORKO_MEMBER_ID = "testPorkoMemberId";
+    public static final String TEST_PORKO_MEMBER_EMAIL = "testPorkorer@porko.info";
 
-    public static final PorkoPrincipal testPorkoPrincipal = PorkoPrincipal.of(TEST_PORKO_ID, TEST_PORKO_MEMBER_ID);
+    public static final PorkoPrincipal testPorkoPrincipal = PorkoPrincipal.of(TEST_PORKO_ID, TEST_PORKO_MEMBER_EMAIL);
 
     public static final Member testMember = Member.of(
-        TEST_PORKO_MEMBER_ID,
+        TEST_PORKO_MEMBER_EMAIL,
         "testPorkoMemberPassword",
         "testPorkorer",
-        "testPorkorer@porko.info",
         "01011112222",
         Address.of("서울시 서초구", "강남"),
         Gender.MALE

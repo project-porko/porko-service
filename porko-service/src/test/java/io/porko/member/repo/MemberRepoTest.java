@@ -23,10 +23,9 @@ class MemberRepoTest extends JpaTestBase {
     void save() {
         // Given
         Member given = Member.of(
-            "memberId",
+            "member@porko.info",
             "password",
             "name",
-            "email",
             "01012345678",
             Address.of("roadName", "detail"),
             Gender.MALE
