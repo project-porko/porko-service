@@ -21,13 +21,15 @@ dependencies {
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.github.ben-manes.caffeine:caffeine")
+
     testRuntimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(testSourceSet)
 }
-
 
 tasks.withType<Test> {
     useJUnitPlatform()
@@ -47,6 +49,6 @@ tasks.withType<JavaCompile> {
 
 tasks {
     getByName<Delete>("clean") {
-        delete.add(qClassGeneratedPath) // add accepts argument with Any type
+        delete.add(qClassGeneratedPath)
     }
 }
