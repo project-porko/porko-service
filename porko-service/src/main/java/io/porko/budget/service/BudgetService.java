@@ -29,6 +29,8 @@ public class BudgetService {
 
         return BudgetResponse.of(totalCost.divide(budget.getGoalCost())
                             .multiply(BigDecimal.valueOf(100))
-                            .abs());
+                            .abs()
+                            .setScale(1, RoundingMode.DOWN)
+                            .stripTrailingZeros());
     }
 }
