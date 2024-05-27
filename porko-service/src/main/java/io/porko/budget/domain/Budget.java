@@ -24,12 +24,12 @@ public class Budget {
     private BigDecimal goalCost;
 
     @Column(nullable = false)
-    private YearMonth goalDate;
+    private String goalDate;
 
     private Budget(
             Long memberId,
             BigDecimal goalCost,
-            YearMonth goalDate
+            String goalDate
     ) {
         this.memberId = memberId;
         this.goalCost = goalCost;
@@ -39,7 +39,7 @@ public class Budget {
     public static Budget of(
             Long memberId,
             BigDecimal goalCost,
-            YearMonth goalDate
+            String goalDate
     ) {
         return new Budget(memberId, goalCost, goalDate);
     }
