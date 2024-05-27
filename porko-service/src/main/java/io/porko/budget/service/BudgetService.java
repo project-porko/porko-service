@@ -22,10 +22,10 @@ public class BudgetService {
     private final BudgetRepo budgetRepo;
     private final HistoryQueryRepo historyQueryRepo;
 
-    public BudgetResponse getBudget(YearMonth goalDate, Long memberId) {
-        Budget budget = budgetRepo.findByGoalDateAndMemberId(ConvertUtils.YearMonthToString(goalDate), memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalDate, memberId));
+    public BudgetResponse getBudget(Integer goalYear, Integer goalMonth, Long memberId) {
+        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(goalYear, goalMonth, memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalYear, goalMonth, memberId));
 
-        BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalDate, memberId).orElse(BigDecimal.ZERO);
+        BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalYear, goalMonth, memberId).orElse(BigDecimal.ZERO);
 
         return BudgetResponse.of(totalCost.divide(budget.getGoalCost())
                             .multiply(BigDecimal.valueOf(100))

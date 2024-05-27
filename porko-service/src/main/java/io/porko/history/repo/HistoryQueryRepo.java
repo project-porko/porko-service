@@ -16,13 +16,13 @@ import static io.porko.history.domain.QHistory.history;
 public class HistoryQueryRepo {
     private final JPQLQueryFactory queryFactory;
 
-    public Optional<BigDecimal> calcTotalCost (YearMonth yearMonth, Long memberId) {
+    public Optional<BigDecimal> calcTotalCost (Integer goalYear, Integer goalMonth, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
                 .where(history.memberId.eq(memberId)
                         .and(history.cost.lt(0))
-                        .and(history.usedAt.year().eq(yearMonth.getYear()))
-                        .and(history.usedAt.month().eq(yearMonth.getMonthValue()))
+                        .and(history.usedAt.year().eq(goalYear))
+                        .and(history.usedAt.month().eq(goalMonth))
                         .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
                 .fetchOne());
     }

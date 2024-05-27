@@ -3,6 +3,7 @@ package io.porko.budget.controller;
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.budget.controller.model.BudgetResponse;
 import io.porko.budget.service.BudgetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +20,14 @@ public class BudgetController {
     private final BudgetService budgetService;
 
     @GetMapping
-    ResponseEntity<BudgetResponse> getBudget (@RequestParam("goalDate") YearMonth goalDate,
+    ResponseEntity<BudgetResponse> getBudget (@Valid @RequestParam Integer goalYear,
+                                              @Valid @RequestParam Integer goalMonth,
                                               @RequestParam(required = false) Long memberId,
                                               @LoginMember Long id) {
         if (memberId == null) {
             memberId = id;
         }
-        BudgetResponse budgetResponse = budgetService.getBudget(goalDate, memberId);
+        BudgetResponse budgetResponse = budgetService.getBudget(goalYear, goalMonth, memberId);
 
         return ResponseEntity.ok(budgetResponse);
     }
