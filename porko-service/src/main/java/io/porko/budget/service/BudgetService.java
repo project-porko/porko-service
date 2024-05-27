@@ -23,7 +23,7 @@ public class BudgetService {
     private final HistoryQueryRepo historyQueryRepo;
 
     public BudgetResponse getBudget(YearMonth goalDate, Long memberId) {
-        Budget budget = budgetRepo.findByGoalDateAndMemberId(ConvertUtils.YearMonthToString(goalDate), memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.NOT_FOUND, goalDate, memberId));
+        Budget budget = budgetRepo.findByGoalDateAndMemberId(ConvertUtils.YearMonthToString(goalDate), memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalDate, memberId));
 
         BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalDate, memberId).orElse(BigDecimal.ZERO);
 
