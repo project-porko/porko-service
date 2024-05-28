@@ -4,6 +4,8 @@ import io.porko.auth.controller.model.LoginMember;
 import io.porko.budget.controller.model.BudgetResponse;
 import io.porko.budget.service.BudgetService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ public class BudgetController {
 
     @GetMapping
     ResponseEntity<BudgetResponse> getBudget (@Valid @RequestParam Integer goalYear,
-                                              @Valid @RequestParam Integer goalMonth,
+                                              @Valid @RequestParam @Min(1) @Max(12) Integer goalMonth,
                                               @RequestParam(required = false) Long memberId,
                                               @LoginMember Long id) {
         if (memberId == null) {

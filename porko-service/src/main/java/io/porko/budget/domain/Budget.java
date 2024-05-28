@@ -29,8 +29,8 @@ public class Budget {
     private Integer goalYear;
 
     @Column(nullable = false)
-    @Min(value = 1)
-    @Max(value = 12)
+    @Min(value = 1, message = "월은 1보다 작을 수 없습니다.")
+    @Max(value = 12, message = "월은 12보다 클 수 없습니다.")
     private Integer goalMonth;
 
     private Budget(
