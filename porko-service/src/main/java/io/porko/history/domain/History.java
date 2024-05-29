@@ -1,5 +1,6 @@
 package io.porko.history.domain;
 
+import io.porko.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,10 @@ public class History {
     @Column(nullable = false, length = 100)
     private String memo;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     public History(
             BigDecimal cost,
             Boolean regret,
@@ -47,7 +52,8 @@ public class History {
             LocalDateTime usedAt,
             SpendingCategory spendingCategoryId,
             String type,
-            String memo
+            String memo,
+            Member member
     ) {
         this.cost = cost;
         this.regret = regret;
@@ -57,6 +63,7 @@ public class History {
         this.spendingCategoryId = spendingCategoryId;
         this.type = type;
         this.memo = memo;
+        this.member = member;
     }
 
     public static History of(
@@ -67,8 +74,9 @@ public class History {
             LocalDateTime usedAt,
             SpendingCategory spendingCategoryId,
             String type,
-            String memo
+            String memo,
+            Member member
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo);
+        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo,member);
     }
 }
