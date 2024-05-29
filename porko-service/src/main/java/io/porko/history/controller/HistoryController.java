@@ -1,6 +1,5 @@
 package io.porko.history.controller;
 
-
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.history.controller.model.HistoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import io.porko.history.service.HistoryService;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
 public class HistoryController {
@@ -26,7 +24,8 @@ public class HistoryController {
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-        List<HistoryResponse> historyList = historyService.getHistoryList(loginMemberId, startDate, endDate);
-        return ResponseEntity.ok(historyList);
+        if (startDate == null || endDate == null) {
+            return ResponseEntity.ok(historyService.getThisMonthHistoryList(loginMemberId));
+        } else return ResponseEntity.ok(historyService.getHistoryListByDate(loginMemberId, startDate, endDate));
     }
 }
