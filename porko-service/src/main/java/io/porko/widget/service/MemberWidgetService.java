@@ -3,6 +3,7 @@ package io.porko.widget.service;
 import io.porko.member.domain.Member;
 import io.porko.member.service.MemberService;
 import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
 import io.porko.widget.controller.model.WidgetsResponse;
 import io.porko.widget.domain.OrderedMemberWidgets;
 import io.porko.widget.domain.Widget;
@@ -30,5 +31,9 @@ public class MemberWidgetService {
 
         memberWidgetRepo.deleteByMemberId(memberId);
         memberWidgetRepo.saveAll(orderedMemberWidgets.elements());
+    }
+
+    public OrderedMemberWidgetsResponse loadOrderedMemberWidgets(Long memberId) {
+        return OrderedMemberWidgetsResponse.from(memberWidgetRepo.findByMemberIdOrderBySequenceAsc(memberId));
     }
 }

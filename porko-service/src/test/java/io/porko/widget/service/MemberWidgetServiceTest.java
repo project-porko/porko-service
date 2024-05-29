@@ -1,5 +1,6 @@
 package io.porko.widget.service;
 
+import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.widgetsResponse;
 import static io.porko.widget.fixture.MemberWidgetFixture.modifyModifyMemberWidgetsOrderRequest;
@@ -8,10 +9,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
 
+import com.navercorp.fixturemonkey.api.type.TypeReference;
 import io.porko.config.base.business.ServiceTestBase;
+import io.porko.config.fixture.FixtureCommon;
 import io.porko.member.service.MemberService;
 import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.domain.MemberWidget;
 import io.porko.widget.repo.MemberWidgetRepo;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,5 +57,23 @@ class MemberWidgetServiceTest extends ServiceTestBase {
         verify(widgetService).loadAllWidgets();
         verify(memberWidgetRepo).deleteByMemberId(memberId);
         verify(memberWidgetRepo).saveAll(anyCollection());
+    }
+
+    @Test
+    @DisplayName("회원 위젯 순서 조회")
+    void loadOrderedMemberWidgets() {
+        // Given
+        List<MemberWidget> sample = FixtureCommon.entityType()
+            .giveMeBuilder(new TypeReference<List<MemberWidget>>() {
+            })
+            .sample();
+
+        given(memberWidgetRepo.findByMemberIdOrderBySequenceAsc(TEST_PORKO_ID)).willReturn(sample);
+
+        // When
+        memberWidgetService.loadOrderedMemberWidgets(TEST_PORKO_ID);
+
+        // Then
+        verify(memberWidgetRepo).findByMemberIdOrderBySequenceAsc(TEST_PORKO_ID);
     }
 }

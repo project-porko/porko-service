@@ -44,4 +44,12 @@ public class Widget {
     public static Widget of(Long id, WidgetCode widgetCode) {
         return new Widget(id, widgetCode);
     }
+
+    public WidgetType getWidgetType() {
+        return widgetCode.getType();
+    }
+
+    public String getDescription() {
+        return widgetCode.getDescription();
+    }
 }

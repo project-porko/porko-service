@@ -59,4 +59,12 @@ public class MemberWidget extends MetaFields {
     public static MemberWidget of(Member member, Widget widget, int sequence) {
         return new MemberWidget(member, widget, sequence);
     }
+
+    public WidgetCode getWidgetCode() {
+        return widget.getWidgetCode();
+    }
+
+    public String getWidgetDescription() {
+        return widget.getDescription();
+    }
 }
