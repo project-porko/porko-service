@@ -16,14 +16,7 @@ public record HistoryResponse(
         String payType
 ) {
     @QueryProjection
-    public HistoryResponse(String type, LocalDateTime usedAt, BigDecimal cost, String place, SpendingCategory spendingCategoryId, String payType) {
-        this.type = type;
-        this.usedAt = usedAt;
-        this.cost = cost;
-        this.place = place;
-        this.spendingCategoryId = spendingCategoryId;
-        this.payType = payType;
-    }
+    public HistoryResponse{}
 
     public static HistoryResponse of(History history) {
         return new HistoryResponse(
