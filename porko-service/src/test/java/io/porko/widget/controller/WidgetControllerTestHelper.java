@@ -18,18 +18,18 @@ public class WidgetControllerTestHelper extends WebMvcTestBase {
     public static List<Widget> widgets;
     static {
         widgets = List.of(
-            Widget.from(WidgetCode.TODAY_CONSUMPTION_WEATHER),
-            Widget.from(WidgetCode.REMAINING_BUDGET),
-            Widget.from(WidgetCode.UPCOMING_EXPENSES),
-            Widget.from(WidgetCode.LAST_MONTH_EXPENSES),
-            Widget.from(WidgetCode.CURRENT_MONTH_EXPENSES),
-            Widget.from(WidgetCode.CURRENT_MONTH_CARD_USAGE),
-            Widget.from(WidgetCode.MY_CHALLENGE),
-            Widget.from(WidgetCode.DAILY_EXPENSES),
-            Widget.from(WidgetCode.CREDIT_SCORE),
-            Widget.from(WidgetCode.INVESTMENT_RANKING),
-            Widget.from(WidgetCode.STEP_COUNT),
-            Widget.from(WidgetCode.DAILY_HOROSCOPE)
+            Widget.of(1L, WidgetCode.TODAY_CONSUMPTION_WEATHER),
+            Widget.of(2L, WidgetCode.REMAINING_BUDGET),
+            Widget.of(3L, WidgetCode.UPCOMING_EXPENSES),
+            Widget.of(4L, WidgetCode.LAST_MONTH_EXPENSES),
+            Widget.of(5L, WidgetCode.CURRENT_MONTH_EXPENSES),
+            Widget.of(6L, WidgetCode.CURRENT_MONTH_CARD_USAGE),
+            Widget.of(7L, WidgetCode.MY_CHALLENGE),
+            Widget.of(8L, WidgetCode.DAILY_EXPENSES),
+            Widget.of(9L, WidgetCode.CREDIT_SCORE),
+            Widget.of(10L, WidgetCode.INVESTMENT_RANKING),
+            Widget.of(11L, WidgetCode.STEP_COUNT),
+            Widget.of(12L, WidgetCode.DAILY_HOROSCOPE)
         );
     }
 

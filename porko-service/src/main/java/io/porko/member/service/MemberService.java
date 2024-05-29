@@ -5,6 +5,7 @@ import static io.porko.member.exception.MemberErrorCode.DUPLICATED_PHONE_NUMBER;
 
 import io.porko.member.controller.model.MemberResponse;
 import io.porko.member.controller.model.signup.SignUpRequest;
+import io.porko.member.domain.Member;
 import io.porko.member.exception.MemberErrorCode;
 import io.porko.member.exception.MemberException;
 import io.porko.member.repo.MemberQueryRepo;
@@ -53,6 +54,11 @@ public class MemberService {
 
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    public Member findMemberById(Long id) {
+        return memberRepo.findById(id)
+            .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND, id));
     }
 
     public MemberResponse loadMemberById(Long id) {
