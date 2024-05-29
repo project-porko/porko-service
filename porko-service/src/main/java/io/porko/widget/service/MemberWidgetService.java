@@ -24,7 +24,7 @@ public class MemberWidgetService {
     public void reorderWidget(Long memberId, ModifyMemberWidgetsOrderRequest request) {
         Member member = memberService.findMemberById(memberId);
         WidgetsResponse widgetsResponse = widgetService.loadAllWidgets();
-        List<Widget> targetWidgets = widgetsResponse.extractByIds(request.getWidgetIds());
+        List<Widget> targetWidgets = widgetsResponse.extractByIds(request.extractWidgetIds());
 
         OrderedMemberWidgets orderedMemberWidgets = request.toEntity(member, targetWidgets);
 

@@ -4,6 +4,7 @@ import static io.porko.config.fixture.FixtureCommon.dtoType;
 import static io.porko.config.fixture.FixtureCommon.entityType;
 import static io.porko.widget.controller.WidgetControllerTestHelper.widgetsResponse;
 import static io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.fixture.MemberWidgetFixture.targetWidgets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -118,12 +119,7 @@ class ModifyMemberWidgetsOrderRequestTest extends TestBase {
     void toEntity() {
         // Given
         Member member = entityType().giveMeOne(Member.class);
-        AtomicReference<Long> longAtomicReference = new AtomicReference<>(2L);
-
-        List<ModifyMemberWidgetOrderDto> targetWidgets = givenBuilder
-            .setLazy("widgetId", () -> nextId(longAtomicReference))
-            .setLazy("sequence", () -> nextIndex())
-            .sampleList(ORDERED_WIDGET_COUNT);
+        List<ModifyMemberWidgetOrderDto> targetWidgets = targetWidgets();
 
         List<Long> targetWidgetIds = targetWidgets.stream().map(it -> it.widgetId()).collect(Collectors.toList());
         List<Integer> expected = targetWidgets.stream().map(it -> it.sequence()).collect(Collectors.toList());

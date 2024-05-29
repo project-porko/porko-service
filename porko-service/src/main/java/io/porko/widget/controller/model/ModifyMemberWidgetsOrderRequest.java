@@ -83,7 +83,7 @@ public record ModifyMemberWidgetsOrderRequest(
         }
     }
 
-    public List<Long> getWidgetIds() {
+    public List<Long> extractWidgetIds() {
         return elements.stream()
             .map(ModifyMemberWidgetOrderDto::widgetId)
             .toList();
