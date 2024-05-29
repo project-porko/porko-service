@@ -32,7 +32,16 @@ public class Widget {
         this.widgetCode = widgetCode;
     }
 
+    public Widget(Long id, WidgetCode widgetCode) {
+        this.id = id;
+        this.widgetCode = widgetCode;
+    }
+
     public static Widget from(WidgetCode widgetCode) {
         return new Widget(widgetCode);
+    }
+
+    public static Widget of(Long id, WidgetCode widgetCode) {
+        return new Widget(id, widgetCode);
     }
 }
