@@ -1,10 +1,8 @@
 package io.porko.widget.service;
 
-import static io.porko.config.fixture.FixtureCommon.dtoType;
-import static io.porko.config.fixture.FixtureCommon.withValidated;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.widgetsResponse;
-import static io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.fixture.MemberWidgetFixture.modifyModifyMemberWidgetsOrderRequest;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -12,12 +10,8 @@ import static org.mockito.Mockito.verify;
 
 import io.porko.config.base.business.ServiceTestBase;
 import io.porko.member.service.MemberService;
-import io.porko.widget.controller.model.ModifyMemberWidgetOrderDto;
 import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
 import io.porko.widget.repo.MemberWidgetRepo;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,7 +31,6 @@ class MemberWidgetServiceTest extends ServiceTestBase {
     @InjectMocks
     MemberWidgetService memberWidgetService;
 
-    @Disabled
     @Test
     @DisplayName("회원 위젯 순서 변경")
     void reorderWidget() {
@@ -49,15 +42,7 @@ class MemberWidgetServiceTest extends ServiceTestBase {
         willDoNothing().given(memberWidgetRepo).deleteByMemberId(memberId);
         given(memberWidgetRepo.saveAll(anyCollection())).willReturn(null);
 
-        AtomicReference<Long> longAtomicReference = new AtomicReference<>(2L);
-
-        List<ModifyMemberWidgetOrderDto> targetWidgets = dtoType()
-            .giveMeBuilder(ModifyMemberWidgetOrderDto.class)
-            .setLazy("widgetId", () -> nextId(longAtomicReference))
-            .setLazy("sequence", () -> nextIndex())
-            .sampleList(ORDERED_WIDGET_COUNT);
-        
-        ModifyMemberWidgetsOrderRequest given = new ModifyMemberWidgetsOrderRequest(targetWidgets);
+        ModifyMemberWidgetsOrderRequest given = modifyModifyMemberWidgetsOrderRequest();
 
         // When
         memberWidgetService.reorderWidget(memberId, given);

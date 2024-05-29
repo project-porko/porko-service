@@ -12,8 +12,8 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 @TestConstructor(autowireMode = AutowireMode.ALL)
 public abstract class TestBase {
     static final String TEST = "test";
-    protected AtomicReference<Integer> intVariable;
-    protected AtomicReference<Long> lonVariable;
+    protected static AtomicReference<Integer> intVariable;
+    protected static AtomicReference<Long> lonVariable;
 
     @BeforeEach
     void setUp() {
@@ -21,15 +21,15 @@ public abstract class TestBase {
         lonVariable = new AtomicReference<>(1L);
     }
 
-    protected Integer nextIndex() {
+    public static Integer nextIndex() {
         return intVariable.getAndSet(intVariable.get() + 1);
     }
 
-    protected Long nextId() {
+    public Long nextId() {
         return lonVariable.getAndSet(lonVariable.get() + 1);
     }
 
-    protected Long nextId(AtomicReference<Long> lonVariable) {
+    public static Long nextId(AtomicReference<Long> lonVariable) {
         return lonVariable.getAndSet(lonVariable.get() + 1);
     }
 }
