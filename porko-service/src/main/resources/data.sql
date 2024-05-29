@@ -16,3 +16,11 @@ insert into widget (widget_code) values
     ('INVESTMENT_RANKING'),
     ('STEP_COUNT'),
     ('DAILY_HOROSCOPE');
+
+---
+-- history
+insert into history (cost, regret, place, pay_type, used_at, category_id, type, memo, member_id) values
+     ('100000',true,'용용선생','신용카드','2025-05-28T02:00:30.033',1,'지출','과음',1),
+     ('50000',false,'용용선생','계좌이체','2025-05-28T10:00:30.033',1,'수입','친구A',1),
+     ('5000',true,'빽다방','신용카드','2025-05-29T08:30:33.012',1,'지출','모닝커피',1),
+     ('10000',true,'백암순대','신용카드','2025-05-29T12:50:50.033',1,'지출','점심',1);
