@@ -5,11 +5,13 @@ import static io.porko.widget.controller.MemberWidgetController.MEMBER_WIDGET_BA
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.utils.ResponseEntityUtils;
 import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
 import io.porko.widget.service.MemberWidgetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +36,12 @@ public class MemberWidgetController {
     ) {
         memberWidgetService.reorderWidget(memberId, modifyMemberWidgetsOrderRequest);
         return ResponseEntityUtils.created(MEMBER_WIDGETS, memberId);
+    }
+
+    @GetMapping
+    public ResponseEntity<OrderedMemberWidgetsResponse> getOrderedMemberWidget(
+        @LoginMember Long memberId
+    ) {
+        return ResponseEntity.ok(memberWidgetService.loadOrderedMemberWidgets(memberId));
     }
 }

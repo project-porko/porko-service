@@ -4,13 +4,16 @@ import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
 import static io.porko.widget.controller.MemberWidgetController.MEMBER_WIDGET_BASE_URI;
 import static io.porko.widget.fixture.MemberWidgetFixture.modifyModifyMemberWidgetsOrderRequest;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import io.porko.config.base.presentation.WebMvcTestBase;
+import io.porko.config.fixture.FixtureCommon;
 import io.porko.config.security.TestSecurityConfig;
 import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
 import io.porko.widget.service.MemberWidgetService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,4 +60,22 @@ class MemberWidgetControllerTest extends WebMvcTestBase {
      *  - 변경 대상 위젯의 순서가 1~6범위가 아닌 경우
      *  - 변경 대상 위젯에 존재하지 않는 위젯이 포함된 경우
      * */
+
+    @Test
+    @WithUserDetails(value = TEST_PORKO_MEMBER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[회원 위젯 순서 조회][GET:200]")
+    void getOrderedMemberWidget() throws Exception {
+        OrderedMemberWidgetsResponse given = FixtureCommon.dtoType().giveMeBuilder(OrderedMemberWidgetsResponse.class).sample();
+
+        // Given
+        given(memberWidgetService.loadOrderedMemberWidgets(TEST_PORKO_ID)).willReturn(given);
+
+        // When
+        get()
+            .url("/member/widget")
+            .noAuthentication()
+            .expect().ok();
+
+        // Then
+    }
 }
