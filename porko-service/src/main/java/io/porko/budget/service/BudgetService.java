@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,5 +39,15 @@ public class BudgetService {
         Budget budget = budgetRequest.toEntity(id);
 
         budgetRepo.save(budget);
+    }
+
+    public BudgetResponse getUsedCostInLastMonth(Long memberId) {
+        return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
+                    LocalDate.now().getYear(),
+                    LocalDate.now().getMonthValue(),
+                    memberId)
+                .orElse(BigDecimal.ZERO)
+                .abs()
+                .stripTrailingZeros());
     }
 }
