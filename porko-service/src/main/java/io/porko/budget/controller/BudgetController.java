@@ -35,4 +35,9 @@ public class BudgetController {
         budgetService.setBudget(budgetRequest, id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/lastused")
+    ResponseEntity<BudgetResponse> getUsedCostInLastMonth(@LoginMember Long id) {
+        return ResponseEntity.ok(budgetService.getUsedCostInLastMonth(id));
+    }
 }
