@@ -7,16 +7,30 @@ import io.porko.member.controller.model.validateduplicate.AvailabilityStatus;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateResponse;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
+import io.porko.member.facade.strategy.EmailDuplicateStrategy;
+import io.porko.member.facade.strategy.PhoneNumberDuplicateStrategy;
+import io.porko.member.service.MemberService;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
-@SpringBootTest
 @DisplayName("Facade:ValidateDuplicate")
+@WebMvcTest(controllers = ValidateDuplicateFacade.class)
 class ValidateDuplicateFacadeTest extends ServiceTestBase {
+    @MockBean
+    private MemberService memberService;
+
+    @SpyBean
+    PhoneNumberDuplicateStrategy phoneNumberDuplicateStrategy;
+
+    @SpyBean
+    EmailDuplicateStrategy emailDuplicateStrategy;
+
     private final ValidateDuplicateFacade validateDuplicateFacade;
 
     public ValidateDuplicateFacadeTest(ValidateDuplicateFacade validateDuplicateFacade) {
