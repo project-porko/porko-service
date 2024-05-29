@@ -11,6 +11,4 @@ public interface HistoryRepo extends JpaRepository<History, Long> {
             Long memberId,
             LocalDateTime startDate,
             LocalDateTime endDate);
-
-    List<History> findByMemberId(Long loginMemberId);
 }
