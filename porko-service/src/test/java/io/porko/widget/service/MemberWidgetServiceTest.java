@@ -2,8 +2,8 @@ package io.porko.widget.service;
 
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.testMember;
-import static io.porko.widget.controller.WidgetControllerTestHelper.widgetsResponse;
-import static io.porko.widget.fixture.MemberWidgetFixture.modifyModifyMemberWidgetsOrderRequest;
+import static io.porko.widget.controller.WidgetControllerTestHelper.allWidgets;
+import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -13,7 +13,7 @@ import com.navercorp.fixturemonkey.api.type.TypeReference;
 import io.porko.config.base.business.ServiceTestBase;
 import io.porko.config.fixture.FixtureCommon;
 import io.porko.member.service.MemberService;
-import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.controller.model.ReorderWidgetRequest;
 import io.porko.widget.domain.MemberWidget;
 import io.porko.widget.repo.MemberWidgetRepo;
 import java.util.List;
@@ -42,12 +42,12 @@ class MemberWidgetServiceTest extends ServiceTestBase {
         // Given
         final Long memberId = 1L;
         given(memberService.findMemberById(memberId)).willReturn(testMember);
-        given(widgetService.loadAllWidgets()).willReturn(widgetsResponse);
+        given(widgetService.loadAllWidgets()).willReturn(allWidgets);
 
         willDoNothing().given(memberWidgetRepo).deleteByMemberId(memberId);
         given(memberWidgetRepo.saveAll(anyCollection())).willReturn(null);
 
-        ModifyMemberWidgetsOrderRequest given = modifyModifyMemberWidgetsOrderRequest();
+        ReorderWidgetRequest given = valiedReorderWidgetRequest;
 
         // When
         memberWidgetService.reorderWidget(memberId, given);

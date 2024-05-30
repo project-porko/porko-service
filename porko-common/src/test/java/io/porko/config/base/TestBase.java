@@ -21,15 +21,19 @@ public abstract class TestBase {
         lonVariable = new AtomicReference<>(1L);
     }
 
-    public static Integer nextIndex() {
+    public static Integer nextInt() {
+        return nextInt(intVariable);
+    }
+
+    public static Integer nextInt(AtomicReference<Integer> intVariable) {
         return intVariable.getAndSet(intVariable.get() + 1);
     }
 
-    public Long nextId() {
-        return lonVariable.getAndSet(lonVariable.get() + 1);
+    public static Long nextLong() {
+        return nextLong(lonVariable);
     }
 
-    public static Long nextId(AtomicReference<Long> lonVariable) {
+    public static Long nextLong(AtomicReference<Long> lonVariable) {
         return lonVariable.getAndSet(lonVariable.get() + 1);
     }
 }

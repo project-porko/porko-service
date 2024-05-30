@@ -1,40 +1,77 @@
 package io.porko.widget.domain;
 
-import static io.porko.widget.exception.WidgetErrorCode.INCLUDE_FIXED_WIDGET;
-import static io.porko.widget.exception.WidgetErrorCode.INVALID_ORDERED_WIDGET_COUNT;
-
+import io.porko.member.domain.Member;
+import io.porko.widget.controller.model.ModifyMemberWidgetOrderDto;
+import io.porko.widget.controller.model.ReorderWidgetRequest;
+import io.porko.widget.controller.model.WidgetsResponse;
+import io.porko.widget.exception.WidgetErrorCode;
 import io.porko.widget.exception.WidgetException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public record OrderedMemberWidgets(
     List<MemberWidget> elements
 ) {
-    private static final int ORDERED_WIDGET_COUNT = 6;
+    public static OrderedMemberWidgets of(
+        Member member,
+        WidgetsResponse widgetsResponse,
+        ReorderWidgetRequest reorderWidgetRequest
+    ) {
+        Map<Long, Widget> widgetMap = toMap(widgetsResponse.toWidgets());
+        List<MemberWidget> memberWidgets = reorderWidgetRequest.elements().stream()
+            .map(it -> processSequencedWidget(member, it, widgetMap))
+            .collect(Collectors.toList());
+        widgetMap.forEach((key, value) -> memberWidgets.add(processUnsequencedWidget(member, value)));
 
-    public static OrderedMemberWidgets of(List<MemberWidget> memberWidgets) {
-        validateOrderedTargetWidgets(memberWidgets);
         return new OrderedMemberWidgets(memberWidgets);
     }
 
-    public static void validateOrderedTargetWidgets(List<MemberWidget> memberWidgets) {
-        checkIncludeFixedWidget(memberWidgets);
-        checkOrderedTargetWidgetsCount(memberWidgets);
+    private static MemberWidget processSequencedWidget(Member member, ModifyMemberWidgetOrderDto it, Map<Long, Widget> widgetMap) {
+        Widget widget = widgetMap.get(it.widgetId());
+        checkIsNotExistWidget(it, widget);
+        checkIncludeFixedWidget(it, widget);
+        widgetMap.remove(it.widgetId());
+        return MemberWidget.of(member, widget, it.sequence());
     }
 
-    private static void checkIncludeFixedWidget(List<MemberWidget> memberWidgets) {
-        Optional<MemberWidget> fixedWidget = memberWidgets.stream()
-            .filter(it -> it.getWidget().getWidgetCode().isFixed())
-            .findFirst();
+    private static Map<Long, Widget> toMap(List<Widget> widgets) {
+        return widgets.stream()
+            .collect(Collectors.toMap(Widget::getId, widget -> widget));
+    }
 
-        if (fixedWidget.isPresent()) {
-            throw new WidgetException(INCLUDE_FIXED_WIDGET);
+    private static void checkIncludeFixedWidget(ModifyMemberWidgetOrderDto it, Widget widget) {
+        if (widget.isFixed()) {
+            throw new WidgetException(WidgetErrorCode.INCLUDE_FIXED_WIDGET, it.widgetId());
         }
     }
 
-    private static void checkOrderedTargetWidgetsCount(List<MemberWidget> memberWidgets) {
-        if (memberWidgets.size() != ORDERED_WIDGET_COUNT) {
-            throw new WidgetException(INVALID_ORDERED_WIDGET_COUNT);
+    private static void checkIsNotExistWidget(ModifyMemberWidgetOrderDto it, Widget widget) {
+        if (widget == null) {
+            throw new WidgetException(WidgetErrorCode.INCLUDE_NOT_EXIST_WIDGET, it.widgetId());
         }
+    }
+
+    private static MemberWidget processUnsequencedWidget(Member member, Widget unsequencedWidget) {
+        if (unsequencedWidget.isFixed()) {
+            return MemberWidget.fixedOf(member, unsequencedWidget);
+        }
+        return MemberWidget.optionalOf(member, unsequencedWidget);
+    }
+
+    public int size() {
+        return elements.size();
+    }
+
+    public List<MemberWidget> getSequencedWidgets() {
+        return elements.stream()
+            .filter(MemberWidget::isSequenced)
+            .collect(Collectors.toList());
+    }
+
+    public List<MemberWidget> getUnSequencedWidgets() {
+        return elements.stream()
+            .filter(MemberWidget::isUnsequenced)
+            .collect(Collectors.toList());
     }
 }

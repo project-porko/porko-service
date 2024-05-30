@@ -15,6 +15,12 @@ public record WidgetsResponse(
         );
     }
 
+    public List<Widget> toWidgets() {
+        return elements().stream()
+            .map(it -> Widget.of(it.id(), it.code()))
+            .collect(Collectors.toList());
+    }
+
     public List<Widget> extractByIds(List<Long> targetIds) {
         return elements().stream()
             .filter(widgetDto -> targetIds.contains(widgetDto.id()))
