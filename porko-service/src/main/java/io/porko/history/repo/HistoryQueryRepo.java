@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.YearMonth;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import static io.porko.history.domain.QHistory.history;
@@ -41,6 +42,52 @@ public class HistoryQueryRepo {
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(currentYear))
                         .and(history.usedAt.month().eq(currentMonth)))
+                .fetchOne());
+    }
+
+    public Optional<BigDecimal> calcDailyUsedCost (LocalDate date, Long memberId) {
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(date.getYear()))
+                        .and(history.usedAt.month().eq(date.getMonthValue()))
+                        .and(history.usedAt.dayOfMonth().eq(date.getDayOfMonth())))
+                .fetchOne());
+    }
+
+    public Optional<BigDecimal> calcDailyEarnedCost (LocalDate date, Long memberId) {
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.gt(0))
+                        .and(history.usedAt.year().eq(date.getYear()))
+                        .and(history.usedAt.month().eq(date.getMonthValue()))
+                        .and(history.usedAt.dayOfMonth().eq(date.getDayOfMonth())))
+                .fetchOne());
+    }
+
+    public Optional<BigDecimal> calcUsedCostForPeriod (LocalDate startDate, LocalDate endDate, Long memberId) {
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.between(startDateTime, endDateTime)))
+                .fetchOne());
+    }
+
+    public Optional<BigDecimal> calcEarnedCostForPeriod (LocalDate startDate, LocalDate endDate, Long memberId) {
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.gt(0))
+                        .and(history.usedAt.between(startDateTime, endDateTime)))
                 .fetchOne());
     }
 }
