@@ -1,27 +1,29 @@
 package io.porko.widget.fixture;
 
-import static io.porko.config.base.TestBase.nextId;
-import static io.porko.config.base.TestBase.nextIndex;
 import static io.porko.config.fixture.FixtureCommon.dtoType;
-import static io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.controller.model.ReorderWidgetRequest.ORDERED_WIDGET_COUNT;
 
+import com.navercorp.fixturemonkey.ArbitraryBuilder;
+import io.porko.config.base.TestBase;
 import io.porko.widget.controller.model.ModifyMemberWidgetOrderDto;
-import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
+import io.porko.widget.controller.model.ReorderWidgetRequest;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MemberWidgetFixture {
-    public static ModifyMemberWidgetsOrderRequest modifyModifyMemberWidgetsOrderRequest() {
-        return new ModifyMemberWidgetsOrderRequest(targetWidgets());
-    }
+public class MemberWidgetFixture extends TestBase {
+    public static final ArbitraryBuilder<ModifyMemberWidgetOrderDto> givenBuilder = dtoType()
+        .giveMeBuilder(ModifyMemberWidgetOrderDto.class);
 
-    public static List<ModifyMemberWidgetOrderDto> targetWidgets() {
+    public static List<ModifyMemberWidgetOrderDto> validReorderWidgets = validReorderTargetWidgets();
+    public static ReorderWidgetRequest valiedReorderWidgetRequest = new ReorderWidgetRequest(validReorderWidgets);
+
+    private static List<ModifyMemberWidgetOrderDto> validReorderTargetWidgets() {
         AtomicReference<Long> longAtomicReference = new AtomicReference<>(2L);
 
         return dtoType()
             .giveMeBuilder(ModifyMemberWidgetOrderDto.class)
-            .setLazy("widgetId", () -> nextId(longAtomicReference))
-            .setLazy("sequence", () -> nextIndex())
+            .setLazy("widgetId", () -> nextLong(longAtomicReference))
+            .setLazy("sequence", TestBase::nextInt)
             .sampleList(ORDERED_WIDGET_COUNT);
     }
 }

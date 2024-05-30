@@ -16,6 +16,7 @@ public class WidgetControllerTestHelper extends WebMvcTestBase {
     protected WidgetService widgetService;
 
     public static List<Widget> widgets;
+
     static {
         widgets = List.of(
             Widget.of(1L, WidgetCode.TODAY_CONSUMPTION_WEATHER),
@@ -33,5 +34,5 @@ public class WidgetControllerTestHelper extends WebMvcTestBase {
         );
     }
 
-    public static WidgetsResponse widgetsResponse = WidgetsResponse.from(widgets);
+    public static WidgetsResponse allWidgets = WidgetsResponse.from(widgets);
 }

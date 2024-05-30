@@ -15,7 +15,7 @@ class WidgetControllerTest extends WidgetControllerTestHelper {
     @DisplayName("[모든 위젯 조회][GET:200]")
     void getAllWidgets() throws Exception {
         // Given
-        given(widgetService.loadAllWidgets()).willReturn(widgetsResponse);
+        given(widgetService.loadAllWidgets()).willReturn(allWidgets);
 
         // When & Then
         get()

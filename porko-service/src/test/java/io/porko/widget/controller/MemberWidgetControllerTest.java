@@ -3,7 +3,7 @@ package io.porko.widget.controller;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
 import static io.porko.widget.controller.MemberWidgetController.MEMBER_WIDGET_BASE_URI;
-import static io.porko.widget.fixture.MemberWidgetFixture.modifyModifyMemberWidgetsOrderRequest;
+import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
@@ -12,8 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import io.porko.config.base.presentation.WebMvcTestBase;
 import io.porko.config.fixture.FixtureCommon;
 import io.porko.config.security.TestSecurityConfig;
-import io.porko.widget.controller.model.ModifyMemberWidgetsOrderRequest;
 import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
+import io.porko.widget.controller.model.ReorderWidgetRequest;
 import io.porko.widget.service.MemberWidgetService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class MemberWidgetControllerTest extends WebMvcTestBase {
     @DisplayName("[회원 위젯 순서 변경][PUT:201]")
     void modifyMemberWidgetOrder() throws Exception {
         // Given
-        ModifyMemberWidgetsOrderRequest given = modifyModifyMemberWidgetsOrderRequest();
+        ReorderWidgetRequest given = valiedReorderWidgetRequest;
         willDoNothing().given(memberWidgetService).reorderWidget(TEST_PORKO_ID, given);
 
         // When
