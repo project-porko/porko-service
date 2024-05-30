@@ -34,8 +34,9 @@ public class History {
     @Embedded
     private SpendingCategory spendingCategoryId;
 
-    @Column(nullable = false, length = 10)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionType type;
 
     @Column(nullable = false, length = 100)
     private String memo;
@@ -51,7 +52,7 @@ public class History {
             String payType,
             LocalDateTime usedAt,
             SpendingCategory spendingCategoryId,
-            String type,
+            TransactionType type,
             String memo,
             Member member
     ) {
@@ -73,7 +74,7 @@ public class History {
             String payType,
             LocalDateTime usedAt,
             SpendingCategory spendingCategoryId,
-            String type,
+            TransactionType type,
             String memo,
             Member member
     ) {
