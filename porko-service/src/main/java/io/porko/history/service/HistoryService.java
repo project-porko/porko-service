@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -22,10 +23,10 @@ public class HistoryService {
     private final MemberQueryRepo memberQueryRepo;
 
     public List<HistoryResponse> getThisMonthHistoryList(Long loginMemberId) {
-        LocalDate now = LocalDate.now();
-        YearMonth thisMonth = YearMonth.from(now);
+        YearMonth thisMonth = YearMonth.now();
         LocalDate startDate = thisMonth.atDay(1);
         LocalDate endDate = thisMonth.atEndOfMonth();
+
         return fetchHistoryList(loginMemberId, startDate, endDate);
     }
 
@@ -35,20 +36,17 @@ public class HistoryService {
 
     private List<HistoryResponse> fetchHistoryList(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
         loadMemberById(loginMemberId);
+
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+
+        BigDecimal totalSpent = historyRepo.calcUsedCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
+        BigDecimal totalEarned = historyRepo.calcEarnedCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
 
         List<History> histories = historyRepo.findByMemberIdAndUsedAtBetween(loginMemberId, startDateTime, endDateTime);
 
         return histories.stream()
-                .map(history -> new HistoryResponse(
-                        history.getType(),
-                        history.getUsedAt(),
-                        history.getCost(),
-                        history.getPlace(),
-                        history.getSpendingCategoryId(),
-                        history.getPayType()
-                ))
+                .map(history -> HistoryResponse.of(history, totalSpent, totalEarned))
                 .collect(Collectors.toList());
     }
 
