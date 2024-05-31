@@ -11,12 +11,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
 
 @DisplayName("Config:Cache")
-@WebMvcTest(controllers = CacheManager.class)
 class CacheConfigTest extends CacheConfigTestHelper {
     @Test
     @DisplayName("캐시 매니저에 등록된 캐시 목록 확인")

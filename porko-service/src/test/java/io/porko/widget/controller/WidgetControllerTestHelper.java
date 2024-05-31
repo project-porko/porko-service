@@ -1,20 +1,12 @@
 package io.porko.widget.controller;
 
-import io.porko.config.base.presentation.WebMvcTestBase;
-import io.porko.config.security.TestSecurityConfig;
+import io.porko.config.base.WebLayerTestBase;
 import io.porko.widget.controller.model.WidgetsResponse;
 import io.porko.widget.domain.Widget;
 import io.porko.widget.domain.WidgetCode;
-import io.porko.widget.service.WidgetService;
 import java.util.List;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 
-@Import(TestSecurityConfig.class)
-public class WidgetControllerTestHelper extends WebMvcTestBase {
-    @MockBean
-    protected WidgetService widgetService;
-
+public class WidgetControllerTestHelper extends WebLayerTestBase {
     public static List<Widget> widgets;
 
     static {

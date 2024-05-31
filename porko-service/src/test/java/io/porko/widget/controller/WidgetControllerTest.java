@@ -5,9 +5,7 @@ import static org.mockito.BDDMockito.given;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-@WebMvcTest(WidgetController.class)
 @DisplayName("Controller:Widget")
 class WidgetControllerTest extends WidgetControllerTestHelper {
     // TODO: TC 기반 API docs 추출을 위해 Mocking된 응답에 Null로 설정된 ID(PK)필드 값 설정

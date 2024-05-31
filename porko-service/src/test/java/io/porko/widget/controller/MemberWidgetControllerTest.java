@@ -7,30 +7,18 @@ import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetReq
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-import io.porko.config.base.presentation.WebMvcTestBase;
+import io.porko.config.base.WebLayerTestBase;
 import io.porko.config.fixture.FixtureCommon;
-import io.porko.config.security.TestSecurityConfig;
 import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
 import io.porko.widget.controller.model.ReorderWidgetRequest;
-import io.porko.widget.service.MemberWidgetService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.web.servlet.ResultActions;
 
-@WebMvcTest(MemberWidgetController.class)
 @DisplayName("Controller:MemberWidget")
-@Import(TestSecurityConfig.class)
-class MemberWidgetControllerTest extends WebMvcTestBase {
-    @MockBean
-    protected MemberWidgetService memberWidgetService;
-
+class MemberWidgetControllerTest extends WebLayerTestBase {
     @Test
     @WithUserDetails(value = TEST_PORKO_MEMBER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[회원 위젯 순서 변경][PUT:201]")
@@ -40,14 +28,13 @@ class MemberWidgetControllerTest extends WebMvcTestBase {
         willDoNothing().given(memberWidgetService).reorderWidget(TEST_PORKO_ID, given);
 
         // When
-        ResultActions resultActions = put()
+        put()
             .url(MEMBER_WIDGET_BASE_URI)
             .noAuthentication()
             .jsonContent(given)
             .created();
 
         // Then
-        resultActions.andDo(print());
         verify(memberWidgetService).reorderWidget(TEST_PORKO_ID, given);
     }
 
@@ -65,17 +52,17 @@ class MemberWidgetControllerTest extends WebMvcTestBase {
     @WithUserDetails(value = TEST_PORKO_MEMBER_EMAIL, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[회원 위젯 순서 조회][GET:200]")
     void getOrderedMemberWidget() throws Exception {
-        OrderedMemberWidgetsResponse given = FixtureCommon.dtoType().giveMeBuilder(OrderedMemberWidgetsResponse.class).sample();
-
         // Given
+        OrderedMemberWidgetsResponse given = FixtureCommon.dtoType()
+            .giveMeBuilder(OrderedMemberWidgetsResponse.class)
+            .sample();
+        
         given(memberWidgetService.loadOrderedMemberWidgets(TEST_PORKO_ID)).willReturn(given);
 
-        // When
+        // When & Then
         get()
-            .url("/member/widget")
+            .url(MEMBER_WIDGET_BASE_URI)
             .noAuthentication()
             .expect().ok();
-
-        // Then
     }
 }
