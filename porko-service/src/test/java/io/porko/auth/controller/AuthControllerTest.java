@@ -6,30 +6,16 @@ import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import io.porko.auth.config.SecurityConfig;
-import io.porko.auth.config.jwt.JwtProperties;
 import io.porko.auth.controller.model.LoginRequest;
 import io.porko.auth.controller.model.LoginResponse;
 import io.porko.auth.exception.AuthException;
-import io.porko.auth.service.AuthService;
+import io.porko.config.base.WebLayerTestBase;
 import io.porko.config.base.presentation.RequestBuilder.Expect;
-import io.porko.config.base.presentation.WebMvcTestBase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 
-@WebMvcTest(AuthController.class)
 @DisplayName("Controller:Auth")
-@Import(SecurityConfig.class)
-class AuthControllerTest extends WebMvcTestBase {
-    @MockBean
-    private AuthService authService;
-
-    @MockBean
-    JwtProperties jwtProperties;
-
+class AuthControllerTest extends WebLayerTestBase {
     private static final String LOGIN_URI = "/login";
     private static final LoginRequest loginRequest = new LoginRequest(TEST_PORKO_MEMBER_EMAIL, "password");
 

@@ -5,13 +5,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import io.porko.auth.config.SecurityConfig;
-import io.porko.auth.config.jwt.JwtProperties;
 import io.porko.auth.controller.model.PorkoPrincipal;
-import io.porko.auth.service.AuthService;
 import io.porko.member.domain.Address;
 import io.porko.member.domain.Gender;
 import io.porko.member.domain.Member;
-import jakarta.annotation.Resource;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -21,13 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 @Import(SecurityConfig.class)
 public class TestSecurityConfig {
     @MockBean
-    private AuthService authService;
-
-    @MockBean
     private InMemoryUserDetailsManager inMemoryUserDetailsManager;
-
-    @Resource
-    public JwtProperties jwtProperties;
 
     @BeforeTestMethod
     public void setUp() {
