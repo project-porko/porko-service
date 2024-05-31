@@ -1,3 +1,9 @@
+val bootJar: org.springframework.boot.gradle.tasks.bundling.BootJar by tasks
+val jar: Jar by tasks
+
+bootJar.enabled = true
+jar.enabled = false
+
 val testSourceSet: SourceSetOutput = project(":porko-common").sourceSets["test"].output
 val queryDslVersion = dependencyManagement.importedProperties["querydsl.version"]
 
@@ -31,9 +37,6 @@ dependencies {
     testImplementation(testSourceSet)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
 val qClassGeneratedPath: String = layout.projectDirectory.dir("src/main/generated").asFile.path
 
 sourceSets {
