@@ -18,6 +18,9 @@ jobs:
           token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
           submodule: recursive
 
+      - name: 🍀 update config submodule
+        run: git submodule update --init --recursive
+
       - name: 🍀 set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -29,9 +32,6 @@ jobs:
 
       - name: 🍀 debug checkout
         run: ls -al
-
-#      - name: 🍀 update config submodule
-#        run: git submodule update --init --recursive
 
       - name: 🍀 debug submodule checkout
         run: ls -al vault
