@@ -233,10 +233,12 @@ db/**
 ### Querydsl q-class
 porko-service/src/main/generated/**
 
-### application environment properties
-porko-common/src/main/resources/environment/**
+### Copied application environment properties from vault
+porko-common/src/main/resources/**
 
-### docker environment properties
+### Copied docker environment properties form valut
 .env
+docker-compose.yml
+Dockerfile
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
