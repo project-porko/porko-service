@@ -1,7 +1,6 @@
 package io.porko.consumption.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -31,6 +30,8 @@ public enum RegretItem {
             return APPLE_PENCLE;
         } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(300000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(500000)) < 0) {
             return APPLE_WATCH;
+        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(500000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(1000000)) < 0) {
+            return AIRPOT;
         } else {
             return MACBOOK;
         }

@@ -1,7 +1,6 @@
 package io.porko.consumption.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
