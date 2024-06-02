@@ -18,6 +18,13 @@ jobs:
           submodule: true
           token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
 
+      - name: 🍀 debug step
+        run:
+          ls -al
+          pwd
+          ./gradlew bootJar
+          docker build -t porko-app-local .
+
       - name: 🍀 update config submodule
         run: git submodule update --init --recursive
 
@@ -29,13 +36,6 @@ jobs:
 
       - name: 🍀 grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: 🍀 debug step
-        run:
-          ls -al
-          pwd
-          ./gradlew bootJar
-          docker build -t porko-app-local .
 
       - name: 🍀 test with gradle
         run:
