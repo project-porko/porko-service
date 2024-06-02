@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
-          submodule: true
+          submodule: recursive
 
       - name: 🍀 set up JDK 17
         uses: actions/setup-java@v3
@@ -30,6 +30,9 @@ jobs:
       - name: 🍀 debug checkout
         run: ls -al
 
+#      - name: 🍀 update config submodule
+#        run: git submodule update --init --recursive
+
       - name: 🍀 debug submodule checkout
         run: ls -al vault
 
@@ -38,9 +41,6 @@ jobs:
 
       - name: debug submodule properties copied
         run: ls -al porko-common/src/main/resources
-
-      - name: 🍀 update config submodule
-        run: git submodule update --init --recursive
 
       - name: 🍀 test with gradle
         run:
