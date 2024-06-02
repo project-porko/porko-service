@@ -2,10 +2,8 @@ FROM openjdk:17-jdk-slim AS JAR_BUILDER
 
 WORKDIR /app
 COPY . /app
-ARG JAR_ARTIFACT=porko-service/build/libs/*jar
 
 RUN ./gradlew bootJar
-COPY ${JAR_ARTIFACT} /app
 
 FROM amazoncorretto:17-alpine AS JRE_BUILDER
 
@@ -30,7 +28,7 @@ RUN adduser --no-create-home -u 1000 -D $APPLICATION_USER
 RUN mkdir /app && chown -R $APPLICATION_USER /app
 USER 1000
 
-ARG JAR_FILE=/app/*.jar
+ARG JAR_FILE=/app/porko-service/build/libs/*jar
 COPY --chown=1000:1000 --from=JAR_BUILDER ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
