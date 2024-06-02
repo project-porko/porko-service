@@ -5,7 +5,7 @@ on:
     branches: [ develop ] # TODO: main branch PR 시 추가
 
 permissions:
-  contents: read-all
+  contents: read
 
 jobs:
   test:
