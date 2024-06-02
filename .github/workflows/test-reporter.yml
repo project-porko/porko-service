@@ -19,7 +19,7 @@ jobs:
           token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
 
       - name: 🍀 debug step
-        run: ls -al
+        run: ls -al porko-common/src/main/resources
 
       - name: 🍀 update config submodule
         run: git submodule update --init --recursive
