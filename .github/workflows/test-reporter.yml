@@ -1,0 +1,40 @@
+name: PR Reporter # TODO: ci 적용 시, ci 과정에 tc result reporting을 포함하고 작업 이름을 변경
+
+on:
+  pull_request:
+    branches: [ develop ] # TODO: main branch PR 시 추가
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 🍀 set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          submodule: true
+          token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 🍀 grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: 🍀 test with gradle
+        run:
+          ./gradlew copyProperties
+          ./gradlew --info test
+
+      - name: 🍀 publish unit Test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: 'build/test-results/**/*.xml'
+
+      - name: 🍀 add comments to fail tests
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: 'build/test-results/test/TEST-*.xml'
