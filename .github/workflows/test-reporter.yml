@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [ develop ] # TODO: main branch PR 시 추가
 
+permissions:
+  contents: read-all
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,14 +18,24 @@ jobs:
           submodule: true
           token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
 
+      - name: 🍀 update config submodule
+        run: git submodule update --init --recursive
+
       - name: 🍀 set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'corretto'
 
       - name: 🍀 grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: 🍀 debug step
+        run:
+          ls -al
+          pwd
+          ./gradlew bootJar
+          docker build -t porko-app-local .
 
       - name: 🍀 test with gradle
         run:
