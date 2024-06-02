@@ -22,8 +22,6 @@ jobs:
         run:
           ls -al
           pwd
-          ./gradlew bootJar
-          docker build -t porko-app-local .
 
       - name: 🍀 update config submodule
         run: git submodule update --init --recursive
