@@ -2,6 +2,7 @@ package io.porko.budget.service;
 
 import io.porko.budget.controller.model.BudgetRequest;
 import io.porko.budget.controller.model.BudgetResponse;
+import io.porko.budget.controller.model.ManageBudgetResponse;
 import io.porko.budget.domain.Budget;
 import io.porko.budget.exception.BudgetErrorCode;
 import io.porko.budget.exception.BudgetException;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,5 +41,47 @@ public class BudgetService {
         Budget budget = budgetRequest.toEntity(id);
 
         budgetRepo.save(budget);
+    }
+
+    public ManageBudgetResponse manageBudget (Long memberId) {
+        LocalDate today = LocalDate.now();
+
+        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(
+                today.getYear(),
+                today.getMonthValue(),
+                memberId)
+                .orElse(null);
+
+        BigDecimal totalCost = historyQueryRepo.calcTotalCost(
+                today.getYear(),
+                today.getMonthValue(),
+                memberId)
+                .orElse(BigDecimal.ZERO);
+
+        BigDecimal usableCost = budget.getGoalCost()
+                .subtract(totalCost)
+                .setScale(1, RoundingMode.DOWN)
+                .stripTrailingZeros();
+
+        int lastDayOfMonth = YearMonth.from(today).lengthOfMonth();
+
+        BigDecimal dailyCost = usableCost.divide(BigDecimal.valueOf(lastDayOfMonth - today.getDayOfMonth()))
+                .setScale(1, RoundingMode.DOWN)
+                .stripTrailingZeros();
+
+        return ManageBudgetResponse.of(
+                usableCost,
+                dailyCost,
+                historyQueryRepo.countOverSpend(
+                        today.getYear(),
+                        today.getMonthValue(),
+                        memberId,
+                        dailyCost),
+                historyQueryRepo.countSpendingDate(
+                        today.getYear(),
+                        today.getMonthValue(),
+                        memberId
+                )
+        );
     }
 }

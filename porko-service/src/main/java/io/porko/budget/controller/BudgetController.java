@@ -3,6 +3,7 @@ package io.porko.budget.controller;
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.budget.controller.model.BudgetRequest;
 import io.porko.budget.controller.model.BudgetResponse;
+import io.porko.budget.controller.model.ManageBudgetResponse;
 import io.porko.budget.service.BudgetService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -34,5 +35,10 @@ public class BudgetController {
     ResponseEntity<Void> setBudget (@RequestBody BudgetRequest budgetRequest, @LoginMember Long id) {
         budgetService.setBudget(budgetRequest, id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/management")
+    ResponseEntity<ManageBudgetResponse> manageBudget (@LoginMember Long id) {
+        return ResponseEntity.ok(budgetService.manageBudget(id));
     }
 }

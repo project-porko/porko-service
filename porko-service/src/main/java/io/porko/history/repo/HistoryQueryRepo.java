@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.Optional;
 
 import static io.porko.history.domain.QHistory.history;
@@ -25,5 +24,29 @@ public class HistoryQueryRepo {
                         .and(history.usedAt.month().eq(goalMonth))
                         .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
                 .fetchOne());
+    }
+
+    public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyCost) {
+        return Long.valueOf(queryFactory.select()
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(goalYear))
+                        .and(history.usedAt.month().eq(goalMonth))
+                        .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth()))
+                        .and(history.cost.gt(dailyCost)))
+                .fetchCount());
+    }
+
+    public Long countSpendingDate(Integer goalYear, Integer goalMonth, Long memberId) {
+        return Long.valueOf(queryFactory.select(history.usedAt.date())
+                .from(history)
+                .where(history.memberId.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(goalYear))
+                        .and(history.usedAt.month().eq(goalMonth))
+                        .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
+                .groupBy(history.usedAt.date())
+                .fetchCount());
     }
 }
