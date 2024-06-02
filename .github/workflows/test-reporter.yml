@@ -18,6 +18,15 @@ jobs:
           submodule: true
           token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
 
+      - name: 🍀 set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: 🍀 grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: 🍀 debug checkout
         run: ls -al
 
@@ -32,15 +41,6 @@ jobs:
 
       - name: 🍀 update config submodule
         run: git submodule update --init --recursive
-
-      - name: 🍀 set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'corretto'
-
-      - name: 🍀 grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: 🍀 test with gradle
         run:
