@@ -1,5 +1,0 @@
-spring:
-  config.activate.on-profile: sql-init-local
-  sql.init.mode: always
-  jpa:
-    defer-datasource-initialization: true
