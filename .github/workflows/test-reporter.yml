@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodule: true
-          token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
+          token: ${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
 
       - name: 🍀 set up JDK 17
         uses: actions/setup-java@v3
