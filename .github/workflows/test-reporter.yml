@@ -18,7 +18,16 @@ jobs:
           submodule: true
           token: ${{secrets.PRIVATE_REPO_ACCESS_TOKEN}}
 
-      - name: 🍀 debug step
+      - name: 🍀 debug checkout
+        run: ls -al
+
+      - name: 🍀 debug submodule checkout
+        run: ls -al vault
+
+      - name: debug submodule properties copied
+        run: ./gradlew copyProperties
+
+      - name: debug submodule properties copied
         run: ls -al porko-common/src/main/resources
 
       - name: 🍀 update config submodule
