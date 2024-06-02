@@ -14,17 +14,21 @@ dependencies {
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.14")
 }
 
-tasks.withType<JavaCompile> {
-    copy {
-        from("../vault/application")
-        into("src/main/resources")
-    }
-    doLast{
+tasks.register("copyProperties") {
+    doLast {
+        copy {
+            from("../vault/application")
+            into("src/main/resources")
+        }
         copy {
             from("../vault/docker")
             into("../")
         }
     }
+}
+
+tasks.withType<JavaCompile> {
+    dependsOn("copyProperties")
 }
 
 tasks {
