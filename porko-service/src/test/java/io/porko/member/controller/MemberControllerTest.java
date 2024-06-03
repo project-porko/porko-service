@@ -17,7 +17,6 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import io.porko.config.fixture.FixtureCommon;
-import io.porko.config.security.TestSecurityConfig;
 import io.porko.member.controller.model.MemberResponse;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.controller.model.validateduplicate.AvailabilityStatus;
@@ -32,14 +31,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 
 @DisplayName("Controller:Member")
-@Import(TestSecurityConfig.class)
 class MemberControllerTest extends MemberControllerTestHelper {
     @Test
     @DisplayName("[중복 검사 가능 항목 조회][GET:200]")

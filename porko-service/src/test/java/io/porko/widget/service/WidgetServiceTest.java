@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import io.porko.config.base.TestBase;
 import io.porko.config.cache.CacheConfig;
 import io.porko.config.cache.CacheType;
-import io.porko.widget.controller.model.WidgetsResponse;
 import io.porko.widget.repo.WidgetRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,10 +42,7 @@ class WidgetServiceTest extends TestBase {
         given(widgetRepo.findAll()).willReturn(widgets);
 
         // When
-        repeat(repeatCount, () -> {
-            WidgetsResponse widgetsResponse = widgetService.loadAllWidgets();
-            System.out.println(widgetsResponse);
-        });
+        repeat(repeatCount, widgetService::loadAllWidgets);
 
         // Then
         verify(cacheManager, times(repeatCount)).getCache(CacheType.WIDGETS.getName());

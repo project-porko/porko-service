@@ -46,15 +46,15 @@ public class History {
     private Member member;
 
     public History(
-            BigDecimal cost,
-            Boolean regret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
-            TransactionType type,
-            String memo,
-            Member member
+        BigDecimal cost,
+        Boolean regret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        SpendingCategory spendingCategoryId,
+        TransactionType type,
+        String memo,
+        Member member
     ) {
         this.cost = cost;
         this.regret = regret;
@@ -68,16 +68,16 @@ public class History {
     }
 
     public static History of(
-            BigDecimal cost,
-            Boolean regret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
-            TransactionType type,
-            String memo,
-            Member member
+        BigDecimal cost,
+        Boolean regret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        SpendingCategory spendingCategoryId,
+        TransactionType type,
+        String memo,
+        Member member
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo,member);
+        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo, member);
     }
 }
