@@ -18,7 +18,7 @@ public enum RegretItem {
     public final String item;
 
     public static RegretItem getRegretItemBymonthlyUsedWithRegret(BigDecimal monthlyUsedWithRegret) {
-        if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(0)) > 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(5000)) < 0) {
+        if (monthlyUsedWithRegret.compareTo(BigDecimal.ZERO) > 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(5000)) < 0) {
             return COFFEE;
         } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(5000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(10000)) < 0) {
             return HAMBURGER;
