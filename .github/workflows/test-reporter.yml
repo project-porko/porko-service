@@ -15,7 +15,7 @@ jobs:
       - name: 🍀 checkout submodule
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.ACCESS_PRIVATE_TOKEN }}
+          token: ${{ secrets.SUBMODULE_TOKEN }}
           submodule: true
 
       - name: 🍀 set up JDK 17
