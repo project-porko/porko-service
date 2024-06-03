@@ -39,7 +39,7 @@ class TokenResolverTest extends TokenTestHelper {
         // When & Then
         assertThatExceptionOfType(AuthException.class)
             .isThrownBy(() -> TokenResolver.resolve(generate, testJwtProperties))
-            .extracting(AuthException::getCode).isEqualTo(AuthErrorCode.INVALID_SIGNATURE.name())
+            .extracting(AuthException::getErrorCode).isEqualTo(AuthErrorCode.INVALID_SIGNATURE)
         ;
     }
 
@@ -53,7 +53,7 @@ class TokenResolverTest extends TokenTestHelper {
         // When & Then
         assertThatExceptionOfType(AuthException.class)
             .isThrownBy(() -> TokenResolver.resolve(token, testJwtProperties))
-            .extracting(AuthException::getCode).isEqualTo(AuthErrorCode.EXPIRED_TOKEN.name())
+            .extracting(AuthException::getErrorCode).isEqualTo(AuthErrorCode.EXPIRED_TOKEN)
         ;
     }
 
@@ -68,7 +68,7 @@ class TokenResolverTest extends TokenTestHelper {
         // When & Then
         assertThatExceptionOfType(AuthException.class)
             .isThrownBy(() -> TokenResolver.resolve(token, testJwtProperties))
-            .extracting(AuthException::getCode).isEqualTo(AuthErrorCode.UNSUPPORTED_AUDIENCE.name())
+            .extracting(AuthException::getErrorCode).isEqualTo(AuthErrorCode.UNSUPPORTED_AUDIENCE)
         ;
     }
 
@@ -79,7 +79,7 @@ class TokenResolverTest extends TokenTestHelper {
         // When & Then
         assertThatExceptionOfType(AuthException.class)
             .isThrownBy(() -> TokenResolver.resolve(given, testJwtProperties))
-            .extracting(AuthException::getCode).isEqualTo(AuthErrorCode.INVALID_TOKEN_FORMAT.name())
+            .extracting(AuthException::getErrorCode).isEqualTo(AuthErrorCode.INVALID_TOKEN_FORMAT)
         ;
     }
 }

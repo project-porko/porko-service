@@ -28,8 +28,8 @@ class ValidateDuplicateTypeTest {
         Arrays.stream(ValidateDuplicateType.values()).forEach(it ->
             assertThatExceptionOfType(MemberException.class)
                 .isThrownBy(() -> it.validateFormat(value))
-                .extracting(MemberException::getCode)
-                .isEqualTo(INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT.name())
+                .extracting(MemberException::getErrorCode)
+                .isEqualTo(INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT)
         );
     }
 
@@ -40,8 +40,8 @@ class ValidateDuplicateTypeTest {
         // When & Then
         assertThatExceptionOfType(MemberException.class)
             .isThrownBy(() -> type.validateFormat(value))
-            .extracting(MemberException::getCode)
-            .isEqualTo(INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT.name())
+            .extracting(MemberException::getErrorCode)
+            .isEqualTo(INVALID_VALIDATE_DUPLICATE_VALUE_FORMAT)
         ;
     }
 

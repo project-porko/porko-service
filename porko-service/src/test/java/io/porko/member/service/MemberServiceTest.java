@@ -71,9 +71,9 @@ class MemberServiceTest extends ServiceTestBase {
         // When
         assertThatExceptionOfType(MemberException.class)
             .isThrownBy(() -> memberService.createMember(회원_가입_요청_객체))
-            .extracting(MemberException::getCode, MemberException::getMessage)
+            .extracting(MemberException::getErrorCode, MemberException::getMessage)
             .containsExactly(
-                MemberErrorCode.DUPLICATED_EMAIL.name(),
+                MemberErrorCode.DUPLICATED_EMAIL,
                 MemberErrorCode.DUPLICATED_EMAIL.getMessage().formatted(중복된_회원_이메일)
             )
         ;
@@ -92,9 +92,9 @@ class MemberServiceTest extends ServiceTestBase {
         // When
         assertThatExceptionOfType(MemberException.class)
             .isThrownBy(() -> memberService.createMember(회원_가입_요청_객체))
-            .extracting(MemberException::getCode, MemberException::getMessage)
+            .extracting(MemberException::getErrorCode, MemberException::getMessage)
             .containsExactly(
-                MemberErrorCode.DUPLICATED_PHONE_NUMBER.name(),
+                MemberErrorCode.DUPLICATED_PHONE_NUMBER,
                 MemberErrorCode.DUPLICATED_PHONE_NUMBER.getMessage().formatted(중복된_회원_휴대폰_번호)
             )
         ;

@@ -1,25 +1,28 @@
 package io.porko.widget.exception;
 
 import io.porko.exception.BusinessException;
+import lombok.Getter;
 
+@Getter
 public class WidgetException extends BusinessException {
-    private WidgetErrorCode errorCode;
-    private String message;
+    private final WidgetErrorCode errorCode;
 
-    public WidgetException(WidgetErrorCode errorCode, Object... args) {
+    public WidgetException(WidgetErrorCode errorCode) {
         super(
             errorCode.getStatus(),
             errorCode.name(),
             errorCode.getMessage()
         );
+        this.errorCode = errorCode;
     }
 
-//    public WidgetException(WidgetErrorCode errorCode, Object... args) {
-//        super(
-//            errorCode.getStatus(),
-//            errorCode.name(),
-//            errorCode.getMessage(),
-//            args
-//        );
-//    }
+    public WidgetException(WidgetErrorCode errorCode, Object... args) {
+        super(
+            errorCode.getStatus(),
+            errorCode.name(),
+            errorCode.getMessage(),
+            args
+        );
+        this.errorCode = errorCode;
+    }
 }

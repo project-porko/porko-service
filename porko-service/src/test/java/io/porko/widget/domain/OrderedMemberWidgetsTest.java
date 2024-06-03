@@ -40,8 +40,8 @@ class OrderedMemberWidgetsTest extends TestBase {
             // When
             assertThatExceptionOfType(WidgetException.class)
                 .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, reorderWidgetRequest))
-                .extracting(WidgetException::getCode)
-                .isEqualTo(WidgetErrorCode.INCLUDE_FIXED_WIDGET.name());
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.INCLUDE_FIXED_WIDGET);
         }
 
         @Test
@@ -60,8 +60,8 @@ class OrderedMemberWidgetsTest extends TestBase {
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
                 .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, reorderWidgetRequest))
-                .extracting(WidgetException::getCode)
-                .isEqualTo(WidgetErrorCode.INCLUDE_NOT_EXIST_WIDGET.name());
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.INCLUDE_NOT_EXIST_WIDGET);
         }
     }
 

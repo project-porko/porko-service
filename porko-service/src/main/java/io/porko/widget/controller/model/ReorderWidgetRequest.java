@@ -43,42 +43,4 @@ public record ReorderWidgetRequest(
     private static boolean hasDuplicateSequence(Set<Integer> sequenceSet) {
         return sequenceSet.size() != ORDERED_WIDGET_COUNT;
     }
-
-//    public OrderedMemberWidgets toEntity(Member member, List<Widget> targetWidgets) {
-//        validateTargetWidgets(targetWidgets);
-//
-//        Map<Long, Widget> targetWidgetMap = targetWidgets.stream()
-//            .collect(Collectors.toMap(Widget::getId, widget -> widget));
-//
-//        return OrderedMemberWidgets.of(elements.stream()
-//            .map(it -> it.toEntity(member, targetWidgetMap))
-//            .collect(Collectors.toList()));
-//    }
-
-//    private void validateTargetWidgets(List<Widget> targetWidgets) {
-//        validateIncludeFixedWidget(targetWidgets);
-//        validateIncludeNotExistWidget(targetWidgets);
-//    }
-
-//    private static void validateIncludeFixedWidget(List<Widget> targetWidgets) {
-//        Optional<Widget> fixedWidget = targetWidgets.stream()
-//            .filter(it -> it.getWidgetCode().isFixed())
-//            .findFirst();
-//
-//        if (fixedWidget.isPresent()) {
-//            throw new WidgetException(INCLUDE_FIXED_WIDGET);
-//        }
-//    }
-
-//    private void validateIncludeNotExistWidget(List<Widget> targetWidgets) {
-//        if (targetWidgets.size() != ORDERED_WIDGET_COUNT) {
-//            throw new WidgetException(INCLUDE_NOT_EXIST_WIDGET);
-//        }
-//    }
-
-//    public List<Long> extractWidgetIds() {
-//        return elements.stream()
-//            .map(ModifyMemberWidgetOrderDto::widgetId)
-//            .toList();
-//    }
 }
