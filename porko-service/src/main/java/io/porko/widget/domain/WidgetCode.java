@@ -30,4 +30,8 @@ public enum WidgetCode {
         this.type = type;
         this.description = description;
     }
+
+    public boolean isFixed() {
+        return type == FIXED;
+    }
 }

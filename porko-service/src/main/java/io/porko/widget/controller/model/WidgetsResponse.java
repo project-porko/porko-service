@@ -2,6 +2,7 @@ package io.porko.widget.controller.model;
 
 import io.porko.widget.domain.Widget;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record WidgetsResponse(
     List<WidgetDto> elements
@@ -12,5 +13,18 @@ public record WidgetsResponse(
                 .map(WidgetDto::from)
                 .toList()
         );
+    }
+
+    public List<Widget> toWidgets() {
+        return elements().stream()
+            .map(it -> Widget.of(it.id(), it.code()))
+            .collect(Collectors.toList());
+    }
+
+    public List<Widget> extractByIds(List<Long> targetIds) {
+        return elements().stream()
+            .filter(widgetDto -> targetIds.contains(widgetDto.id()))
+            .map(it -> Widget.of(it.id(), it.code()))
+            .collect(Collectors.toList());
     }
 }

@@ -13,3 +13,28 @@ dependencies {
 
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.14")
 }
+
+tasks.register("copyProperties") {
+    doLast {
+        copy {
+            from("../porko-properties/application")
+            into("src/main/resources")
+        }
+        copy {
+            from("../porko-properties/docker")
+            into("../")
+        }
+    }
+}
+
+tasks.withType<JavaCompile> {
+    dependsOn("copyProperties")
+}
+
+tasks {
+    getByName<Delete>("clean") {
+        delete.add("src/main/resources")
+        delete.add("../.env")
+        delete.add("../docker-compose.yml")
+    }
+}

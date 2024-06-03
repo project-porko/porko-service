@@ -1,25 +1,14 @@
 package io.porko.member.controller;
 
+import io.porko.config.base.WebLayerTestBase;
 import io.porko.config.base.presentation.RequestBuilder.Expect;
-import io.porko.config.base.presentation.WebMvcTestBase;
 import io.porko.member.controller.model.signup.AddressDto;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.controller.model.validateduplicate.ValidateDuplicateType;
-import io.porko.member.facade.ValidateDuplicateFacade;
-import io.porko.member.service.MemberService;
-import org.junit.jupiter.api.DisplayName;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(MemberController.class)
-@DisplayName("Controller:Member")
-class MemberControllerTestHelper extends WebMvcTestBase {
-    @MockBean
-    protected MemberService memberService;
-
-    @MockBean
-    protected ValidateDuplicateFacade validateDuplicateFacade;
-
+class MemberControllerTestHelper extends WebLayerTestBase {
     private static final String MEMBER_SIGN_UP_URI = "/member/sign-up";
     private static final String MEMBER_SIGN_UP_VALIDATE_DUPLICATE_URL = "/member/validate?type={type}&value={value}";
     private static final String ME_URI = "/member/me";

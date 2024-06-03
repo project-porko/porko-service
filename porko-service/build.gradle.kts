@@ -1,3 +1,9 @@
+val bootJar: org.springframework.boot.gradle.tasks.bundling.BootJar by tasks
+val jar: Jar by tasks
+
+bootJar.enabled = true
+jar.enabled = false
+
 val testSourceSet: SourceSetOutput = project(":porko-common").sourceSets["test"].output
 val queryDslVersion = dependencyManagement.importedProperties["querydsl.version"]
 
@@ -24,6 +30,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("com.github.ben-manes.caffeine:caffeine")
 
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
     testRuntimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
@@ -34,6 +42,7 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
 val qClassGeneratedPath: String = layout.projectDirectory.dir("src/main/generated").asFile.path
 
 sourceSets {
