@@ -31,7 +31,7 @@ jobs:
         run: ls -al
 
       - name: 🍀 debug submodule checkout
-        run: ls -al vault
+        run: ls -al porko-properties
 
       - name: debug submodule properties copied
         run: ./gradlew copyProperties
