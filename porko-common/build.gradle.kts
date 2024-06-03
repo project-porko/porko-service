@@ -17,11 +17,11 @@ dependencies {
 tasks.register("copyProperties") {
     doLast {
         copy {
-            from("../vault/application")
+            from("../porko-properties/application")
             into("src/main/resources")
         }
         copy {
-            from("../vault/docker")
+            from("../porko-properties/docker")
             into("../")
         }
     }
