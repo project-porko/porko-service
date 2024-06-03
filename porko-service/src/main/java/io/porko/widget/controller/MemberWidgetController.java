@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(
     value = MEMBER_WIDGET_BASE_URI,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RequiredArgsConstructor

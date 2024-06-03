@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(
     value = MEMBER_BASE_URI,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE
 )
 @RestController
