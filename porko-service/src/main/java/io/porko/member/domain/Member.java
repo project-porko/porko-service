@@ -1,6 +1,6 @@
 package io.porko.member.domain;
 
-import io.porko.member.config.jpa.auditor.TimeMetaFields;
+import io.porko.config.jpa.auditor.TimeMetaFields;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -17,28 +17,23 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(
-    uniqueConstraints = {
-        @UniqueConstraint(name = "UK_MEMBER_ID", columnNames = "member_id"),
-        @UniqueConstraint(name = "UK_MEMBER_EMAIL", columnNames = "email")
-    })
+@Table(uniqueConstraints = @UniqueConstraint(
+    name = "UK_MEMBER_EMAIL", columnNames = "email"
+))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends TimeMetaFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
-    private String memberId;
+    @Column(nullable = false, length = 40)
+    private String email;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, length = 10)
     private String name;
-
-    @Column(nullable = false, length = 40)
-    private String email;
 
     @Column(nullable = false, length = 11)
     private String phoneNumber;
@@ -51,31 +46,29 @@ public class Member extends TimeMetaFields {
     private Gender gender;
 
     private Member(
-        String memberId,
+        String email,
         String password,
         String name,
-        String email,
         String phoneNumber,
         Address address,
         Gender gender
     ) {
-        this.memberId = memberId;
+        this.email = email;
         this.password = password;
         this.name = name;
-        this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.gender = gender;
     }
 
-    public static Member of(String memberId,
+    public static Member of(
+        String email,
         String password,
         String name,
-        String email,
         String phoneNumber,
         Address address,
         Gender gender
     ) {
-        return new Member(memberId, password, name, email, phoneNumber, address, gender);
+        return new Member(email, password, name, phoneNumber, address, gender);
     }
 }

@@ -11,6 +11,7 @@ public record ValidateDuplicateRequest(
     String value
 ) {
     public static ValidateDuplicateRequest of(ValidateDuplicateType requestType, String value) {
+        requestType.validateFormat(value);
         return new ValidateDuplicateRequest(requestType, value);
     }
 }

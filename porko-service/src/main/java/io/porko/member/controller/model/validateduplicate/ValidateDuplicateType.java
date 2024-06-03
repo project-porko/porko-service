@@ -5,17 +5,19 @@ import static java.util.regex.Pattern.compile;
 import io.porko.member.exception.MemberErrorCode;
 import io.porko.member.exception.MemberException;
 import java.util.regex.Pattern;
+import lombok.Getter;
 
+@Getter
 public enum ValidateDuplicateType {
-    MEMBER_ID(compile("^[a-zA-Z0-9]{6,20}$")),
-    EMAIL(compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")),
-    PHONE_NUMBER(compile("^[0-9]{11}$"))
-    ;
+    EMAIL(compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"), "이메일"),
+    PHONE_NUMBER(compile("^[0-9]{11}$"), "휴대폰 번호");
 
     private final Pattern pattern;
+    private final String description;
 
-    ValidateDuplicateType(Pattern pattern) {
+    ValidateDuplicateType(Pattern pattern, String description) {
         this.pattern = pattern;
+        this.description = description;
     }
 
     public void validateFormat(String value) {

@@ -47,7 +47,6 @@ class MemberServiceTest extends ServiceTestBase {
     }
 
     private void 회원_생성_의존성_행동_정의(SignUpRequest signUpRequest) {
-        given(memberRepo.existsByMemberId(signUpRequest.memberId())).willReturn(false);
         given(memberRepo.existsByEmail(signUpRequest.email())).willReturn(false);
         given(memberRepo.save(any(Member.class))).will(AdditionalAnswers.returnsFirstArg());
     }
@@ -57,31 +56,9 @@ class MemberServiceTest extends ServiceTestBase {
     }
 
     private void 회원_생성_의존성_동작_검증(SignUpRequest 회원_가입_요청_객체) {
-        verify(memberRepo).existsByMemberId(회원_가입_요청_객체.memberId());
         verify(memberRepo).existsByEmail(회원_가입_요청_객체.email());
         verify(passwordEncoder).encode(회원_가입_요청_객체.password());
         verify(memberRepo).save(any(Member.class));
-    }
-
-    @Test
-    @DisplayName("[예외]회원 생성 실패: 중복된 아이디")
-    void throwMemberException_GivenDuplicatedMemberId() {
-        // Given
-        String 중복된_회원_아이디 = 회원_가입_요청_객체.memberId();
-        given(memberRepo.existsByMemberId(중복된_회원_아이디)).willReturn(true);
-
-        // When
-        assertThatExceptionOfType(MemberException.class)
-            .isThrownBy(() -> memberService.createMember(회원_가입_요청_객체))
-            .extracting(MemberException::getCode, MemberException::getMessage)
-            .containsExactly(
-                MemberErrorCode.DUPLICATED_MEMBER_ID.name(),
-                MemberErrorCode.DUPLICATED_MEMBER_ID.getMessage().formatted(중복된_회원_아이디)
-            )
-        ;
-
-        // Then
-        verify(memberRepo).existsByMemberId(중복된_회원_아이디);
     }
 
     @Test
@@ -103,5 +80,26 @@ class MemberServiceTest extends ServiceTestBase {
 
         // Then
         verify(memberRepo).existsByEmail(중복된_회원_이메일);
+    }
+
+    @Test
+    @DisplayName("[예외]회원 생성 실패: 중복된 핸드폰 번호")
+    void throwMemberException_GivenDuplicatedPhoneNumber() {
+        // Given
+        String 중복된_회원_휴대폰_번호 = 회원_가입_요청_객체.phoneNumber();
+        given(memberRepo.existsByPhoneNumber(중복된_회원_휴대폰_번호)).willReturn(true);
+
+        // When
+        assertThatExceptionOfType(MemberException.class)
+            .isThrownBy(() -> memberService.createMember(회원_가입_요청_객체))
+            .extracting(MemberException::getCode, MemberException::getMessage)
+            .containsExactly(
+                MemberErrorCode.DUPLICATED_PHONE_NUMBER.name(),
+                MemberErrorCode.DUPLICATED_PHONE_NUMBER.getMessage().formatted(중복된_회원_휴대폰_번호)
+            )
+        ;
+
+        // Then
+        verify(memberRepo).existsByPhoneNumber(중복된_회원_휴대폰_번호);
     }
 }

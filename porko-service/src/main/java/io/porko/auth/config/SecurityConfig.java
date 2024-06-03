@@ -37,7 +37,8 @@ public class SecurityConfig {
             // [TODO:Refactor] endpoint, roles에 따른 인가 정책 가독성 개선을 위한 AuthenticationEndpointByRoles 적용
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/member/sign-up", "/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/member/validate").permitAll()
+                .requestMatchers(HttpMethod.GET, "/member/validate", "/member/validate/types").permitAll()
+                .requestMatchers(HttpMethod.GET, "/widget").permitAll()
                 .anyRequest().authenticated()
             )
             // [TODO:Feature] : 403 권한 없음 예외 처리를 위한 AccessDeniedHandler 구현 및 등록
