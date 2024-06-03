@@ -1,8 +1,8 @@
-name: PR Reporter # TODO: ci 적용 시, ci 과정에 tc result reporting을 포함하고 작업 이름을 변경
+name: PR Test Reporter
 
 on:
   pull_request:
-    branches: [ develop ] # TODO: main branch PR 시 추가
+    branches: [ develop ]
 
 permissions: write-all
 
@@ -22,6 +22,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
+
+      # Gradle 캐싱
+      - name: 🍀 gradle caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: 🍀 grant execute permission for gradlew
         run: chmod +x gradlew
@@ -43,5 +54,3 @@ jobs:
         if: always()
         with:
           report_paths: 'porko-service/build/test-results/test/TEST-*.xml'
-
-#      TODO : ECR login, push image to ECR, deploy to server instance
