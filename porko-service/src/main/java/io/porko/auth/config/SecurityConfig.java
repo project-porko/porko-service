@@ -14,6 +14,9 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class SecurityConfig {
         return http
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
+            .cors(httpSecurityCorsConfigurer -> corsConfigurationSource())
             .csrf(AbstractHttpConfigurer::disable)
             .headers(headersConfigurer -> headersConfigurer
                 .frameOptions(FrameOptionsConfig::disable)
@@ -39,6 +43,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/member/sign-up", "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/member/validate", "/member/validate/types").permitAll()
                 .requestMatchers(HttpMethod.GET, "/widget").permitAll()
+                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             // [TODO:Feature] : 403 권한 없음 예외 처리를 위한 AccessDeniedHandler 구현 및 등록
@@ -50,5 +55,19 @@ public class SecurityConfig {
                 UsernamePasswordAuthenticationFilter.class
             )
             .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
