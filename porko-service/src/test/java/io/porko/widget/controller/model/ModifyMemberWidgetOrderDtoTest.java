@@ -17,8 +17,8 @@ class ModifyMemberWidgetOrderDtoTest {
         // When & Then
         assertThatExceptionOfType(WidgetException.class)
             .isThrownBy(() -> new ModifyMemberWidgetOrderDto(1L, given))
-            .extracting(WidgetException::getCode)
-            .isEqualTo(WidgetErrorCode.INVALID_SEQUENCE_RANGE.name())
+            .extracting(WidgetException::getErrorCode)
+            .isEqualTo(WidgetErrorCode.INVALID_SEQUENCE_RANGE)
         ;
     }
 }

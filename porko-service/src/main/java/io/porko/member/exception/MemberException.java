@@ -1,10 +1,11 @@
 package io.porko.member.exception;
 
 import io.porko.exception.BusinessException;
+import lombok.Getter;
 
+@Getter
 public class MemberException extends BusinessException {
-    private MemberErrorCode errorCode;
-    private String message;
+    private final MemberErrorCode errorCode;
 
     public MemberException(MemberErrorCode errorCode, Object... args) {
         super(
@@ -13,5 +14,6 @@ public class MemberException extends BusinessException {
             errorCode.getMessage(),
             args
         );
+        this.errorCode = errorCode;
     }
 }

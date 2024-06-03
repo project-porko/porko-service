@@ -1,10 +1,11 @@
 package io.porko.widget.exception;
 
 import io.porko.exception.BusinessException;
+import lombok.Getter;
 
+@Getter
 public class WidgetException extends BusinessException {
-    private WidgetErrorCode errorCode;
-    private String message;
+    private final WidgetErrorCode errorCode;
 
     public WidgetException(WidgetErrorCode errorCode) {
         super(
@@ -12,6 +13,7 @@ public class WidgetException extends BusinessException {
             errorCode.name(),
             errorCode.getMessage()
         );
+        this.errorCode = errorCode;
     }
 
     public WidgetException(WidgetErrorCode errorCode, Object... args) {
@@ -21,5 +23,6 @@ public class WidgetException extends BusinessException {
             errorCode.getMessage(),
             args
         );
+        this.errorCode = errorCode;
     }
 }

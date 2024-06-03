@@ -23,8 +23,8 @@ class ReorderWidgetRequestTest extends TestBase {
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
                 .isThrownBy(() -> new ReorderWidgetRequest(givenBuilder.sampleList(1)))
-                .extracting(WidgetException::getCode)
-                .isEqualTo(WidgetErrorCode.INVALID_REQUEST_ORDERED_WIDGET_COUNT.name());
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.INVALID_REQUEST_ORDERED_WIDGET_COUNT);
         }
 
         @Test
@@ -40,8 +40,8 @@ class ReorderWidgetRequestTest extends TestBase {
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
                 .isThrownBy(() -> new ReorderWidgetRequest(given))
-                .extracting(WidgetException::getCode)
-                .isEqualTo(WidgetErrorCode.DUPLICATED_SEQUENCE.name());
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.DUPLICATED_SEQUENCE);
         }
     }
 }

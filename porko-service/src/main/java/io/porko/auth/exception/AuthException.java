@@ -1,10 +1,11 @@
 package io.porko.auth.exception;
 
 import io.porko.exception.BusinessException;
+import lombok.Getter;
 
+@Getter
 public class AuthException extends BusinessException {
-    private AuthErrorCode errorCode;
-    private String message;
+    private final AuthErrorCode errorCode;
 
     public AuthException(AuthErrorCode errorCode) {
         super(
@@ -12,5 +13,6 @@ public class AuthException extends BusinessException {
             errorCode.name(),
             errorCode.getMessage()
         );
+        this.errorCode = errorCode;
     }
 }
