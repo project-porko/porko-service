@@ -42,17 +42,17 @@ jobs:
       - name: 🍀 test with gradle
         run: ./gradlew --info test
 
-#      - name: 🍀 publish unit Test results
-#        uses: EnricoMi/publish-unit-test-result-action@v2
-#        if: always()
-#        with:
-#          files: 'build/test-results/**/*.xml'
-#
-#      - name: 🍀 add comments to fail tests
-#        uses: mikepenz/action-junit-report@v3
-#        if: always()
-#        with:
-#          report_paths: 'build/test-results/test/TEST-*.xml'
-#
+      - name: 🍀 publish unit Test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: 'build/test-results/**/*.xml'
+
+      - name: 🍀 add comments to fail tests
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: 'build/test-results/test/TEST-*.xml'
+
 #      - name: 🍀 docker build
 #        run: docker build -t porko-app-local .
