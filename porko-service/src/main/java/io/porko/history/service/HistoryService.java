@@ -34,6 +34,12 @@ public class HistoryService {
         return fetchHistoryList(loginMemberId, startDate, endDate);
     }
 
+    public HistoryResponse getHistoryDetail( Long historyId) {
+        History history = historyRepo.findById(historyId)
+                .orElseThrow(() -> new RuntimeException("상세조회를 찾을수 없습니다." + historyId));
+        return HistoryResponse.ofDetail(history);
+    }
+
     private List<HistoryResponse> fetchHistoryList(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
         loadMemberById(loginMemberId);
 
