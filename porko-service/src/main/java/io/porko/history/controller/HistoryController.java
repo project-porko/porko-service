@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.porko.history.service.HistoryService;
@@ -27,5 +28,11 @@ public class HistoryController {
         if (startDate == null || endDate == null) {
             return ResponseEntity.ok(historyService.getThisMonthHistoryList(loginMemberId));
         } else return ResponseEntity.ok(historyService.getHistoryListByDate(loginMemberId, startDate, endDate));
+    }
+
+    @GetMapping("history/{historyId}")
+    ResponseEntity<HistoryResponse> getHistoryDetail(
+            @PathVariable("historyId") Long historyId) {
+        return ResponseEntity.ok(historyService.getHistoryDetail(historyId));
     }
 }
