@@ -1,5 +1,6 @@
 package io.porko.history.domain;
 
+import io.porko.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,6 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private Long memberId;
 
     @Column(nullable = false)
     private BigDecimal cost;
@@ -36,24 +34,28 @@ public class History {
     @Embedded
     private SpendingCategory spendingCategoryId;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Type type;
+    private TransactionType type;
 
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     private String memo;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     public History(
-            Long memberId,
-            BigDecimal cost,
-            Boolean regret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
-            Type type,
-            String memo
+        BigDecimal cost,
+        Boolean regret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        SpendingCategory spendingCategoryId,
+        TransactionType type,
+        String memo,
+        Member member
     ) {
-        this.memberId = memberId;
         this.cost = cost;
         this.regret = regret;
         this.place = place;
@@ -62,19 +64,20 @@ public class History {
         this.spendingCategoryId = spendingCategoryId;
         this.type = type;
         this.memo = memo;
+        this.member = member;
     }
 
     public static History of(
-            Long memberId,
-            BigDecimal cost,
-            Boolean regret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
-            Type type,
-            String memo
+        BigDecimal cost,
+        Boolean regret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        SpendingCategory spendingCategoryId,
+        TransactionType type,
+        String memo,
+        Member member
     ) {
-        return new History(memberId, cost, regret, place, payType, usedAt, spendingCategoryId, type, memo);
+        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo, member);
     }
 }
