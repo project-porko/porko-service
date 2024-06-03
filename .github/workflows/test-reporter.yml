@@ -40,9 +40,7 @@ jobs:
         run: ls -al porko-common/src/main/resources
 
       - name: 🍀 test with gradle
-        run:
-          ./gradlew copyProperties
-          ./gradlew --info test
+        run: ./gradlew --info test
 
       - name: 🍀 publish unit Test results
         uses: EnricoMi/publish-unit-test-result-action@v2
