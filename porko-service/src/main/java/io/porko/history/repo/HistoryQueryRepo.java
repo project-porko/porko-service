@@ -20,7 +20,7 @@ public class HistoryQueryRepo {
     public Optional<BigDecimal> calcTotalCost (Integer goalYear, Integer goalMonth, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
@@ -38,7 +38,7 @@ public class HistoryQueryRepo {
 
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(currentYear))
                         .and(history.usedAt.month().eq(currentMonth)))
@@ -48,7 +48,7 @@ public class HistoryQueryRepo {
     public Optional<BigDecimal> calcDailyUsedCost (LocalDate date, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(date.getYear()))
                         .and(history.usedAt.month().eq(date.getMonthValue()))
@@ -59,7 +59,7 @@ public class HistoryQueryRepo {
     public Optional<BigDecimal> calcDailyEarnedCost (LocalDate date, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.gt(0))
                         .and(history.usedAt.year().eq(date.getYear()))
                         .and(history.usedAt.month().eq(date.getMonthValue()))
@@ -73,7 +73,7 @@ public class HistoryQueryRepo {
 
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.between(startDateTime, endDateTime)))
                 .fetchOne());
@@ -85,7 +85,7 @@ public class HistoryQueryRepo {
 
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.gt(0))
                         .and(history.usedAt.between(startDateTime, endDateTime)))
                 .fetchOne());
