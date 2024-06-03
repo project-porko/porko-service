@@ -16,7 +16,9 @@ public record HistoryResponse(
         SpendingCategory spendingCategoryId,
         String payType,
         BigDecimal totalSpent,
-        BigDecimal totalEarned
+        BigDecimal totalEarned,
+        Boolean regret,
+        String memo
 ) {
     @QueryProjection
     public HistoryResponse{}
@@ -30,8 +32,24 @@ public record HistoryResponse(
                 history.getSpendingCategoryId(),
                 history.getPayType(),
                 totalSpent,
-                totalEarned
+                totalEarned,
+                history.getRegret(),
+                null
+        );
+    }
+
+    public static  HistoryResponse ofDetail (History history) {
+        return new HistoryResponse(
+                null,
+                history.getUsedAt(),
+                history.getCost(),
+                history.getPlace(),
+                history.getSpendingCategoryId(),
+                history.getPayType(),
+                null, // totalSpent
+                null, // totalEarned
+                history.getRegret(),
+                history.getMemo()
         );
     }
 }
-
