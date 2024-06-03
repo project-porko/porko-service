@@ -36,12 +36,12 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: 'build/test-results/**/*.xml'
+          files: 'porko-service/build/test-results/**/*.xml'
 
       - name: 🍀 add comments to fail tests
         uses: mikepenz/action-junit-report@v3
         if: always()
         with:
-          report_paths: 'build/test-results/test/TEST-*.xml'
+          report_paths: 'porko-service/build/test-results/test/TEST-*.xml'
 
 #      TODO : ECR login, push image to ECR, deploy to server instance
