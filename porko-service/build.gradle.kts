@@ -41,6 +41,16 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    maxParallelForks = Runtime.getRuntime().availableProcessors().div(2).takeIf { it > 0 } ?: 1
+
+    forkEvery = 100
+
+    reports.html.required = false
+    reports.junitXml.required = false
+}
+
+tasks.withType<JavaCompile> {
+    options.isFork = true
 }
 
 val qClassGeneratedPath: String = layout.projectDirectory.dir("src/main/generated").asFile.path
