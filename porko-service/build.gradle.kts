@@ -37,6 +37,10 @@ dependencies {
     testImplementation(testSourceSet)
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 val qClassGeneratedPath: String = layout.projectDirectory.dir("src/main/generated").asFile.path
 
 sourceSets {
