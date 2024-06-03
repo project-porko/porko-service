@@ -39,7 +39,7 @@ dependencies {
     testImplementation(testSourceSet)
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 
