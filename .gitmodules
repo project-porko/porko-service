@@ -1,4 +1,0 @@
-[submodule "vault"]
-	path = vault
-	url = https://github.com/project-porko/porko-properties.git
-	branch = develop
