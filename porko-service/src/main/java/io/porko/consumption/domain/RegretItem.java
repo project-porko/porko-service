@@ -1,43 +1,101 @@
 package io.porko.consumption.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @AllArgsConstructor
+@RequiredArgsConstructor
 public enum RegretItem {
-    COFFEE ("커피 한 잔"),
-    HAMBURGER("햄버거 세트"),
-    CHICKEN("치킨 두 마리"),
-    SUSHI("스시 오마카세"),
-    APPLE_PENCLE("애플 펜슬"),
-    APPLE_WATCH("애플 워치 SE"),
-    AIRPOT("에어팟 맥스"),
-    MACBOOK("최신형 맥북");
+    ZERO ("ZERO", 0) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, cost);
+        }
+    },
+    COFFEE ("커피 한 잔", 0, 5000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    HAMBURGER("햄버거 세트", 5000, 10000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    CHICKEN("치킨 두 마리", 10000, 50000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    SUSHI("스시 오마카세", 50000, 100000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    APPLE_PENCLE("애플 펜슬", 100000, 300000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    APPLE_WATCH("애플 워치 SE", 300000, 500000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    AIRPODS("에어팟 맥스", 500000, 1000000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, endRange, cost);
+        }
+    },
+    MACBOOK("최신형 맥북", 1000000) {
+        @Override
+        boolean isMatched(BigDecimal cost) {
+            return isRange(startRange, cost);
+        }
+    };
 
     public final String item;
+    final int startRange;
+    int endRange;
 
-    public static RegretItem getRegretItemBymonthlyUsedWithRegret(BigDecimal monthlyUsedWithRegret) {
-        if (monthlyUsedWithRegret.compareTo(BigDecimal.ZERO) > 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(5000)) < 0) {
-            return COFFEE;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(5000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(10000)) < 0) {
-            return HAMBURGER;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(10000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(50000)) < 0) {
-            return CHICKEN;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(50000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(100000)) < 0) {
-            return SUSHI;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(100000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(300000)) < 0) {
-            return APPLE_PENCLE;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(300000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(500000)) < 0) {
-            return APPLE_WATCH;
-        } else if (monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(500000)) >= 0 && monthlyUsedWithRegret.compareTo(BigDecimal.valueOf(1000000)) < 0) {
-            return AIRPOT;
-        } else {
-            return MACBOOK;
+    abstract boolean isMatched(BigDecimal cost);
+
+    public boolean isRange(int start, int end, BigDecimal cost) {
+        BigDecimal startRange = BigDecimal.valueOf(start);
+        BigDecimal endRange = BigDecimal.valueOf(end);
+
+        if (start == 0) {
+            return cost.compareTo(startRange) > 0 && cost.compareTo(endRange) < 0;
         }
+
+        return cost.compareTo(startRange) >= 0 && cost.compareTo(endRange) < 0;
+    }
+
+    public boolean isRange(int start, BigDecimal cost) {
+        if (start == 0) {
+            return cost.compareTo(BigDecimal.valueOf(start)) == 0;
+        }
+        return cost.compareTo(BigDecimal.valueOf(start)) >= 0;
     }
 
     public static String getImageURL() {
         return "ImageURL";
+    }
+
+    public static RegretItem getRegretItemBymonthlyUsedWithRegret(BigDecimal monthlyUsedWithRegret) {
+        return Arrays.stream(values())
+                .filter(it -> it.isMatched(monthlyUsedWithRegret))
+                .findFirst()
+                .orElse(MACBOOK);
     }
 }
