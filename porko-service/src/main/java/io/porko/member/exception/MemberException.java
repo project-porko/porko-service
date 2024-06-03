@@ -10,7 +10,8 @@ public class MemberException extends BusinessException {
         super(
             errorCode.getStatus(),
             errorCode.name(),
-            errorCode.formattingErrorMessage(args)
+            errorCode.getMessage(),
+            args
         );
     }
 }

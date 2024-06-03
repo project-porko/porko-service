@@ -11,8 +11,4 @@ public enum BudgetErrorCode {
 
     private final HttpStatus status;
     private final String message;
-
-    public String formattingErrorMessage(Object... objects) {
-        return getMessage().formatted(objects);
-    }
 }

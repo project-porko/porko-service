@@ -14,4 +14,14 @@ public abstract class BusinessException extends RuntimeException {
         this.code = code;
         this.message = message;
     }
+
+    public BusinessException(HttpStatus status, String code, String message, Object... args) {
+        this.status = status;
+        this.code = code;
+        this.message = formattingErrorMessage(message, args);
+    }
+
+    protected String formattingErrorMessage(String message, Object... objects) {
+        return message.formatted(objects);
+    }
 }

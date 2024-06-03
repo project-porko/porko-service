@@ -21,8 +21,4 @@ public enum AuthErrorCode {
         this.status = status;
         this.message = message;
     }
-
-    public String formattingErrorMessage(Object... objects) {
-        return getMessage().formatted(objects);
-    }
 }

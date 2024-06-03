@@ -1,6 +1,7 @@
 package io.porko.budget.exception;
 
 import io.porko.exception.BusinessException;
+
 public class BudgetException extends BusinessException {
     private BudgetErrorCode errorCode;
     private String message;
@@ -9,7 +10,8 @@ public class BudgetException extends BusinessException {
         super(
             errorCode.getStatus(),
             errorCode.name(),
-            errorCode.formattingErrorMessage(args)
+            errorCode.getMessage(),
+            args
         );
     }
 }
