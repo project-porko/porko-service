@@ -1,5 +1,6 @@
 package io.porko.config.base;
 
+import io.porko.auth.config.SecurityConfig;
 import io.porko.auth.config.jwt.JwtProperties;
 import io.porko.auth.controller.AuthController;
 import io.porko.auth.service.AuthService;
@@ -17,6 +18,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 
 @WebMvcTest(
@@ -26,6 +29,9 @@ import org.springframework.context.annotation.Import;
         MemberWidgetController.class,
         WidgetController.class,
         CacheManager.class
+    },
+    excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
     }
 )
 @Import({TestSecurityConfig.class, CacheConfig.class})
