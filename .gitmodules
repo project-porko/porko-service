@@ -1,3 +1,3 @@
 [submodule "porko-properties"]
 	path = porko-properties
-	url = https://github.com/project-porko/porko-properties.git
+	url = git@github.com/project-porko/porko-properties.git
