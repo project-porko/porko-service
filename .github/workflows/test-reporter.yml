@@ -4,8 +4,7 @@ on:
   pull_request:
     branches: [ develop ] # TODO: main branch PR 시 추가
 
-permissions:
-  contents: read
+permissions: write-all
 
 jobs:
   test:
@@ -53,6 +52,3 @@ jobs:
         if: always()
         with:
           report_paths: 'build/test-results/test/TEST-*.xml'
-
-#      - name: 🍀 docker build
-#        run: docker build -t porko-app-local .
