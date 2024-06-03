@@ -26,17 +26,8 @@ jobs:
       - name: 🍀 grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: 🍀 debug checkout
-        run: ls -al
-
-      - name: 🍀 debug submodule checkout
-        run: ls -al porko-properties
-
-      - name: debug submodule properties copied
+      - name: 🍀 copy submodule properties
         run: ./gradlew copyProperties
-
-      - name: debug submodule properties copied
-        run: ls -al porko-common/src/main/resources
 
       - name: 🍀 test with gradle
         run: ./gradlew --info test
@@ -52,3 +43,5 @@ jobs:
         if: always()
         with:
           report_paths: 'build/test-results/test/TEST-*.xml'
+
+#      TODO : ECR login, push image to ECR, deploy to server instance
