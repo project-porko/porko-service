@@ -1,6 +1,7 @@
 package io.porko.budget.controller.model;
 
 import io.porko.budget.domain.Budget;
+import io.porko.member.domain.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -12,9 +13,9 @@ public record BudgetRequest(
         @Size(min = 5, max = 9)
         BigDecimal cost
 ) {
-    public Budget toEntity(Long memberId) {
+    public Budget toEntity(Member member) {
         return Budget.of(
-                memberId,
+                member,
                 cost,
                 LocalDate.now().getYear(),
                 LocalDate.now().getMonthValue()
