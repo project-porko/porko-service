@@ -32,7 +32,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.DEV_ECR_UPLOAD_ACCESS }}
           aws-secret-access-key: ${{ secrets.DEV_ECR_UPLOAD_SECRET }}
-          aws-region: aws-northeast-2
+          aws-region: ap-northeast-2
 
       - name: 🍀 Login to Amazon ECR
         id: login-ecr
