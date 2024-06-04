@@ -5,15 +5,15 @@ import java.math.BigDecimal;
 public record ManageBudgetResponse(
         BigDecimal goalCost,
         BigDecimal dailyCost,
-        Long overSpend,
-        Long zeroSpend
+        long overSpend,
+        long zeroSpend
 
 ) {
     public static ManageBudgetResponse of(
             BigDecimal goalCost,
             BigDecimal dailyCost,
-            Long overSpend,
-            Long zeroSpend
+            long overSpend,
+            long zeroSpend
     ) {
         return new ManageBudgetResponse(goalCost, dailyCost, overSpend, zeroSpend);
     }

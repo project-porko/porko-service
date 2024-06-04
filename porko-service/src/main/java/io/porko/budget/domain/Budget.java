@@ -1,5 +1,6 @@
 package io.porko.budget.domain;
 
+import io.porko.member.domain.Member;
 import io.porko.utils.ConvertUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -19,8 +20,9 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(nullable = false)
     private BigDecimal goalCost;
@@ -32,23 +34,23 @@ public class Budget {
     private Integer goalMonth;
 
     private Budget(
-            Long memberId,
+            Member member,
             BigDecimal goalCost,
             Integer goalYear,
             Integer goalMonth
     ) {
-        this.memberId = memberId;
+        this.member = member;
         this.goalCost = goalCost;
         this.goalYear = goalYear;
         this.goalMonth = goalMonth;
     }
 
     public static Budget of(
-            Long memberId,
+            Member member,
             BigDecimal goalCost,
             Integer goalYear,
             Integer goalMonth
     ) {
-        return new Budget(memberId, goalCost, goalYear, goalMonth);
+        return new Budget(member, goalCost, goalYear, goalMonth);
     }
 }
