@@ -3,4 +3,4 @@ spring:
     name: porko-service-api
 
   profiles:
-    active: dev
+    active: local
