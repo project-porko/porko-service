@@ -18,7 +18,7 @@ public class HistoryQueryRepo {
     public Optional<BigDecimal> calcTotalCost (Integer goalYear, Integer goalMonth, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
@@ -29,7 +29,7 @@ public class HistoryQueryRepo {
     public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyCost) {
         return Long.valueOf(queryFactory.select()
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
@@ -38,15 +38,14 @@ public class HistoryQueryRepo {
                 .fetchCount());
     }
 
-    public Long countSpendingDate(Integer goalYear, Integer goalMonth, Long memberId) {
-        return Long.valueOf(queryFactory.select(history.usedAt.date())
+    public long countSpendingDate(Integer goalYear, Integer goalMonth, Long memberId) {
+        return queryFactory.select(history.usedAt.dayOfMonth().count())
                 .from(history)
-                .where(history.memberId.eq(memberId)
+                .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
                         .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
-                .groupBy(history.usedAt.date())
-                .fetchCount());
+                .fetchCount();
     }
 }

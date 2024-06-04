@@ -8,6 +8,9 @@ import io.porko.budget.exception.BudgetErrorCode;
 import io.porko.budget.exception.BudgetException;
 import io.porko.budget.repo.BudgetRepo;
 import io.porko.history.repo.HistoryQueryRepo;
+import io.porko.member.exception.MemberErrorCode;
+import io.porko.member.exception.MemberException;
+import io.porko.member.repo.MemberRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,7 @@ import java.time.YearMonth;
 @RequiredArgsConstructor
 public class BudgetService {
     private final BudgetRepo budgetRepo;
+    private final MemberRepo memberRepo;
     private final HistoryQueryRepo historyQueryRepo;
 
     public BudgetResponse getBudget(Integer goalYear, Integer goalMonth, Long memberId) {
@@ -38,7 +42,7 @@ public class BudgetService {
 
     @Transactional
     public void setBudget (BudgetRequest budgetRequest, Long id) {
-        Budget budget = budgetRequest.toEntity(id);
+        Budget budget = budgetRequest.toEntity(memberRepo.findById(id).orElseThrow(()-> new MemberException(MemberErrorCode.NOT_FOUND)));
 
         budgetRepo.save(budget);
     }
@@ -59,14 +63,13 @@ public class BudgetService {
                 .orElse(BigDecimal.ZERO);
 
         BigDecimal usableCost = budget.getGoalCost()
-                .subtract(totalCost)
+                .add(totalCost)
                 .setScale(1, RoundingMode.DOWN)
                 .stripTrailingZeros();
 
         int lastDayOfMonth = YearMonth.from(today).lengthOfMonth();
 
-        BigDecimal dailyCost = usableCost.divide(BigDecimal.valueOf(lastDayOfMonth - today.getDayOfMonth()))
-                .setScale(1, RoundingMode.DOWN)
+        BigDecimal dailyCost = usableCost.divide(BigDecimal.valueOf(lastDayOfMonth - today.getDayOfMonth() + 1), 0, RoundingMode.DOWN)
                 .stripTrailingZeros();
 
         return ManageBudgetResponse.of(
@@ -77,7 +80,7 @@ public class BudgetService {
                         today.getMonthValue(),
                         memberId,
                         dailyCost),
-                historyQueryRepo.countSpendingDate(
+                today.getDayOfMonth() - historyQueryRepo.countSpendingDate(
                         today.getYear(),
                         today.getMonthValue(),
                         memberId
