@@ -57,7 +57,7 @@ jobs:
           key: ${{ secrets.PORKO_DEV_EC2_PRIVATE_KEY }}
           script: |
             sudo docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-2) ${{ secrets.DEV_ECR_REPO_URL }}
-            aws ecr batch-delete-image --repository-name ${{ secrets.DEV_ECR_REPO_NAME }} --image-ids imageTag=.
+            aws ecr batch-delete-image --repository-name ${{ secrets.DEV_ECR_REPO_NAME }} --image-ids imageTag=-
             sudo docker-compose down
             docker rmi $REGISTRY/$REPOSITORY:$IMAGE_TAG
             sudo docker pull ${{ secrets.DEV_ECR_REPO_URL }}:$IMAGE_TAG
