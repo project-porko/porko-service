@@ -47,6 +47,16 @@ public class BudgetService {
         budgetRepo.save(budget);
     }
 
+    public BudgetResponse getUsedCostInLastMonth(Long memberId) {
+        return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
+                        LocalDate.now().getYear(),
+                        LocalDate.now().getMonthValue(),
+                        memberId)
+                .orElse(BigDecimal.ZERO)
+                .abs()
+                .stripTrailingZeros());
+    }
+
     public ManageBudgetResponse manageBudget (Long memberId) {
         LocalDate today = LocalDate.now();
 
@@ -89,13 +99,5 @@ public class BudgetService {
     }
 
 
-    public BudgetResponse getUsedCostInLastMonth(Long memberId) {
-        return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
-                        LocalDate.now().getYear(),
-                        LocalDate.now().getMonthValue(),
-                        memberId)
-                .orElse(BigDecimal.ZERO)
-                .abs()
-                .stripTrailingZeros());
-    }
+
 }

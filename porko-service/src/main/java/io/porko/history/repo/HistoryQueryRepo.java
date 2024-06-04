@@ -26,6 +26,23 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
+    public Optional<BigDecimal> calcUsedCostInLastMonth (Integer currentYear, Integer currentMonth, Long memberId) {
+        if (currentMonth == 1) {
+            currentYear -= 1;
+            currentMonth = 12;
+        } else {
+            currentMonth -= 1;
+        }
+
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.member.id.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(currentYear))
+                        .and(history.usedAt.month().eq(currentMonth)))
+                .fetchOne());
+    }
+
     public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyCost) {
         return Long.valueOf(queryFactory.select()
                 .from(history)
@@ -47,22 +64,5 @@ public class HistoryQueryRepo {
                         .and(history.usedAt.month().eq(goalMonth))
                         .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
                 .fetchCount();
-    }
-
-    public Optional<BigDecimal> calcUsedCostInLastMonth (Integer currentYear, Integer currentMonth, Long memberId) {
-        if (currentMonth == 1) {
-            currentYear -= 1;
-            currentMonth = 12;
-        } else {
-            currentMonth -= 1;
-        }
-
-        return Optional.ofNullable(queryFactory.select(history.cost.sum())
-                .from(history)
-                .where(history.member.id.eq(memberId)
-                        .and(history.cost.lt(0))
-                        .and(history.usedAt.year().eq(currentYear))
-                        .and(history.usedAt.month().eq(currentMonth)))
-                .fetchOne());
     }
 }

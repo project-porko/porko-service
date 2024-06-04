@@ -37,13 +37,13 @@ public class BudgetController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/management")
-    ResponseEntity<ManageBudgetResponse> manageBudget (@LoginMember Long id) {
-        return ResponseEntity.ok(budgetService.manageBudget(id));
-    }
-
     @GetMapping("/lastused")
     ResponseEntity<BudgetResponse> getUsedCostInLastMonth(@LoginMember Long id) {
         return ResponseEntity.ok(budgetService.getUsedCostInLastMonth(id));
+    }
+
+    @GetMapping("/management")
+    ResponseEntity<ManageBudgetResponse> manageBudget (@LoginMember Long id) {
+        return ResponseEntity.ok(budgetService.manageBudget(id));
     }
 }
