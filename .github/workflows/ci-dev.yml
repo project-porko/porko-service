@@ -5,7 +5,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,7 +47,8 @@ jobs:
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-      - name: Deploy to server
+      # TODO at least EB(docker platform)
+      - name: 🍀 Deploy to server
         uses: appleboy/ssh-action@master
         id: deploy
         with:
