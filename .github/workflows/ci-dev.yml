@@ -56,4 +56,6 @@ jobs:
           key: ${{ secrets.PORKO_DEV_EC2_PRIVATE_KEY }}
           script: |
             sudo docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-2) ${{ secrets.DEV_ECR_REPO_URL }}
+            sudo docker pull ${{ secrets.DEV_ECR_REPO_URL }}:$IMAGE_TAG
             sudo docker-compose up -d
+            docker images prune -f
