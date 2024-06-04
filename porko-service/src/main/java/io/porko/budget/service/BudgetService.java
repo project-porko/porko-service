@@ -87,4 +87,15 @@ public class BudgetService {
                 )
         );
     }
+
+
+    public BudgetResponse getUsedCostInLastMonth(Long memberId) {
+        return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
+                        LocalDate.now().getYear(),
+                        LocalDate.now().getMonthValue(),
+                        memberId)
+                .orElse(BigDecimal.ZERO)
+                .abs()
+                .stripTrailingZeros());
+    }
 }
