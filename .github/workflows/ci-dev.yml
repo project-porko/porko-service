@@ -41,8 +41,19 @@ jobs:
       - name: 🍀 Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: ${{ secrets.DEV_ECR_REPO }}
-          IMAGE_TAG: ${{ github.sha }}
+          REPOSITORY: ${{ secrets.DEV_ECR_REPO_NAME }}
+          IMAGE_TAG: latest
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        id: deploy
+        with:
+          host: ${{ secrets.PORKO_DEV_EC2_HOST }}
+          username: ${{ secrets.PORKO_DEV_EC2_USERNAME }}
+          key: ${{ secrets.PORKO_DEV_EC2_PRIVATE_KEY }}
+          script: |
+            sudo docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-2) ${{ secrets.DEV_ECR_REPO_URL }}
+            sudo docker-compose up -d
