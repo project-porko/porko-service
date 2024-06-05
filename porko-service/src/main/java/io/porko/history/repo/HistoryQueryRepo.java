@@ -17,7 +17,7 @@ import static io.porko.history.domain.QHistory.history;
 public class HistoryQueryRepo {
     private final JPQLQueryFactory queryFactory;
 
-    public Optional<BigDecimal> calcTotalCost (Integer goalYear, Integer goalMonth, Long memberId) {
+    public Optional<BigDecimal> calcTotalCost(Integer goalYear, Integer goalMonth, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
                 .where(history.member.id.eq(memberId)
@@ -28,7 +28,30 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Optional<BigDecimal> calcUsedCostInLastMonth (Integer currentYear, Integer currentMonth, Long memberId) {
+    public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyCost) {
+        return Long.valueOf(queryFactory.select()
+                .from(history)
+                .where(history.member.id.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(goalYear))
+                        .and(history.usedAt.month().eq(goalMonth))
+                        .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth()))
+                        .and(history.cost.gt(dailyCost)))
+                .fetchCount());
+    }
+
+    public long countSpendingDate(Integer goalYear, Integer goalMonth, Long memberId) {
+        return queryFactory.select(history.usedAt.dayOfMonth().count())
+                .from(history)
+                .where(history.member.id.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.year().eq(goalYear))
+                        .and(history.usedAt.month().eq(goalMonth))
+                        .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
+                .fetchCount();
+    }
+
+    public Optional<BigDecimal> calcUsedCostInLastMonth(Integer currentYear, Integer currentMonth, Long memberId) {
         if (currentMonth == 1) {
             currentYear -= 1;
             currentMonth = 12;
@@ -45,7 +68,7 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Optional<BigDecimal> calcDailyUsedCost (LocalDate date, Long memberId) {
+    public Optional<BigDecimal> calcDailyUsedCost(LocalDate date, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
                 .where(history.member.id.eq(memberId)
@@ -56,7 +79,7 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Optional<BigDecimal> calcDailyEarnedCost (LocalDate date, Long memberId) {
+    public Optional<BigDecimal> calcDailyEarnedCost(LocalDate date, Long memberId) {
         return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
                 .where(history.member.id.eq(memberId)
@@ -67,7 +90,7 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Optional<BigDecimal> calcUsedCostForPeriod (LocalDate startDate, LocalDate endDate, Long memberId) {
+    public Optional<BigDecimal> calcUsedCostForPeriod(LocalDate startDate, LocalDate endDate, Long memberId) {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
@@ -79,7 +102,7 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Optional<BigDecimal> calcEarnedCostForPeriod (LocalDate startDate, LocalDate endDate, Long memberId) {
+    public Optional<BigDecimal> calcEarnedCostForPeriod(LocalDate startDate, LocalDate endDate, Long memberId) {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
 
