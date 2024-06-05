@@ -16,9 +16,9 @@ public interface HistoryRepo extends JpaRepository<History, Long> {
             LocalDateTime startDate,
             LocalDateTime endDate);
 
-    @Query("SELECT SUM(h.cost) FROM History h WHERE h.member.id = :memberId AND h.type = 'SPENT' AND h.usedAt BETWEEN :startDateTime AND :endDateTime")
-    Optional<BigDecimal> calcUsedCostForPeriod(@Param("memberId") Long memberId, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
+    @Query("SELECT SUM(h.cost) FROM History h WHERE h.member.id = :memberId AND h.cost < 0 AND h.usedAt BETWEEN :startDateTime AND :endDateTime")
+    Optional<BigDecimal> calcSpentCostForPeriod(@Param("memberId") Long memberId, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 
-    @Query("SELECT SUM(h.cost) FROM History h WHERE h.member.id = :memberId AND h.type = 'EARNED' AND h.usedAt BETWEEN :startDateTime AND :endDateTime")
+    @Query("SELECT SUM(h.cost) FROM History h WHERE h.member.id = :memberId AND h.cost > 0 AND h.usedAt BETWEEN :startDateTime AND :endDateTime")
     Optional<BigDecimal> calcEarnedCostForPeriod(@Param("memberId") Long memberId, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 }
