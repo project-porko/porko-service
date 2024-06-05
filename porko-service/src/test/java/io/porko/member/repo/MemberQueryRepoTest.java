@@ -7,7 +7,6 @@ import io.porko.member.controller.model.MemberResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("Repo:Query:Member")
 class MemberQueryRepoTest extends QueryDslTestBase {
@@ -17,7 +16,6 @@ class MemberQueryRepoTest extends QueryDslTestBase {
         this.memberQueryRepo = memberQueryRepo;
     }
 
-    @Sql("classpath:data.sql")
     @Test
     @DisplayName("회원 조회")
     void findMemberById() {
