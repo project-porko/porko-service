@@ -5,6 +5,7 @@ import io.porko.auth.config.jwt.JwtProperties;
 import io.porko.auth.filter.TokenVerifyFilter;
 import io.porko.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,7 +32,10 @@ public class SecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
             .cors(httpSecurityCorsConfigurer -> corsConfigurationSource())
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers(PathRequest.toH2Console())
+                .disable()
+            )
             .headers(headersConfigurer -> headersConfigurer
                 .frameOptions(FrameOptionsConfig::disable)
             )
@@ -44,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/member/validate", "/member/validate/types").permitAll()
                 .requestMatchers(HttpMethod.GET, "/widget").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated()
             )
             // [TODO:Feature] : 403 권한 없음 예외 처리를 위한 AccessDeniedHandler 구현 및 등록
