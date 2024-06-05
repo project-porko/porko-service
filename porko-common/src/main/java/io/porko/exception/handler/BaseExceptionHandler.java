@@ -69,4 +69,12 @@ public class BaseExceptionHandler {
         log.error(errorResponse.toString());
         return ResponseEntity.status(errorCode.status).body(errorResponse);
     }
+
+    // TODO: 예상하지 못한 예외 발생 시, 알림 발생 이벤트 발행 및 printStackTrace() 제거
+    @ExceptionHandler({Exception.class, RuntimeException.class})
+    public ResponseEntity<?> unexpectedException(Exception exception, HttpServletRequest request) {
+        ErrorResponse errorResponse = ErrorResponse.of(request, ErrorCode.UNEXPECTED_ERROR);
+        exception.printStackTrace();
+        return ResponseEntity.internalServerError().body(errorResponse);
+    }
 }
