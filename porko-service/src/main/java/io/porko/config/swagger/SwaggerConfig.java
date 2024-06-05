@@ -36,6 +36,8 @@ public class SwaggerConfig {
 
     private static Server getUrl() {
         return new Server()
-            .url("https://api-dev.porko.store");
+            .url("http://api-dev.porko.store")
+            .description("api dev server url")
+            ;
     }
 }
