@@ -34,10 +34,6 @@ public class History {
     @Embedded
     private SpendingCategory spendingCategoryId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TransactionType type;
-
     @Column(nullable = false, length = 100)
     private String memo;
 
@@ -46,15 +42,14 @@ public class History {
     private Member member;
 
     public History(
-        BigDecimal cost,
-        Boolean regret,
-        String place,
-        String payType,
-        LocalDateTime usedAt,
-        SpendingCategory spendingCategoryId,
-        TransactionType type,
-        String memo,
-        Member member
+            BigDecimal cost,
+            Boolean regret,
+            String place,
+            String payType,
+            LocalDateTime usedAt,
+            SpendingCategory spendingCategoryId,
+            String memo,
+            Member member
     ) {
         this.cost = cost;
         this.regret = regret;
@@ -62,22 +57,24 @@ public class History {
         this.payType = payType;
         this.usedAt = usedAt;
         this.spendingCategoryId = spendingCategoryId;
-        this.type = type;
         this.memo = memo;
         this.member = member;
     }
 
     public static History of(
-        BigDecimal cost,
-        Boolean regret,
-        String place,
-        String payType,
-        LocalDateTime usedAt,
-        SpendingCategory spendingCategoryId,
-        TransactionType type,
-        String memo,
-        Member member
+            BigDecimal cost,
+            Boolean regret,
+            String place,
+            String payType,
+            LocalDateTime usedAt,
+            SpendingCategory spendingCategoryId,
+            String memo,
+            Member member
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, type, memo, member);
+        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, memo, member);
+    }
+
+    public void updateRegret(Boolean regret) {
+        this.regret = regret;
     }
 }
