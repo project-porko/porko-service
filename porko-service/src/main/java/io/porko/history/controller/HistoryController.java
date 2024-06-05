@@ -24,12 +24,12 @@ public class HistoryController {
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
+        Map<String, Object> response;
         if (startDate == null || endDate == null) {
-            startDate = YearMonth.now().atDay(1);
-            endDate = YearMonth.now().atEndOfMonth();
+            response = historyService.getThisMonthHistoryList(loginMemberId);
+        } else {
+            response = historyService.getHistoryListByDate(loginMemberId, startDate, endDate);
         }
-
-        Map<String, Object> response = historyService.fetchHistoryList(loginMemberId, startDate, endDate);
         return ResponseEntity.ok(response);
     }
 
