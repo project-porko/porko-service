@@ -5,7 +5,7 @@ import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.allWidgets;
 import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 import static io.porko.widget.fixture.MemberWidgetFixture.givenBuilder;
-import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
+import static io.porko.widget.fixture.MemberWidgetFixture.validReorderWidgetRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -76,7 +76,7 @@ class OrderedMemberWidgetsTest extends TestBase {
     @DisplayName("회원의 위젯 순서 변경 요청 시 순서가 지정된 위젯으로 변경")
     void create() {
         // When
-        OrderedMemberWidgets actual = OrderedMemberWidgets.of(testMember, allWidgets, valiedReorderWidgetRequest);
+        OrderedMemberWidgets actual = OrderedMemberWidgets.of(testMember, allWidgets, validReorderWidgetRequest);
 
         // Then
         List<Integer> actualSequence = actual.getSequencedWidgets().stream()

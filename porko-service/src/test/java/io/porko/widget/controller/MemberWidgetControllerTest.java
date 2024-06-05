@@ -3,7 +3,7 @@ package io.porko.widget.controller;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
 import static io.porko.widget.controller.MemberWidgetController.MEMBER_WIDGET_BASE_URI;
-import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
+import static io.porko.widget.fixture.MemberWidgetFixture.validReorderWidgetRequest;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
@@ -24,7 +24,7 @@ class MemberWidgetControllerTest extends WebLayerTestBase {
     @DisplayName("[회원 위젯 순서 변경][PUT:201]")
     void modifyMemberWidgetOrder() throws Exception {
         // Given
-        ReorderWidgetRequest given = valiedReorderWidgetRequest;
+        ReorderWidgetRequest given = validReorderWidgetRequest;
         willDoNothing().given(memberWidgetService).reorderWidget(TEST_PORKO_ID, given);
 
         // When

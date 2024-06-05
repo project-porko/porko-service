@@ -37,7 +37,7 @@ public record OrderedMemberWidgets(
     private static void validateRequest(ReorderWidgetRequest reorderWidgetRequest) {
         List<ModifyMemberWidgetOrderDto> elements = reorderWidgetRequest.elements();
         validateOrderedWidgetCount(elements);
-        validateSequenceRange(elements);
+        validateSequenceDuplicated(elements);
     }
 
     private static void validateOrderedWidgetCount(List<ModifyMemberWidgetOrderDto> elements) {
@@ -46,7 +46,7 @@ public record OrderedMemberWidgets(
         }
     }
 
-    private static void validateSequenceRange(List<ModifyMemberWidgetOrderDto> elements) {
+    private static void validateSequenceDuplicated(List<ModifyMemberWidgetOrderDto> elements) {
         Set<Integer> sequenceSet = elements.stream()
             .map(ModifyMemberWidgetOrderDto::sequence)
             .collect(Collectors.toSet());
@@ -79,7 +79,7 @@ public record OrderedMemberWidgets(
     }
 
     private static MemberWidget processUnsequencedWidget(Member member, Widget unsequencedWidget) {
-        return MemberWidget.optionalOf(member, unsequencedWidget);
+        return MemberWidget.unorderedOf(member, unsequencedWidget);
     }
 
     public int size() {

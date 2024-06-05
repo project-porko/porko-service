@@ -1,4 +1,4 @@
-package io.porko.widget.controller.model;
+package io.porko.widget.domain;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -8,17 +8,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@DisplayName("Model:ModifyMemberWidgetOrderDto")
-class ModifyMemberWidgetOrderDtoTest {
+@DisplayName("Domain:Sequence")
+class SequenceTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 7})
     @DisplayName("순서 범위가 1~6이 아닌 위젯이 포함된 경우")
-    void invalidSequenceRange(final int given) {
+    void outOfSequenceRange(final int given) {
         // When & Then
         assertThatExceptionOfType(WidgetException.class)
-            .isThrownBy(() -> new ModifyMemberWidgetOrderDto(1L, given))
+            .isThrownBy(() -> Sequence.orderedFrom(given))
             .extracting(WidgetException::getErrorCode)
-            .isEqualTo(WidgetErrorCode.INVALID_SEQUENCE_RANGE)
+            .isEqualTo(WidgetErrorCode.OUT_OF_SEQUENCE_RANGE)
         ;
     }
 }

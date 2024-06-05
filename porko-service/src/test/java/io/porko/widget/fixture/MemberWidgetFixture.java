@@ -8,21 +8,18 @@ import io.porko.config.base.TestBase;
 import io.porko.widget.controller.model.ModifyMemberWidgetOrderDto;
 import io.porko.widget.controller.model.ReorderWidgetRequest;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MemberWidgetFixture extends TestBase {
     public static final ArbitraryBuilder<ModifyMemberWidgetOrderDto> givenBuilder = dtoType()
         .giveMeBuilder(ModifyMemberWidgetOrderDto.class);
 
     public static List<ModifyMemberWidgetOrderDto> validReorderWidgets = validReorderTargetWidgets();
-    public static ReorderWidgetRequest valiedReorderWidgetRequest = new ReorderWidgetRequest(validReorderWidgets);
+    public static ReorderWidgetRequest validReorderWidgetRequest = new ReorderWidgetRequest(validReorderWidgets);
 
     private static List<ModifyMemberWidgetOrderDto> validReorderTargetWidgets() {
-        AtomicReference<Long> longAtomicReference = new AtomicReference<>(2L);
-
         return dtoType()
             .giveMeBuilder(ModifyMemberWidgetOrderDto.class)
-            .setLazy("widgetId", () -> nextLong(longAtomicReference))
+            .setLazy("widgetId", TestBase::nextLong)
             .setLazy("sequence", TestBase::nextInt)
             .sampleList(ORDERED_WIDGET_COUNT);
     }

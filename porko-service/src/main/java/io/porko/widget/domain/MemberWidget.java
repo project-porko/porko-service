@@ -1,5 +1,7 @@
 package io.porko.widget.domain;
 
+import static io.porko.widget.domain.Sequence.unorderedSequence;
+
 import io.porko.config.jpa.auditor.MetaFields;
 import io.porko.member.domain.Member;
 import jakarta.persistence.Column;
@@ -27,8 +29,6 @@ import lombok.NoArgsConstructor;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberWidget extends MetaFields {
-    private static final int OPTIONAL_SEQUENCE = -1;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,24 +50,28 @@ public class MemberWidget extends MetaFields {
     private Widget widget;
 
     @Column(nullable = false)
-    private int sequence;
+    private Sequence sequence;
 
-    public MemberWidget(Member member, Widget widget, int sequence) {
+    public MemberWidget(Member member, Widget widget, Sequence sequence) {
         this.member = member;
         this.widget = widget;
         this.sequence = sequence;
     }
 
     public static MemberWidget of(Member member, Widget widget, int sequence) {
-        return new MemberWidget(member, widget, sequence);
+        return new MemberWidget(member, widget, Sequence.orderedFrom(sequence));
     }
 
-    public static MemberWidget optionalOf(Member member, Widget widget) {
-        return new MemberWidget(member, widget, OPTIONAL_SEQUENCE);
+    public static MemberWidget unorderedOf(Member member, Widget widget) {
+        return new MemberWidget(member, widget, unorderedSequence());
     }
 
     public WidgetCode getWidgetCode() {
         return widget.getWidgetCode();
+    }
+
+    public int getSequence() {
+        return sequence.getValue();
     }
 
     public String getWidgetDescription() {
@@ -79,6 +83,6 @@ public class MemberWidget extends MetaFields {
     }
 
     public boolean isUnsequenced() {
-        return sequence == OPTIONAL_SEQUENCE;
+        return sequence.isUnsequenced();
     }
 }

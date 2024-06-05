@@ -3,7 +3,7 @@ package io.porko.widget.service;
 import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_ID;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.allWidgets;
-import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
+import static io.porko.widget.fixture.MemberWidgetFixture.validReorderWidgetRequest;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -47,7 +47,7 @@ class MemberWidgetServiceTest extends ServiceTestBase {
         willDoNothing().given(memberWidgetRepo).deleteByMemberId(memberId);
         given(memberWidgetRepo.saveAll(anyCollection())).willReturn(null);
 
-        ReorderWidgetRequest given = valiedReorderWidgetRequest;
+        ReorderWidgetRequest given = validReorderWidgetRequest;
 
         // When
         memberWidgetService.reorderWidget(memberId, given);
