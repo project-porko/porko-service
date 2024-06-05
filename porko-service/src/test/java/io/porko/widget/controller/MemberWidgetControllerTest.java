@@ -43,7 +43,6 @@ class MemberWidgetControllerTest extends WebLayerTestBase {
      *  - 변경 대상 위젯의 개수가 6개가 아닌 경우
      *  - 변경 대상 위젯에 중복이 포함된 경우
      *  - 변경 대상 위젯의 순서가 중복된 경우
-     *  - 변경 대상 위젯에 고정 타입 위젯이 포함된 경우
      *  - 변경 대상 위젯의 순서가 1~6범위가 아닌 경우
      *  - 변경 대상 위젯에 존재하지 않는 위젯이 포함된 경우
      * */
@@ -56,7 +55,7 @@ class MemberWidgetControllerTest extends WebLayerTestBase {
         OrderedMemberWidgetsResponse given = FixtureCommon.dtoType()
             .giveMeBuilder(OrderedMemberWidgetsResponse.class)
             .sample();
-        
+
         given(memberWidgetService.loadOrderedMemberWidgets(TEST_PORKO_ID)).willReturn(given);
 
         // When & Then

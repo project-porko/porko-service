@@ -30,7 +30,6 @@ public record OrderedMemberWidgets(
     private static MemberWidget processSequencedWidget(Member member, ModifyMemberWidgetOrderDto it, Map<Long, Widget> widgetMap) {
         Widget widget = widgetMap.get(it.widgetId());
         checkIsNotExistWidget(it, widget);
-        checkIncludeFixedWidget(it, widget);
         widgetMap.remove(it.widgetId());
         return MemberWidget.of(member, widget, it.sequence());
     }
@@ -40,12 +39,6 @@ public record OrderedMemberWidgets(
             .collect(Collectors.toMap(Widget::getId, widget -> widget));
     }
 
-    private static void checkIncludeFixedWidget(ModifyMemberWidgetOrderDto it, Widget widget) {
-        if (widget.isFixed()) {
-            throw new WidgetException(WidgetErrorCode.INCLUDE_FIXED_WIDGET, it.widgetId());
-        }
-    }
-
     private static void checkIsNotExistWidget(ModifyMemberWidgetOrderDto it, Widget widget) {
         if (widget == null) {
             throw new WidgetException(WidgetErrorCode.INCLUDE_NOT_EXIST_WIDGET, it.widgetId());
@@ -53,9 +46,6 @@ public record OrderedMemberWidgets(
     }
 
     private static MemberWidget processUnsequencedWidget(Member member, Widget unsequencedWidget) {
-        if (unsequencedWidget.isFixed()) {
-            return MemberWidget.fixedOf(member, unsequencedWidget);
-        }
         return MemberWidget.optionalOf(member, unsequencedWidget);
     }
 

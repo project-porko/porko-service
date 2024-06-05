@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum WidgetErrorCode {
-    INCLUDE_FIXED_WIDGET(HttpStatus.BAD_REQUEST, "고정 위젯은 순서를 변경할 수 없습니다."),
     INVALID_REQUEST_ORDERED_WIDGET_COUNT(HttpStatus.BAD_REQUEST, "순서를 변경할 6개의 위젯을 요청하세요. [request: %s]"),
     INVALID_ORDERED_WIDGET_COUNT(HttpStatus.BAD_REQUEST, "순서 변경 시 6개의 위젯 정보가 필요합니다. 순서를 변경할 6개의 위젯을 선택하세요. [request: %s]"),
     DUPLICATED_WIDGET(HttpStatus.BAD_REQUEST, "중복된 위젯이 포함되었습니다. [request: %s]"),

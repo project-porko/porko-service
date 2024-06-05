@@ -26,25 +26,6 @@ class OrderedMemberWidgetsTest extends TestBase {
     @DisplayName("사용자의 위젯 순서 변경 시 예외 발생")
     class ThrowsWidgetException {
         @Test
-        @DisplayName("순서를 변경할 위젯 목록에 고정 타입의 위젯이 포함된 경우")
-        void includeFixedWidget() {
-            // Given
-            List<ModifyMemberWidgetOrderDto> reorderWidgets = dtoType()
-                .giveMeBuilder(ModifyMemberWidgetOrderDto.class)
-                .setLazy("widgetId", TestBase::nextLong)
-                .setLazy("sequence", TestBase::nextInt)
-                .sampleList(ORDERED_WIDGET_COUNT);
-
-            ReorderWidgetRequest reorderWidgetRequest = new ReorderWidgetRequest(reorderWidgets);
-
-            // When
-            assertThatExceptionOfType(WidgetException.class)
-                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, reorderWidgetRequest))
-                .extracting(WidgetException::getErrorCode)
-                .isEqualTo(WidgetErrorCode.INCLUDE_FIXED_WIDGET);
-        }
-
-        @Test
         @DisplayName("순서를 변경할 위젯 목록에 존재하지 않는 위젯이 포함된 경우")
         void includeNotExistWidget() {
             // Given
@@ -78,7 +59,7 @@ class OrderedMemberWidgetsTest extends TestBase {
 
         assertThat(actual.size()).isEqualTo(allWidgets.elements().size());
         assertThat(actual.getSequencedWidgets().size()).isEqualTo(ORDERED_WIDGET_COUNT);
-        assertThat(actual.getUnSequencedWidgets().size()).isEqualTo(ORDERED_WIDGET_COUNT + 1);
+        assertThat(actual.getUnSequencedWidgets().size()).isEqualTo(allWidgets.elements().size() - ORDERED_WIDGET_COUNT);
         assertThat(actualSequence).isEqualTo(List.of(1, 2, 3, 4, 5, 6));
     }
 }

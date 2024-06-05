@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberWidget extends MetaFields {
-    private static final int FIXED_SEQUENCE = 0;
     private static final int OPTIONAL_SEQUENCE = -1;
 
     @Id
@@ -67,10 +66,6 @@ public class MemberWidget extends MetaFields {
         return new MemberWidget(member, widget, OPTIONAL_SEQUENCE);
     }
 
-    public static MemberWidget fixedOf(Member member, Widget widget) {
-        return new MemberWidget(member, widget, FIXED_SEQUENCE);
-    }
-
     public WidgetCode getWidgetCode() {
         return widget.getWidgetCode();
     }
@@ -80,10 +75,10 @@ public class MemberWidget extends MetaFields {
     }
 
     public boolean isSequenced() {
-        return sequence > FIXED_SEQUENCE;
+        return !isUnsequenced();
     }
 
     public boolean isUnsequenced() {
-        return sequence != OPTIONAL_SEQUENCE;
+        return sequence == OPTIONAL_SEQUENCE;
     }
 }
