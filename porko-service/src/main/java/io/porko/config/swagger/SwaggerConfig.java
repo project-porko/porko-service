@@ -14,19 +14,25 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
-        String tokenType = JWT_TYPE;
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(tokenType);
-        Components components = new Components().addSecuritySchemes(tokenType, new SecurityScheme()
-            .name(tokenType)
+        return new OpenAPI()
+            .addSecurityItem(securityRequirement())
+            .addServersItem(getUrl())
+            .components(components());
+    }
+
+    private Components components() {
+        return new Components().addSecuritySchemes(JWT_TYPE, new SecurityScheme()
+            .name(JWT_TYPE)
             .type(SecurityScheme.Type.HTTP)
             .scheme("bearer")
-            .bearerFormat(tokenType)
-        );
+            .bearerFormat(JWT_TYPE));
+    }
 
-        return new OpenAPI()
-            .components(new Components())
-            .addSecurityItem(securityRequirement)
-            .addServersItem(new Server().url("/"))
-            .components(components);
+    private SecurityRequirement securityRequirement() {
+        return new SecurityRequirement().addList(JWT_TYPE);
+    }
+
+    private static Server getUrl() {
+        return new Server().url("/");
     }
 }
