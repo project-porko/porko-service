@@ -3,6 +3,8 @@ package io.porko.config.swagger;
 import static io.jsonwebtoken.Header.JWT_TYPE;
 import static io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -11,6 +13,13 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Porko dev API Docs",
+        description = "with url api-dev.porko.store",
+        version = "cors test-v1"
+    )
+)
 @Configuration
 public class SwaggerConfig {
     @Bean
