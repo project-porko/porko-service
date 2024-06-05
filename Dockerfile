@@ -28,7 +28,9 @@ RUN adduser --no-create-home -u 1000 -D $APPLICATION_USER
 RUN mkdir /app && chown -R $APPLICATION_USER /app
 USER 1000
 
+ENV PROFILE=${ACTIVE}
+
 ARG JAR_FILE=/app/porko-service/build/libs/*jar
 COPY --chown=1000:1000 --from=JAR_BUILDER ${JAR_FILE} app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "app.jar"]
