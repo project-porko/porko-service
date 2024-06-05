@@ -4,10 +4,12 @@ import io.porko.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter
+@ToString
 public class ErrorResponse {
     private final String method;
     private final String path;
