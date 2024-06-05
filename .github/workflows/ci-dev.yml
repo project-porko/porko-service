@@ -69,6 +69,7 @@ jobs:
             sudo docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-2) ${{ secrets.DEV_ECR_REPO_URL }}
             aws ecr batch-delete-image --repository-name ${{ secrets.DEV_ECR_REPO_NAME }} --image-ids "$(aws ecr list-images --query 'imageIds[*]' --repository-name ${{ secrets.DEV_ECR_REPO_NAME }} --filter "tagStatus=UNTAGGED")"
             sudo docker-compose down
+            sudo docker rm porko-app-local
             sudo docker rmi ${{ secrets.DEV_ECR_REPO_URL }}:$IMAGE_TAG
             sudo docker pull ${{ secrets.DEV_ECR_REPO_URL }}:$IMAGE_TAG
             sudo docker-compose up -d
