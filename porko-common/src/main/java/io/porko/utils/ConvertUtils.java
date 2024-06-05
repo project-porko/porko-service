@@ -1,6 +1,7 @@
 package io.porko.utils;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public class ConvertUtils {
@@ -16,5 +17,9 @@ public class ConvertUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         return LocalDate.parse(date, formatter);
+    }
+
+    public static YearMonth convertLocalDateToYearMonth(LocalDate date) {
+        return YearMonth.of(date.getYear(), date.getMonthValue());
     }
 }
