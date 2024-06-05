@@ -3,7 +3,8 @@ package io.porko.widget.domain;
 import static io.porko.config.fixture.FixtureCommon.dtoType;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.allWidgets;
-import static io.porko.widget.controller.model.ReorderWidgetRequest.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.fixture.MemberWidgetFixture.givenBuilder;
 import static io.porko.widget.fixture.MemberWidgetFixture.valiedReorderWidgetRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -25,6 +26,31 @@ class OrderedMemberWidgetsTest extends TestBase {
     @Nested
     @DisplayName("사용자의 위젯 순서 변경 시 예외 발생")
     class ThrowsWidgetException {
+        @Test
+        @DisplayName("순서를 변경할 위젯의 개수가 6개가 아닌 경우")
+        void invalidCount() {
+            // When & Then
+            assertThatExceptionOfType(WidgetException.class)
+                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(givenBuilder.sampleList(1))))
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.INVALID_REQUEST_ORDERED_WIDGET_COUNT);
+        }
+
+        @Test
+        @DisplayName("중복된 순서를 가진 위젯이 포함된 경우")
+        void duplicatedSequence() {
+            // Given
+            List<ModifyMemberWidgetOrderDto> given = givenBuilder
+                .set("sequence", 1, 2)
+                .sampleList(ORDERED_WIDGET_COUNT);
+
+            // When & Then
+            assertThatExceptionOfType(WidgetException.class)
+                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(given)))
+                .extracting(WidgetException::getErrorCode)
+                .isEqualTo(WidgetErrorCode.DUPLICATED_SEQUENCE);
+        }
+
         @Test
         @DisplayName("순서를 변경할 위젯 목록에 존재하지 않는 위젯이 포함된 경우")
         void includeNotExistWidget() {

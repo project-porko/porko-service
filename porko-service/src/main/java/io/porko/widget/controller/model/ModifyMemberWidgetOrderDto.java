@@ -1,6 +1,6 @@
 package io.porko.widget.controller.model;
 
-import static io.porko.widget.controller.model.ReorderWidgetRequest.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 import static io.porko.widget.exception.WidgetErrorCode.INVALID_SEQUENCE_RANGE;
 
 import io.porko.widget.exception.WidgetException;
