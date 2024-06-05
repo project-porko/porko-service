@@ -28,7 +28,7 @@ public class SwaggerConfig {
         return new Info()
             .title("Porko dev API Docs")
             .description("with url api-dev.porko.store")
-            .version("cors test-v2");
+            .version("cors test-v3");
     }
 
     private Components components() {
@@ -46,8 +46,8 @@ public class SwaggerConfig {
 
     private static Server getUrl() {
         return new Server()
-            .url("http://api-dev.porko.store")
-            .description("api dev server url")
+            .url("/")
+            .description("for https")
             ;
     }
 }
