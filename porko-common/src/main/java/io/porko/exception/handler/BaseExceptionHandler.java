@@ -5,6 +5,7 @@ import io.porko.exception.response.ErrorCode;
 import io.porko.exception.response.ErrorResponse;
 import io.porko.exception.response.invalid.MethodArgumentNotValidErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+@Slf4j
 @RestControllerAdvice
 public class BaseExceptionHandler {
     @ExceptionHandler(BusinessException.class)
@@ -24,11 +26,13 @@ public class BaseExceptionHandler {
         BusinessException exception,
         HttpServletRequest request
     ) {
-        return ResponseEntity.status(exception.getStatus())
-            .body(ErrorResponse.businessErrorOf(
-                request,
-                exception
-            ));
+        ErrorResponse errorResponse = ErrorResponse.businessErrorOf(
+            request,
+            exception
+        );
+
+        log.error(errorResponse.toString());
+        return ResponseEntity.status(exception.getStatus()).body(errorResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -36,12 +40,15 @@ public class BaseExceptionHandler {
         MethodArgumentNotValidException exception,
         HttpServletRequest request
     ) {
-        return ResponseEntity.badRequest()
-            .body(MethodArgumentNotValidErrorResponse.of(
-                request,
-                ErrorCode.METHOD_ARGUMENT_NOT_VALID,
-                exception.getFieldErrors()
-            ));
+        MethodArgumentNotValidErrorResponse methodArgumentNotValidErrorResponse = MethodArgumentNotValidErrorResponse.of(
+            request,
+            ErrorCode.METHOD_ARGUMENT_NOT_VALID,
+            exception.getFieldErrors()
+        );
+
+        log.error(methodArgumentNotValidErrorResponse.toString());
+
+        return ResponseEntity.badRequest().body(methodArgumentNotValidErrorResponse);
     }
 
     @ExceptionHandler({
@@ -55,11 +62,11 @@ public class BaseExceptionHandler {
     })
     public ResponseEntity<ErrorResponse> invalidRequestException(Exception exception, HttpServletRequest request) {
         ErrorCode errorCode = ErrorCode.valueOf(exception);
-        return ResponseEntity
-            .status(errorCode.status)
-            .body(ErrorResponse.of(
-                request,
-                errorCode)
-            );
+        ErrorResponse errorResponse = ErrorResponse.of(
+            request,
+            errorCode);
+
+        log.error(errorResponse.toString());
+        return ResponseEntity.status(errorCode.status).body(errorResponse);
     }
 }
