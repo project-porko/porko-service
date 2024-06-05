@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record LoginResponse(
     Long id,
-    String memberId,
+    String email,
     String accessToken,
     LocalDateTime loggedInAt
 ) {
