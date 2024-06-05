@@ -1,6 +1,7 @@
 package io.porko.config.swagger;
 
 import static io.jsonwebtoken.Header.JWT_TYPE;
+import static io.swagger.v3.oas.models.security.SecurityScheme.Type.MUTUALTLS;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -21,11 +22,12 @@ public class SwaggerConfig {
     }
 
     private Components components() {
-        return new Components().addSecuritySchemes(JWT_TYPE, new SecurityScheme()
-            .name(JWT_TYPE)
-            .type(SecurityScheme.Type.HTTP)
-            .scheme("bearer")
-            .bearerFormat(JWT_TYPE));
+        return new Components().addSecuritySchemes(JWT_TYPE,
+            new SecurityScheme()
+                .name(JWT_TYPE)
+                .type(MUTUALTLS)
+                .scheme("bearer")
+                .bearerFormat(JWT_TYPE));
     }
 
     private SecurityRequirement securityRequirement() {
