@@ -4,19 +4,15 @@ values ('반포동', '서울시 서초구', '2024-05-21T03:29:30.044', 'project.
 
 ---
 -- widget
-insert into widget (widget_code)
-values ('TODAY_CONSUMPTION_WEATHER'),
+insert into widget (widget_code) values
        ('REMAINING_BUDGET'),
        ('UPCOMING_EXPENSES'),
        ('LAST_MONTH_EXPENSES'),
        ('CURRENT_MONTH_EXPENSES'),
        ('CURRENT_MONTH_CARD_USAGE'),
        ('MY_CHALLENGE'),
-       ('DAILY_EXPENSES'),
        ('CREDIT_SCORE'),
-       ('INVESTMENT_RANKING'),
-       ('STEP_COUNT'),
-       ('DAILY_HOROSCOPE');
+       ('DAILY_EXPENSES');
 
 ---
 -- history

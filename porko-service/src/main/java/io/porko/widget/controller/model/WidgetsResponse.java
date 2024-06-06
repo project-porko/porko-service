@@ -4,6 +4,7 @@ import io.porko.widget.domain.Widget;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// rename to widgetsDto
 public record WidgetsResponse(
     List<WidgetDto> elements
 ) {
@@ -21,10 +22,7 @@ public record WidgetsResponse(
             .collect(Collectors.toList());
     }
 
-    public List<Widget> extractByIds(List<Long> targetIds) {
-        return elements().stream()
-            .filter(widgetDto -> targetIds.contains(widgetDto.id()))
-            .map(it -> Widget.of(it.id(), it.code()))
-            .collect(Collectors.toList());
+    public int size(){
+        return elements.size();
     }
 }

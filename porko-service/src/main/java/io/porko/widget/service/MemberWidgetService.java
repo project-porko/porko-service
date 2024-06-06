@@ -2,10 +2,11 @@ package io.porko.widget.service;
 
 import io.porko.member.domain.Member;
 import io.porko.member.service.MemberService;
-import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
+import io.porko.widget.controller.model.MemberWidgetsResponse;
 import io.porko.widget.controller.model.ReorderWidgetRequest;
 import io.porko.widget.controller.model.WidgetsResponse;
-import io.porko.widget.domain.OrderedMemberWidgets;
+import io.porko.widget.domain.MemberWidgets;
+import io.porko.widget.domain.ReOrderedMemberWidgets;
 import io.porko.widget.repo.MemberWidgetRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,14 @@ public class MemberWidgetService {
         Member member = memberService.findMemberById(memberId);
         WidgetsResponse widgetsResponse = widgetService.loadAllWidgets();
 
-        OrderedMemberWidgets orderedMemberWidgets = OrderedMemberWidgets.of(member, widgetsResponse, request);
+        ReOrderedMemberWidgets reOrderedMemberWidgets = ReOrderedMemberWidgets.of(member, widgetsResponse, request);
 
         memberWidgetRepo.deleteByMemberId(memberId);
-        memberWidgetRepo.saveAll(orderedMemberWidgets.elements());
+        memberWidgetRepo.saveAll(reOrderedMemberWidgets.elements());
     }
 
-    public OrderedMemberWidgetsResponse loadOrderedMemberWidgets(Long memberId) {
-        return OrderedMemberWidgetsResponse.from(memberWidgetRepo.findByMemberIdOrderBySequenceAsc(memberId));
+    public MemberWidgetsResponse loadOrderedMemberWidgets(Long memberId) {
+        MemberWidgets memberWidgets = MemberWidgets.from(memberWidgetRepo.findByMemberIdOrderBySequenceAsc(memberId));
+        return MemberWidgetsResponse.from(memberWidgets);
     }
 }

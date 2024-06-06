@@ -1,6 +1,6 @@
 package io.porko.auth.domain;
 
-import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
+import static io.porko.config.security.TestSecurityConfig.testPrincipal;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("Domain:TokenResolver")
 class TokenResolverTest extends TokenTestHelper {
-    private final String token = TokenProvider.generate(testPorkoPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
+    private final String token = TokenProvider.generate(testPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
 
     @Test
     @DisplayName("토큰 검증")
@@ -24,8 +24,8 @@ class TokenResolverTest extends TokenTestHelper {
         PorkoPrincipal actual = TokenResolver.resolve(token, testJwtProperties);
 
         // Then
-        assertThat(actual.getId()).isEqualTo(testPorkoPrincipal.getId());
-        assertThat(actual.getUsername()).isEqualTo(testPorkoPrincipal.getUsername());
+        assertThat(actual.getId()).isEqualTo(testPrincipal.getId());
+        assertThat(actual.getUsername()).isEqualTo(testPrincipal.getUsername());
     }
 
     @Test
@@ -34,7 +34,7 @@ class TokenResolverTest extends TokenTestHelper {
         // given
         final String notMatchedSecretKey = "not-matched-generated-token-secret-key";
         JwtProperties jwtProperties = generateTestJwtProperties(notMatchedSecretKey);
-        String generate = TokenProvider.generate(testPorkoPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
+        String generate = TokenProvider.generate(testPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
 
         // When & Then
         assertThatExceptionOfType(AuthException.class)
@@ -48,7 +48,7 @@ class TokenResolverTest extends TokenTestHelper {
     void throwAuthException_WhenTokenExpired() {
         // Given
         JwtProperties jwtProperties = new JwtProperties(ISSUER, BASE_64_ENCODED_TEST_SECRET_KEY, AUDIENCE, 0);
-        String token = TokenProvider.generate(testPorkoPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
+        String token = TokenProvider.generate(testPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
 
         // When & Then
         assertThatExceptionOfType(AuthException.class)
@@ -63,7 +63,7 @@ class TokenResolverTest extends TokenTestHelper {
         // Given
         JwtProperties jwtProperties = new JwtProperties(ISSUER, BASE_64_ENCODED_TEST_SECRET_KEY, "invalid audience",
             EXPIRE_PERIOD_MINUTES.intValue());
-        String token = TokenProvider.generate(testPorkoPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
+        String token = TokenProvider.generate(testPrincipal, jwtProperties, TokenType.ACCESS_TOKEN);
 
         // When & Then
         assertThatExceptionOfType(AuthException.class)

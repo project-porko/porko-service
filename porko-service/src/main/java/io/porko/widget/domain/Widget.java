@@ -45,15 +45,7 @@ public class Widget {
         return new Widget(id, widgetCode);
     }
 
-    public WidgetType getWidgetType() {
-        return widgetCode.getType();
-    }
-
     public String getDescription() {
         return widgetCode.getDescription();
-    }
-
-    public boolean isFixed() {
-        return widgetCode.isFixed();
     }
 }
