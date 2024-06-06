@@ -22,16 +22,15 @@ public class AuthService {
     private final TokenService tokenService;
 
     public LoginResponse authenticate(LoginRequest loginRequest) {
-        PorkoPrincipal porkoPrincipal = verifyMember(loginRequest);
+        Member member = loadUserByUsername(loginRequest.email());
+        PorkoPrincipal porkoPrincipal = verifyMember(loginRequest, member);
         String accessToken = tokenService.issueAccessToken(porkoPrincipal);
 
-        return LoginResponse.of(porkoPrincipal, accessToken);
+        return LoginResponse.of(member, accessToken);
     }
 
-    private PorkoPrincipal verifyMember(LoginRequest loginRequest) {
-        Member member = loadUserByUsername(loginRequest.email());
+    private PorkoPrincipal verifyMember(LoginRequest loginRequest, Member member) {
         checkPasswordIsMatched(loginRequest.password(), member.getPassword());
-
         return PorkoPrincipal.of(member.getId(), member.getEmail());
     }
 
