@@ -18,7 +18,8 @@ class MemberControllerTestHelper extends WebLayerTestBase {
         "",
         "",
         new AddressDto("", ""),
-        null
+        null,
+        "https://avatars.githubusercontent.com/u/169456863?s=200&v=4"
     );
 
     protected Expect 회원_가입_요청(SignUpRequest 회원_가입_요청_정보) {

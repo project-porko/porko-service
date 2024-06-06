@@ -45,13 +45,17 @@ public class Member extends TimeMetaFields {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(nullable = false)
+    private String profileImageUrl;
+
     private Member(
         String email,
         String password,
         String name,
         String phoneNumber,
         Address address,
-        Gender gender
+        Gender gender,
+        String profileImageUrl
     ) {
         this.email = email;
         this.password = password;
@@ -59,6 +63,7 @@ public class Member extends TimeMetaFields {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.gender = gender;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public static Member of(
@@ -67,8 +72,9 @@ public class Member extends TimeMetaFields {
         String name,
         String phoneNumber,
         Address address,
-        Gender gender
+        Gender gender,
+        String profileImageUrl
     ) {
-        return new Member(email, password, name, phoneNumber, address, gender);
+        return new Member(email, password, name, phoneNumber, address, gender, profileImageUrl);
     }
 }

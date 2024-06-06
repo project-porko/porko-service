@@ -62,7 +62,6 @@ public class MemberController {
 
     @GetMapping("me")
     ResponseEntity<MemberResponse> me(@LoginMember Long loginMemberId) {
-        MemberResponse memberResponse = memberService.loadMemberById(loginMemberId);
-        return ResponseEntity.ok(memberResponse);
+        return ResponseEntity.ok(memberService.loadMemberById(loginMemberId));
     }
 }

@@ -8,6 +8,7 @@ public record MemberResponse(
     Long id,
     String name,
     String email,
+    String profileImageUrl,
     LocalDateTime registeredAt
 ) {
     @QueryProjection
@@ -19,6 +20,7 @@ public record MemberResponse(
             member.getId(),
             member.getName(),
             member.getEmail(),
+            member.getProfileImageUrl(),
             member.getCreatedAt()
         );
     }

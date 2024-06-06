@@ -20,6 +20,7 @@ public class MemberQueryRepo {
                     member.id,
                     member.name,
                     member.email,
+                    member.profileImageUrl,
                     member.createdAt
                 ))
             .from(member)

@@ -28,7 +28,8 @@ class MemberRepoTest extends JpaTestBase {
             "name",
             "01012345678",
             Address.of("roadName", "detail"),
-            Gender.MALE
+            Gender.MALE,
+            "https://avatars.githubusercontent.com/u/169456863?s=200&v=4"
         );
 
         // When
