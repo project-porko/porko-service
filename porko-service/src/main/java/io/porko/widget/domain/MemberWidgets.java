@@ -1,7 +1,6 @@
 package io.porko.widget.domain;
 
 import io.porko.widget.controller.model.OrderedMemberWidgetsDto;
-import io.porko.widget.controller.model.UnorderedMemberWidgetsDto;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +16,10 @@ public record MemberWidgets(List<MemberWidget> elements) {
             .collect(Collectors.toList());
     }
 
-    public List<UnorderedMemberWidgetsDto> unordered() {
+    public List<OrderedMemberWidgetsDto> unordered() {
         return elements.stream()
             .filter(MemberWidget::isUnsequenced)
-            .map(UnorderedMemberWidgetsDto::from)
+            .map(OrderedMemberWidgetsDto::from)
             .collect(Collectors.toList());
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public record MemberWidgetsResponse(
     List<OrderedMemberWidgetsDto> orderedMemberWidgets,
-    List<UnorderedMemberWidgetsDto> unorderedMemberWidgets
+    List<OrderedMemberWidgetsDto> unorderedMemberWidgets
 ) {
     public static MemberWidgetsResponse from(MemberWidgets memberWidgets) {
         return new MemberWidgetsResponse(
