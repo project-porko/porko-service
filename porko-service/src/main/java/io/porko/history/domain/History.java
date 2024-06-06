@@ -2,6 +2,7 @@ package io.porko.history.domain;
 
 import io.porko.member.domain.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class History {
     @Column(nullable = false, length = 100)
     private String memo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
@@ -61,6 +62,22 @@ public class History {
         this.member = member;
     }
 
+    public History(
+            BigDecimal cost,
+            Boolean regret,
+            String place,
+            String payType,
+            LocalDateTime usedAt,
+            SpendingCategory spendingCategoryId
+    ) {
+        this.cost = cost;
+        this.regret = regret;
+        this.place = place;
+        this.payType = payType;
+        this.usedAt = usedAt;
+        this.spendingCategoryId = spendingCategoryId;
+    }
+
     public static History of(
             BigDecimal cost,
             Boolean regret,
@@ -72,6 +89,17 @@ public class History {
             Member member
     ) {
         return new History(cost, regret, place, payType, usedAt, spendingCategoryId, memo, member);
+    }
+
+    public static History of(
+            BigDecimal cost,
+            Boolean regret,
+            String place,
+            String payType,
+            LocalDateTime usedAt,
+            SpendingCategory spendingCategoryId
+    ) {
+        return new History(cost, regret, place, payType, usedAt, spendingCategoryId);
     }
 
     public void updateRegret(Boolean regret) {
