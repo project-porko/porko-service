@@ -1,14 +1,15 @@
 package io.porko.history.controller;
 
 import io.porko.auth.controller.model.LoginMember;
+import io.porko.history.controller.model.CalendarResponse;
 import io.porko.history.controller.model.HistoryResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.porko.history.service.HistoryService;
 
 import java.time.LocalDate;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/history")
 public class HistoryController {
     private final HistoryService historyService;
 
-    @GetMapping("history")
+    @GetMapping
     ResponseEntity<List<HistoryResponse>> getHistoryList(
             @LoginMember Long loginMemberId,
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -30,9 +32,22 @@ public class HistoryController {
         } else return ResponseEntity.ok(historyService.getHistoryListByDate(loginMemberId, startDate, endDate));
     }
 
-    @GetMapping("history/{historyId}")
+    @GetMapping("/{historyId}")
     ResponseEntity<HistoryResponse> getHistoryDetail(
             @PathVariable("historyId") Long historyId) {
         return ResponseEntity.ok(historyService.getHistoryDetail(historyId));
+    }
+
+    @GetMapping("/calendar")
+    ResponseEntity<CalendarResponse> getCalendar(
+            @Valid @RequestParam Integer year,
+            @Valid @RequestParam @Min(1) @Max(12) Integer month,
+            @RequestParam(required = false) Long memberId,
+            @LoginMember Long id) {
+        if (memberId == null) {
+            memberId = id;
+        }
+
+        return ResponseEntity.ok(historyService.getCalendar(year, month, memberId));
     }
 }
