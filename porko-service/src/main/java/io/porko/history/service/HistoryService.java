@@ -1,7 +1,11 @@
 package io.porko.history.service;
 
+import io.porko.history.controller.model.HistoryDetailResponse;
+import io.porko.history.controller.model.HistoryListResponse;
 import io.porko.history.controller.model.HistoryResponse;
 import io.porko.history.domain.History;
+import io.porko.history.exception.HistoryErrorCode;
+import io.porko.history.exception.HistoryException;
 import io.porko.history.repo.HistoryRepo;
 import io.porko.member.repo.MemberQueryRepo;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +26,7 @@ public class HistoryService {
     private final HistoryRepo historyRepo;
     private final MemberQueryRepo memberQueryRepo;
 
-    public List<HistoryResponse> getThisMonthHistoryList(Long loginMemberId) {
+    public HistoryListResponse getThisMonthHistoryList(Long loginMemberId) {
         YearMonth thisMonth = YearMonth.now();
         LocalDate startDate = thisMonth.atDay(1);
         LocalDate endDate = thisMonth.atEndOfMonth();
@@ -30,30 +34,41 @@ public class HistoryService {
         return fetchHistoryList(loginMemberId, startDate, endDate);
     }
 
-    public List<HistoryResponse> getHistoryListByDate(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
+    public HistoryListResponse getHistoryListByDate(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
         return fetchHistoryList(loginMemberId, startDate, endDate);
     }
 
-    public HistoryResponse getHistoryDetail( Long historyId) {
+    public HistoryDetailResponse getHistoryDetail(Long historyId) {
         History history = historyRepo.findById(historyId)
-                .orElseThrow(() -> new RuntimeException("상세조회를 찾을수 없습니다." + historyId));
-        return HistoryResponse.ofDetail(history);
+                .orElseThrow(() -> new HistoryException(HistoryErrorCode.HISTORY_INVALID_DATE_RANGE, historyId));
+        return HistoryDetailResponse.ofDetail(history);
     }
 
-    private List<HistoryResponse> fetchHistoryList(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
+    @Transactional
+    public HistoryResponse updateRegretStatus(Long historyId, Boolean regret) {
+        History history = historyRepo.findById(historyId)
+                .orElseThrow(() -> new HistoryException(HistoryErrorCode.HISTORY_NOT_FOUND ,historyId));
+        history.updateRegret(regret);
+        historyRepo.save(history);
+        return HistoryResponse.of(history);
+    }
+
+    public HistoryListResponse fetchHistoryList(Long loginMemberId, LocalDate startDate, LocalDate endDate) {
         loadMemberById(loginMemberId);
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
-        BigDecimal totalSpent = historyRepo.calcUsedCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
+        BigDecimal totalSpent = historyRepo.calcSpentCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
         BigDecimal totalEarned = historyRepo.calcEarnedCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
 
         List<History> histories = historyRepo.findByMemberIdAndUsedAtBetween(loginMemberId, startDateTime, endDateTime);
 
-        return histories.stream()
-                .map(history -> HistoryResponse.of(history, totalSpent, totalEarned))
+        List<HistoryResponse> historyResponses = histories.stream()
+                .map(HistoryResponse::of)
                 .collect(Collectors.toList());
+
+        return HistoryListResponse.of(historyResponses, totalSpent, totalEarned);
     }
 
     private void loadMemberById(Long id) {
