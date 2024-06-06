@@ -4,6 +4,7 @@ import static io.porko.widget.domain.Sequence.unorderedSequence;
 
 import io.porko.config.jpa.auditor.MetaFields;
 import io.porko.member.domain.Member;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,6 +51,7 @@ public class MemberWidget extends MetaFields {
     private Widget widget;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "sequence"))
     private Sequence sequence;
 
     public MemberWidget(Member member, Widget widget, Sequence sequence) {
