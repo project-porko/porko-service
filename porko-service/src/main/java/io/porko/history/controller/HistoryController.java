@@ -1,6 +1,8 @@
 package io.porko.history.controller;
 
 import io.porko.auth.controller.model.LoginMember;
+import io.porko.history.controller.model.HistoryDetailResponse;
+import io.porko.history.controller.model.HistoryListResponse;
 import io.porko.history.controller.model.HistoryResponse;
 import io.porko.history.service.HistoryService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,22 +19,18 @@ public class HistoryController {
     private final HistoryService historyService;
 
     @GetMapping
-    ResponseEntity<Map<String, Object>> getHistoryList(
+    ResponseEntity <HistoryListResponse> getHistoryList(
             @LoginMember Long loginMemberId,
             @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-        Map<String, Object> response;
         if (startDate == null || endDate == null) {
-            response = historyService.getThisMonthHistoryList(loginMemberId);
-        } else {
-            response = historyService.getHistoryListByDate(loginMemberId, startDate, endDate);
-        }
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(historyService.getThisMonthHistoryList(loginMemberId));
+        } else return ResponseEntity.ok(historyService.getHistoryListByDate(loginMemberId, startDate, endDate));
     }
 
     @GetMapping("/{historyId}")
-    ResponseEntity<HistoryResponse> getHistoryDetail(
+    ResponseEntity<HistoryDetailResponse> getHistoryDetail(
             @PathVariable("historyId") Long historyId) {
         return ResponseEntity.ok(historyService.getHistoryDetail(historyId));
     }
