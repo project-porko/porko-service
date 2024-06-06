@@ -37,6 +37,7 @@ public class TestSecurityConfig {
         "tester",
         "01011112222",
         Address.of("서울시 서초구", "반포"),
-        Gender.MALE
+        Gender.MALE,
+        "https://avatars.githubusercontent.com/u/169456863?s=200&v=4"
     );
 }

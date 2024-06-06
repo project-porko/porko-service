@@ -28,7 +28,10 @@ public record SignUpRequest(
     AddressDto address,
 
     @NotNull
-    Gender gender
+    Gender gender,
+
+    @NotBlank
+    String profileImageUrl
 ) {
     public Member toEntity(String encodedPassword) {
         return Member.of(
@@ -37,7 +40,8 @@ public record SignUpRequest(
             name,
             phoneNumber,
             address.toEntity(),
-            gender
+            gender,
+            profileImageUrl
         );
     }
 }
