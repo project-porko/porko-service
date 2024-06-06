@@ -2,6 +2,7 @@ package io.porko.auth.controller;
 
 import static io.porko.auth.exception.AuthErrorCode.BAD_CREDENTIALS;
 import static io.porko.config.security.TestSecurityConfig.TEST_MEMBER_EMAIL;
+import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.config.security.TestSecurityConfig.testPrincipal;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -25,7 +26,7 @@ class AuthControllerTest extends WebLayerTestBase {
     void login() throws Exception {
         // Given
         given(authService.authenticate(loginRequest))
-            .willReturn(LoginResponse.of(testPrincipal, "access token"));
+            .willReturn(LoginResponse.of(testMember, "access token"));
 
         // When & Then
         로그인_요청().ok();
