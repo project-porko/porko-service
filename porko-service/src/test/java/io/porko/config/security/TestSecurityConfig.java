@@ -22,23 +22,21 @@ public class TestSecurityConfig {
 
     @BeforeTestMethod
     public void setUp() {
-        ReflectionTestUtils.setField(testMember, ID, TEST_PORKO_ID);
+        ReflectionTestUtils.setField(testMember, ID, TEST_MEMBER_ID);
 
         given(inMemoryUserDetailsManager.loadUserByUsername(anyString()))
-            .willReturn(testPorkoPrincipal);
+            .willReturn(testPrincipal);
     }
 
-    public static final Long TEST_PORKO_ID = 1L;
-    public static final String TEST_PORKO_MEMBER_EMAIL = "testPorkorer@porko.info";
-
-    public static final PorkoPrincipal testPorkoPrincipal = PorkoPrincipal.of(TEST_PORKO_ID, TEST_PORKO_MEMBER_EMAIL);
-
+    public static final Long TEST_MEMBER_ID = 1L;
+    public static final String TEST_MEMBER_EMAIL = "testPorkorer@porko.info";
+    public static final PorkoPrincipal testPrincipal = PorkoPrincipal.of(TEST_MEMBER_ID, TEST_MEMBER_EMAIL);
     public static final Member testMember = Member.of(
-        TEST_PORKO_MEMBER_EMAIL,
-        "testPorkoMemberPassword",
-        "testPorkorer",
+        TEST_MEMBER_EMAIL,
+        "testPassword",
+        "tester",
         "01011112222",
-        Address.of("서울시 서초구", "강남"),
+        Address.of("서울시 서초구", "반포"),
         Gender.MALE
     );
 }

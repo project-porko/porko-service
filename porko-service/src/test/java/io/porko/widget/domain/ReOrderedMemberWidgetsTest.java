@@ -3,7 +3,7 @@ package io.porko.widget.domain;
 import static io.porko.config.fixture.FixtureCommon.dtoType;
 import static io.porko.config.security.TestSecurityConfig.testMember;
 import static io.porko.widget.controller.WidgetControllerTestHelper.allWidgets;
-import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.domain.ReOrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 import static io.porko.widget.fixture.MemberWidgetFixture.givenBuilder;
 import static io.porko.widget.fixture.MemberWidgetFixture.validReorderWidgetRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Domain:OrderedMemberWidgets")
-class OrderedMemberWidgetsTest extends TestBase {
+class ReOrderedMemberWidgetsTest extends TestBase {
     @Nested
     @DisplayName("사용자의 위젯 순서 변경 시 예외 발생")
     class ThrowsWidgetException {
@@ -31,7 +31,7 @@ class OrderedMemberWidgetsTest extends TestBase {
         void invalidCount() {
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
-                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(givenBuilder.sampleList(1))))
+                .isThrownBy(() -> ReOrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(givenBuilder.sampleList(1))))
                 .extracting(WidgetException::getErrorCode)
                 .isEqualTo(WidgetErrorCode.INVALID_REQUEST_ORDERED_WIDGET_COUNT);
         }
@@ -46,7 +46,7 @@ class OrderedMemberWidgetsTest extends TestBase {
 
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
-                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(given)))
+                .isThrownBy(() -> ReOrderedMemberWidgets.of(testMember, allWidgets, new ReorderWidgetRequest(given)))
                 .extracting(WidgetException::getErrorCode)
                 .isEqualTo(WidgetErrorCode.DUPLICATED_SEQUENCE);
         }
@@ -66,7 +66,7 @@ class OrderedMemberWidgetsTest extends TestBase {
 
             // When & Then
             assertThatExceptionOfType(WidgetException.class)
-                .isThrownBy(() -> OrderedMemberWidgets.of(testMember, allWidgets, reorderWidgetRequest))
+                .isThrownBy(() -> ReOrderedMemberWidgets.of(testMember, allWidgets, reorderWidgetRequest))
                 .extracting(WidgetException::getErrorCode)
                 .isEqualTo(WidgetErrorCode.INCLUDE_NOT_EXIST_WIDGET);
         }
@@ -76,7 +76,7 @@ class OrderedMemberWidgetsTest extends TestBase {
     @DisplayName("회원의 위젯 순서 변경 요청 시 순서가 지정된 위젯으로 변경")
     void create() {
         // When
-        OrderedMemberWidgets actual = OrderedMemberWidgets.of(testMember, allWidgets, validReorderWidgetRequest);
+        ReOrderedMemberWidgets actual = ReOrderedMemberWidgets.of(testMember, allWidgets, validReorderWidgetRequest);
 
         // Then
         List<Integer> actualSequence = actual.getSequencedWidgets().stream()

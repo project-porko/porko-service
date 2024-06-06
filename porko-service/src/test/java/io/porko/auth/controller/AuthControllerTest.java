@@ -1,8 +1,8 @@
 package io.porko.auth.controller;
 
 import static io.porko.auth.exception.AuthErrorCode.BAD_CREDENTIALS;
-import static io.porko.config.security.TestSecurityConfig.TEST_PORKO_MEMBER_EMAIL;
-import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
+import static io.porko.config.security.TestSecurityConfig.TEST_MEMBER_EMAIL;
+import static io.porko.config.security.TestSecurityConfig.testPrincipal;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -18,14 +18,14 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Controller:Auth")
 class AuthControllerTest extends WebLayerTestBase {
     private static final String LOGIN_URI = "/login";
-    private static final LoginRequest loginRequest = new LoginRequest(TEST_PORKO_MEMBER_EMAIL, "password");
+    private static final LoginRequest loginRequest = new LoginRequest(TEST_MEMBER_EMAIL, "password");
 
     @Test
     @DisplayName("[로그인][POST:200]")
     void login() throws Exception {
         // Given
         given(authService.authenticate(loginRequest))
-            .willReturn(LoginResponse.of(testPorkoPrincipal, "access token"));
+            .willReturn(LoginResponse.of(testPrincipal, "access token"));
 
         // When & Then
         로그인_요청().ok();

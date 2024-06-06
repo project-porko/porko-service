@@ -4,7 +4,7 @@ import static io.porko.widget.controller.MemberWidgetController.MEMBER_WIDGET_BA
 
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.utils.ResponseEntityUtils;
-import io.porko.widget.controller.model.OrderedMemberWidgetsResponse;
+import io.porko.widget.controller.model.MemberWidgetsResponse;
 import io.porko.widget.controller.model.ReorderWidgetRequest;
 import io.porko.widget.service.MemberWidgetService;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class MemberWidgetController {
     }
 
     @GetMapping
-    public ResponseEntity<OrderedMemberWidgetsResponse> getOrderedMemberWidget(
+    public ResponseEntity<MemberWidgetsResponse> getOrderedMemberWidget(
         @LoginMember Long memberId
     ) {
         return ResponseEntity.ok(memberWidgetService.loadOrderedMemberWidgets(memberId));

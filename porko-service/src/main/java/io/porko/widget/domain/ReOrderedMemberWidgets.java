@@ -14,12 +14,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public record OrderedMemberWidgets(
+public record ReOrderedMemberWidgets(
     List<MemberWidget> elements
 ) {
     public static final int ORDERED_WIDGET_COUNT = 6;
 
-    public static OrderedMemberWidgets of(
+    public static ReOrderedMemberWidgets of(
         Member member,
         WidgetsResponse widgetsResponse,
         ReorderWidgetRequest reorderWidgetRequest
@@ -31,7 +31,7 @@ public record OrderedMemberWidgets(
             .collect(Collectors.toList());
         widgetMap.forEach((key, value) -> memberWidgets.add(processUnsequencedWidget(member, value)));
 
-        return new OrderedMemberWidgets(memberWidgets);
+        return new ReOrderedMemberWidgets(memberWidgets);
     }
 
     private static void validateRequest(ReorderWidgetRequest reorderWidgetRequest) {

@@ -1,7 +1,7 @@
 package io.porko.widget.fixture;
 
 import static io.porko.config.fixture.FixtureCommon.dtoType;
-import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.domain.ReOrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 
 import com.navercorp.fixturemonkey.ArbitraryBuilder;
 import io.porko.config.base.TestBase;

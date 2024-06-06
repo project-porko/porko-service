@@ -1,7 +1,7 @@
 package io.porko.auth.domain;
 
 import static io.porko.auth.domain.TokenProvider.addMinute;
-import static io.porko.config.security.TestSecurityConfig.testPorkoPrincipal;
+import static io.porko.config.security.TestSecurityConfig.testPrincipal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,7 +26,7 @@ class TokenProviderTest extends TokenTestHelper {
     @DisplayName("Access Token 생성")
     void generate() {
         // When
-        String actual = TokenProvider.generate(testPorkoPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
+        String actual = TokenProvider.generate(testPrincipal, testJwtProperties, TokenType.ACCESS_TOKEN);
 
         // Then
         Jws<Claims> claimsJws = resolve(actual, BASE_64_ENCODED_TEST_SECRET_KEY);
@@ -39,8 +39,8 @@ class TokenProviderTest extends TokenTestHelper {
             () -> assertThat(claims.getIssuer()).as("발급 주체").isEqualTo(testJwtProperties.issuer()),
             () -> assertThat(claims.getAudience()).as("발급 대상").isEqualTo(testJwtProperties.audience()),
             () -> assertThat(claims.getSubject()).as("발급 목적").isEqualTo(TokenType.ACCESS_TOKEN.name()),
-            () -> assertThat(claims.get("id", Long.class)).isEqualTo(testPorkoPrincipal.getId()),
-            () -> assertThat(claims.get("username", String.class)).isEqualTo(testPorkoPrincipal.getUsername()),
+            () -> assertThat(claims.get("id", Long.class)).isEqualTo(testPrincipal.getId()),
+            () -> assertThat(claims.get("username", String.class)).isEqualTo(testPrincipal.getUsername()),
             () -> assertThat(claims.getExpiration()).as("만료 일시 : 발급 일자로부터 10분 후").isEqualTo(addMinute(claims.getIssuedAt(), 10))
         );
     }
@@ -54,7 +54,7 @@ class TokenProviderTest extends TokenTestHelper {
 
         // When & Then
         assertThatExceptionOfType(WeakKeyException.class)
-            .isThrownBy(() -> TokenProvider.generate(testPorkoPrincipal, jwtProperties, TokenType.ACCESS_TOKEN))
+            .isThrownBy(() -> TokenProvider.generate(testPrincipal, jwtProperties, TokenType.ACCESS_TOKEN))
         ;
     }
 

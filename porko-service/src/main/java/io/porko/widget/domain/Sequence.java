@@ -1,6 +1,6 @@
 package io.porko.widget.domain;
 
-import static io.porko.widget.domain.OrderedMemberWidgets.ORDERED_WIDGET_COUNT;
+import static io.porko.widget.domain.ReOrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 import static io.porko.widget.exception.WidgetErrorCode.OUT_OF_SEQUENCE_RANGE;
 
 import io.porko.widget.exception.WidgetException;
