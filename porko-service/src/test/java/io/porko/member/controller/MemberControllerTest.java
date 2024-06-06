@@ -91,7 +91,6 @@ class MemberControllerTest extends MemberControllerTestHelper {
     }
 
     private static Stream<Arguments> validateDuplicate() {
-        String memberId = "porkoMemberId";
         String email = "porkoMember@porko.info";
         String phoneNumber = "01012345678";
 
