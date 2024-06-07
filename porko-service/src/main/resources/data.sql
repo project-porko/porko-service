@@ -48,3 +48,10 @@ insert into budget (member_id, goal_cost, goal_year, goal_month)
 values (1, 4500000, 2024, 4),
        (1, 5000000, 2024, 5),
        (1, 5000000, 2024, 6);
+
+---
+-- friend
+insert into friend (member_id, friend_id)
+values (1, 2),
+       (2, 3),
+       (3, 1);
