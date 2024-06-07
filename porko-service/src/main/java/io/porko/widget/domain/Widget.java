@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,5 +48,22 @@ public class Widget {
 
     public String getDescription() {
         return widgetCode.getDescription();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Widget widget = (Widget) o;
+        return widgetCode == widget.widgetCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(widgetCode);
     }
 }
