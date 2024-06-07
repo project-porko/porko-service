@@ -12,14 +12,4 @@ public class ConvertUtils {
         return value.replaceAll(regex, replacement)
             .toUpperCase();
     }
-
-    public static LocalDate convertStringToLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        return LocalDate.parse(date, formatter);
-    }
-
-    public static YearMonth convertLocalDateToYearMonth(LocalDate date) {
-        return YearMonth.of(date.getYear(), date.getMonthValue());
-    }
 }
