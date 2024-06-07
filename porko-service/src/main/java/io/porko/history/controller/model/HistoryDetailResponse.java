@@ -14,7 +14,7 @@ public record HistoryDetailResponse(
         String payType,
         boolean isRegret,
         String memo
-){
+) {
 
     public static HistoryDetailResponse ofDetail(History history) {
         return new HistoryDetailResponse(
@@ -28,4 +28,3 @@ public record HistoryDetailResponse(
         );
     }
 }
-다
