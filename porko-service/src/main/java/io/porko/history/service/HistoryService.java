@@ -89,39 +89,15 @@ public class HistoryService {
         List<CalendarResponse> calendarResponseList = new ArrayList<>();
 
         LocalDate firstDayOfMonth = yearMonth.atDay(1);
-        LocalDate lastDayOfMonth;
-        if (yearMonth.getYear() == LocalDate.now().getYear()
-                && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
-            lastDayOfMonth = LocalDate.now();
-        } else {
-            lastDayOfMonth = yearMonth.atEndOfMonth();
-        }
-
-        BigDecimal dailyUsedCost;
-        BigDecimal dailyEarnedCost;
-        BigDecimal dailyUsedRate;
+        LocalDate lastDayOfMonth = getLastDayOfMonth(yearMonth);
 
         for (LocalDate date = firstDayOfMonth;
              date.isBefore(lastDayOfMonth) || date.isEqual(lastDayOfMonth);
              date = date.plusDays(1)) {
-            dailyUsedCost = historyQueryRepo.calcDailyUsedCost(date, memberId)
-                    .orElse(BigDecimal.ZERO)
-                    .stripTrailingZeros();
 
-            dailyEarnedCost = historyQueryRepo.calcDailyEarnedCost(date, memberId)
-                    .orElse(BigDecimal.ZERO)
-                    .stripTrailingZeros();
-
-
-            BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
-            if (dailyBudget == BigDecimal.ZERO) {
-                dailyUsedRate = BigDecimal.ZERO;
-            } else {
-                dailyUsedRate = dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
-                        .abs()
-                        .multiply(BigDecimal.valueOf(100))
-                        .stripTrailingZeros();
-            }
+            BigDecimal dailyUsedCost = calcDailyUsedCost(date, memberId);
+            BigDecimal dailyEarnedCost = calcDailyEarnedCost(date, memberId);
+            BigDecimal dailyUsedRate = calcDailyUsedRate(date, memberId, dailyUsedCost);
 
             calendarResponseList.add(CalendarResponse.of(
                     date,
@@ -131,5 +107,38 @@ public class HistoryService {
         }
 
         return calendarResponseList;
+    }
+
+    private LocalDate getLastDayOfMonth(YearMonth yearMonth) {
+        if (yearMonth.getYear() == LocalDate.now().getYear()
+                && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
+            return LocalDate.now();
+        } else {
+            return yearMonth.atEndOfMonth();
+        }
+    }
+
+    private BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
+        return historyQueryRepo.calcDailyUsedCost(date, memberId)
+                .orElse(BigDecimal.ZERO)
+                .stripTrailingZeros();
+    }
+
+    private BigDecimal calcDailyEarnedCost(LocalDate date, Long memberId) {
+        return historyQueryRepo.calcDailyEarnedCost(date, memberId)
+                .orElse(BigDecimal.ZERO)
+                .stripTrailingZeros();
+    }
+
+    private BigDecimal calcDailyUsedRate(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
+        BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
+        if (dailyBudget.equals(BigDecimal.ZERO)) {
+            return BigDecimal.ZERO;
+        } else {
+            return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
+                    .abs()
+                    .multiply(BigDecimal.valueOf(100))
+                    .stripTrailingZeros();
+        }
     }
 }
