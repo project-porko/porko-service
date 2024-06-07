@@ -43,7 +43,7 @@ public enum Weather {
     public final String weatherName;
     final int startRange;
     int endRange;
-    public final int weatherId;
+    public final int weatherImageNo;
 
     abstract boolean isMatched(BigDecimal cost);
 
