@@ -21,7 +21,7 @@ public class History {
     private BigDecimal cost;
 
     @Column(nullable = false)
-    private Boolean regret;
+    private boolean isRegret;
 
     @Column(nullable = false, length = 30)
     private String place;
@@ -33,7 +33,7 @@ public class History {
     private LocalDateTime usedAt;
 
     @Embedded
-    private SpendingCategory spendingCategoryId;
+    private HistoryCategory historyCategoryId;
 
     @Column(nullable = false, length = 100)
     private String memo;
@@ -43,66 +43,69 @@ public class History {
     private Member member;
 
     public History(
+            Long id,
             BigDecimal cost,
-            Boolean regret,
+            boolean isRegret,
             String place,
             String payType,
             LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
+            HistoryCategory historyCategoryId,
             String memo,
             Member member
     ) {
+        this.id = id;
         this.cost = cost;
-        this.regret = regret;
+        this.isRegret = isRegret;
         this.place = place;
         this.payType = payType;
         this.usedAt = usedAt;
-        this.spendingCategoryId = spendingCategoryId;
+        this.historyCategoryId = historyCategoryId;
         this.memo = memo;
         this.member = member;
     }
 
     public History(
             BigDecimal cost,
-            Boolean regret,
+            boolean isRegret,
             String place,
             String payType,
             LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId
+            HistoryCategory historyCategoryId
     ) {
         this.cost = cost;
-        this.regret = regret;
+        this.isRegret = isRegret;
         this.place = place;
         this.payType = payType;
         this.usedAt = usedAt;
-        this.spendingCategoryId = spendingCategoryId;
+        this.historyCategoryId = historyCategoryId;
     }
 
     public static History of(
+            Long id,
             BigDecimal cost,
-            Boolean regret,
+            boolean isRegret,
             String place,
             String payType,
             LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId,
+            HistoryCategory historyCategoryId,
             String memo,
             Member member
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, memo, member);
+        return new History(id, cost, isRegret, place, payType, usedAt, historyCategoryId, memo, member);
     }
 
     public static History of(
             BigDecimal cost,
-            Boolean regret,
+            boolean isRegret,
             String place,
             String payType,
             LocalDateTime usedAt,
-            SpendingCategory spendingCategoryId
+            HistoryCategory historyCategoryId
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId);
+        return new History(cost, isRegret, place, payType, usedAt, historyCategoryId);
     }
 
-    public void updateRegret(Boolean regret) {
-        this.regret = regret;
+    public void updateRegret(boolean isRegret) {
+        this.isRegret = isRegret;
     }
 }
