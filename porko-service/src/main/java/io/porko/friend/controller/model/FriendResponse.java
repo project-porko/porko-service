@@ -8,5 +8,9 @@ public record FriendResponse(
         List<Long> friendId
 ) {
     @QueryProjection
-    public FriendResponse (List<Long> friendId) {this.friendId = friendId;}
+    public FriendResponse {}
+
+    public static FriendResponse of (List<Long> friendId) {
+        return new FriendResponse(friendId);
+    }
 }
