@@ -9,31 +9,31 @@ import java.util.Arrays;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public enum Weather {
-    RAINBOW("무지출이 뜬 날", 0, "RAINBOWURL") {
+    RAINBOW("무지출이 뜬 날", 0, 1) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, cost);
         }
     },
-    SUN("지출 하늘이 맑은 날", 0, 33, "SUNURL") {
+    SUN("지출 하늘이 맑은 날", 0, 33, 2) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    CLOUD("지출 구름이 낀 날", 33, 66, "CLOUDURL") {
+    CLOUD("지출 구름이 낀 날", 33, 66, 3) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    RAIN("지출 비가 내리는 날", 66, 100, "RAINURL") {
+    RAIN("지출 비가 내리는 날", 66, 100, 4) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    THUNDER("지출 번개가 치는 날", 100, "THUNDERURL") {
+    THUNDER("지출 번개가 치는 날", 100, 5) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, cost);
@@ -43,7 +43,7 @@ public enum Weather {
     public final String weatherName;
     final int startRange;
     int endRange;
-    public final String imageURL;
+    public final int weatherImageNo;
 
     abstract boolean isMatched(BigDecimal cost);
 

@@ -7,12 +7,12 @@ public record CalendarResponse(
         String date,
         BigDecimal usedCost,
         BigDecimal earnedCost,
-        String weatherURL) {
+        int weatherImageNo) {
     public static CalendarResponse of(
             LocalDate localDate,
             BigDecimal usedCost,
             BigDecimal earnedCost,
-            String weatherURL) {
-        return new CalendarResponse(localDate.toString(), usedCost, earnedCost, weatherURL);
+            int weatherImageNo) {
+        return new CalendarResponse(localDate.toString(), usedCost, earnedCost, weatherImageNo);
     }
 }
