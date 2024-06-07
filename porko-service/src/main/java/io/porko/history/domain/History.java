@@ -43,6 +43,7 @@ public class History {
     private Member member;
 
     public History(
+            Long id,
             BigDecimal cost,
             Boolean regret,
             String place,
@@ -52,6 +53,7 @@ public class History {
             String memo,
             Member member
     ) {
+        this.id = id;
         this.cost = cost;
         this.regret = regret;
         this.place = place;
@@ -79,6 +81,7 @@ public class History {
     }
 
     public static History of(
+            Long id,
             BigDecimal cost,
             Boolean regret,
             String place,
@@ -88,7 +91,7 @@ public class History {
             String memo,
             Member member
     ) {
-        return new History(cost, regret, place, payType, usedAt, spendingCategoryId, memo, member);
+        return new History(id, cost, regret, place, payType, usedAt, spendingCategoryId, memo, member);
     }
 
     public static History of(
