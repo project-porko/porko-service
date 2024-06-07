@@ -13,6 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class FriendId implements Serializable {
-    private long memberId;
-    private long friendId;
+    private Long memberId;
+    private Long friendId;
 }
