@@ -68,16 +68,8 @@ public class MemberWidget extends MetaFields {
         return new MemberWidget(member, widget, unorderedSequence());
     }
 
-    public WidgetCode getWidgetCode() {
-        return widget.getWidgetCode();
-    }
-
     public int getSequence() {
         return sequence.getValue();
-    }
-
-    public String getWidgetDescription() {
-        return widget.getDescription();
     }
 
     public boolean isSequenced() {
