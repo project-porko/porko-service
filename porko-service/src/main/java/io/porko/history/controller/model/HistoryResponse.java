@@ -2,7 +2,7 @@ package io.porko.history.controller.model;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.porko.history.domain.History;
-import io.porko.history.domain.SpendingCategory;
+import io.porko.history.domain.HistoryCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,9 +12,9 @@ public record HistoryResponse(
         LocalDateTime usedAt,
         BigDecimal cost,
         String place,
-        SpendingCategory spendingCategoryId,
+        HistoryCategory historyCategoryId,
         String payType,
-        Boolean regret
+        boolean isRegret
 
 ) {
     @QueryProjection
@@ -27,9 +27,9 @@ public record HistoryResponse(
                 history.getUsedAt(),
                 history.getCost(),
                 history.getPlace(),
-                history.getSpendingCategoryId(),
+                history.getHistoryCategoryId(),
                 history.getPayType(),
-                history.getRegret()
+                history.isRegret()
         );
     }
 }
