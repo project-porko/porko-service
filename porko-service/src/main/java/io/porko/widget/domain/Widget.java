@@ -50,6 +50,14 @@ public class Widget {
         return widgetCode.getDescription();
     }
 
+    public boolean isDefault() {
+        return widgetCode.isDefault();
+    }
+
+    public int getInitialSequence() {
+        return widgetCode.getInitialSequence();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

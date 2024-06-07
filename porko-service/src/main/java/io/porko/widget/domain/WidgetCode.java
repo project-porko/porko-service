@@ -30,4 +30,12 @@ public enum WidgetCode {
     public static int size() {
         return values().length;
     }
+
+    public boolean isDefault() {
+        return type == DEFAULT;
+    }
+
+    public boolean isOptional() {
+        return type == OPTIONAL;
+    }
 }
