@@ -15,13 +15,13 @@ import java.math.BigInteger;
 @AccessType(Type.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SpendingCategory {
+public class HistoryCategory {
 
-    private BigInteger categoryId;
+    private BigInteger imageUrlTypeNo;
+    private String type; // 수입인지 지출인지를 나타냄.
     private String name;
-    private String url;
 
-    public static SpendingCategory of(BigInteger categoryId, String name, String url) {
-        return new SpendingCategory(categoryId, name, url);
+    public static HistoryCategory of(BigInteger imageUrlTypeNo, String type, String name) {
+        return new HistoryCategory(imageUrlTypeNo, type, name);
     }
 }
