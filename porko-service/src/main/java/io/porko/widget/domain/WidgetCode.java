@@ -27,15 +27,7 @@ public enum WidgetCode {
         this.initialSequence = initialSequence;
     }
 
-    public static int size() {
-        return values().length;
-    }
-
     public boolean isDefault() {
         return type == DEFAULT;
-    }
-
-    public boolean isOptional() {
-        return type == OPTIONAL;
     }
 }
