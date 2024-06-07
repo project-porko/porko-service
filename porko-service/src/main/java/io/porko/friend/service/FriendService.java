@@ -15,30 +15,39 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepo friendRepo;
-    public FriendResponse getFriendId(Long id) {
-        List<Long> list = new ArrayList<>();
+    public List<FriendResponse> getFriendId(Long id) {
+        List<FriendResponse> list = new ArrayList<>();
 
-        list.addAll(getFriendIdByMemberId(id));
-        list.addAll(getMemberIdByFriendId(id));
+        Optional<List<FriendResponse>> friendList = getFriendListByMemberId(id);
+        Optional<List<FriendResponse>> memberList = getMemberListByFriendId(id);
 
-        return FriendResponse.of(list);
+        friendList.ifPresent(list::addAll);
+        memberList.ifPresent(list::addAll);
+
+        return list;
     }
 
-    private List<Long> getFriendIdByMemberId(Long id) {
-        Optional<List<Friend>> list = friendRepo.findAllByIdMemberId(id);
+    public Optional<List<FriendResponse>> getFriendListByMemberId(Long id) {
+        Optional<List<Friend>> friendListOptional = friendRepo.findAllByIdMemberId(id);
 
-        return list.orElse(List.of())
-                .stream()
-                .map(friend -> friend.getId().getFriendId())
-                .collect(Collectors.toList());
+        return friendListOptional.map(friendList ->
+                friendList.stream()
+                        .map(friend -> FriendResponse.of(
+                                friend.getFriend().getId(),
+                                friend.getFriend().getName(),
+                                friend.getFriend().getProfileImageUrl()))
+                        .collect(Collectors.toList()));
     }
 
-    private List<Long> getMemberIdByFriendId(Long id) {
-        Optional<List<Friend>> list = friendRepo.findAllByIdFriendId(id);
+    public Optional<List<FriendResponse>> getMemberListByFriendId(Long id) {
+        Optional<List<Friend>> memberListOptional = friendRepo.findAllByIdFriendId(id);
 
-        return list.orElse(List.of())
-                .stream()
-                .map(friend -> friend.getId().getMemberId())
-                .collect(Collectors.toList());
+        return memberListOptional.map(memberList ->
+                memberList.stream()
+                .map(friend -> FriendResponse.of(
+                        friend.getMember().getId(),
+                        friend.getMember().getName(),
+                        friend.getMember().getProfileImageUrl()))
+                .collect(Collectors.toList()));
     }
 }
