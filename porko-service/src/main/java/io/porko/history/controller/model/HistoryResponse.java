@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record HistoryResponse(
+        Long id,
         LocalDateTime usedAt,
         BigDecimal cost,
         String place,
@@ -22,6 +23,7 @@ public record HistoryResponse(
 
     public static HistoryResponse of(History history) {
         return new HistoryResponse(
+                history.getId(),
                 history.getUsedAt(),
                 history.getCost(),
                 history.getPlace(),
