@@ -13,11 +13,11 @@ public class Friend {
     @EmbeddedId
     private FriendId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("memberId")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @MapsId("friendId")
     private Member friend;
 }
