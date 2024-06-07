@@ -3,14 +3,19 @@ package io.porko.history.controller;
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.history.controller.model.HistoryDetailResponse;
 import io.porko.history.controller.model.HistoryListResponse;
+import io.porko.history.controller.model.CalendarResponse;
 import io.porko.history.controller.model.HistoryResponse;
 import io.porko.history.service.HistoryService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,4 +46,18 @@ public class HistoryController {
             @RequestParam("regret") Boolean regret) {
         return ResponseEntity.ok(historyService.updateRegretStatus(historyId, regret));
     }
+
+    @GetMapping("/calendar")
+    ResponseEntity<List<CalendarResponse>> getCalendar(
+            @Valid @RequestParam Integer year,
+            @Valid @RequestParam @Min(1) @Max(12) Integer month,
+            @RequestParam(required = false) Long memberId,
+            @LoginMember Long id) {
+        if (memberId == null) {
+            memberId = id;
+        }
+
+        return ResponseEntity.ok(historyService.getCalendar(year, month, memberId));
+    }
+
 }

@@ -9,31 +9,31 @@ import java.util.Arrays;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public enum Weather {
-    RAINBOW("무지출이 뜬 날", 0) {
+    RAINBOW("무지출이 뜬 날", 0, "RAINBOWURL") {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, cost);
         }
     },
-    SUN("지출 하늘이 맑은 날", 0, 33) {
+    SUN("지출 하늘이 맑은 날", 0, 33, "SUNURL") {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    CLOUD("지출 구름이 낀 날", 33, 66) {
+    CLOUD("지출 구름이 낀 날", 33, 66, "CLOUDURL") {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    RAIN("지출 비가 내리는 날", 66, 100) {
+    RAIN("지출 비가 내리는 날", 66, 100, "RAINURL") {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, endRange, cost);
         }
     },
-    THUNDER("지출 번개가 치는 날", 100) {
+    THUNDER("지출 번개가 치는 날", 100, "THUNDERURL") {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, cost);
@@ -43,6 +43,7 @@ public enum Weather {
     public final String weatherName;
     final int startRange;
     int endRange;
+    public final String imageURL;
 
     abstract boolean isMatched(BigDecimal cost);
 
@@ -59,10 +60,6 @@ public enum Weather {
 
     public boolean isRange(int start, BigDecimal cost) {
         return cost.compareTo(BigDecimal.valueOf(start)) == 0;
-    }
-
-    public static String getImageURL() {
-        return "ImageURL";
     }
 
     public static Weather getWeatherByDailyUsed(BigDecimal dailyUsed) {
