@@ -81,7 +81,7 @@ public class HistoryService {
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
     }
 
-    public List<CalendarResponse> getCalendar(Integer year, Integer month, Long memberId) {
+    public List<CalendarResponse> getCalendar(int year, int month, Long memberId) {
         YearMonth yearMonth = YearMonth.of(year, month);
         List<CalendarResponse> calendarResponseList = new ArrayList<>();
 
