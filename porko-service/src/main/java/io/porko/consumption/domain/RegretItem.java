@@ -9,7 +9,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public enum RegretItem {
-    ZERO ("ZERO", 0, 1) {
+    ZERO ("후회한 소비가 없어요!", 0, 1) {
         @Override
         boolean isMatched(BigDecimal cost) {
             return isRange(startRange, cost);
