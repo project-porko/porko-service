@@ -39,7 +39,7 @@ public class HistoryController {
     }
 
     @GetMapping("/calendar")
-    ResponseEntity<CalendarResponse> getCalendar(
+    ResponseEntity<List<CalendarResponse>> getCalendar(
             @Valid @RequestParam Integer year,
             @Valid @RequestParam @Min(1) @Max(12) Integer month,
             @RequestParam(required = false) Long memberId,
