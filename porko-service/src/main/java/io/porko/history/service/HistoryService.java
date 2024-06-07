@@ -1,5 +1,6 @@
 package io.porko.history.service;
 
+import io.porko.budget.service.BudgetService;
 import io.porko.consumption.domain.Weather;
 import io.porko.history.controller.model.CalendarResponse;
 import io.porko.history.controller.model.HistoryDetailResponse;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -30,6 +32,7 @@ public class HistoryService {
     private final HistoryRepo historyRepo;
     private final HistoryQueryRepo historyQueryRepo;
     private final MemberQueryRepo memberQueryRepo;
+    private final BudgetService budgetService;
 
     public HistoryListResponse getThisMonthHistoryList(Long loginMemberId) {
         YearMonth thisMonth = YearMonth.now();
@@ -96,6 +99,7 @@ public class HistoryService {
 
         BigDecimal dailyUsedCost;
         BigDecimal dailyEarnedCost;
+        BigDecimal dailyUsedRate;
 
         for (LocalDate date = firstDayOfMonth;
              date.isBefore(lastDayOfMonth) || date.isEqual(lastDayOfMonth);
@@ -103,15 +107,27 @@ public class HistoryService {
             dailyUsedCost = historyQueryRepo.calcDailyUsedCost(date, memberId)
                     .orElse(BigDecimal.ZERO)
                     .stripTrailingZeros();
+
             dailyEarnedCost = historyQueryRepo.calcDailyEarnedCost(date, memberId)
                     .orElse(BigDecimal.ZERO)
                     .stripTrailingZeros();
+
+
+            BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
+            if (dailyBudget == BigDecimal.ZERO) {
+                dailyUsedRate = BigDecimal.ZERO;
+            } else {
+                dailyUsedRate = dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
+                        .abs()
+                        .multiply(BigDecimal.valueOf(100))
+                        .stripTrailingZeros();
+            }
 
             calendarResponseList.add(CalendarResponse.of(
                     date,
                     dailyUsedCost,
                     dailyEarnedCost,
-                    Weather.getWeatherByDailyUsed(dailyUsedCost).weatherImageNo));
+                    Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo));
         }
 
         return calendarResponseList;

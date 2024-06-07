@@ -88,7 +88,6 @@ public class BudgetService {
         );
     }
 
-
     public BudgetResponse getUsedCostInLastMonth(Long memberId) {
         return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
                         LocalDate.now().getYear(),
@@ -97,5 +96,20 @@ public class BudgetService {
                 .orElse(BigDecimal.ZERO)
                 .abs()
                 .stripTrailingZeros());
+    }
+
+    public BigDecimal calcDailyBudget(LocalDate date, Long memberId) {
+        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(
+                        date.getYear(),
+                        date.getMonthValue(),
+                        memberId)
+                .orElse(null);
+
+        if (budget != null) {
+            return budget.getGoalCost()
+                    .divide(BigDecimal.valueOf(YearMonth.from(date).lengthOfMonth()), 0, RoundingMode.DOWN)
+                    .stripTrailingZeros();
+        }
+        return BigDecimal.ZERO;
     }
 }
