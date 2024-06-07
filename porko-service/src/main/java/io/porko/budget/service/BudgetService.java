@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -88,7 +89,6 @@ public class BudgetService {
         );
     }
 
-
     public BudgetResponse getUsedCostInLastMonth(Long memberId) {
         return BudgetResponse.of(historyQueryRepo.calcUsedCostInLastMonth(
                         LocalDate.now().getYear(),
@@ -97,5 +97,22 @@ public class BudgetService {
                 .orElse(BigDecimal.ZERO)
                 .abs()
                 .stripTrailingZeros());
+    }
+
+    public BigDecimal calcDailyBudget(LocalDate date, Long memberId) {
+        Optional<Budget> budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(
+                date.getYear(),
+                date.getMonthValue(),
+                memberId
+        );
+
+        return budget.map(value -> value.getGoalCost()
+                .divide(
+                        BigDecimal.valueOf(YearMonth.from(date).lengthOfMonth()),
+                        0,
+                        RoundingMode.DOWN
+                )
+                .stripTrailingZeros()
+        ).orElse(BigDecimal.ZERO);
     }
 }

@@ -1,5 +1,6 @@
 package io.porko.history.service;
 
+import io.porko.budget.service.BudgetService;
 import io.porko.consumption.domain.Weather;
 import io.porko.history.controller.model.CalendarResponse;
 import io.porko.history.controller.model.HistoryDetailResponse;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -30,6 +32,7 @@ public class HistoryService {
     private final HistoryRepo historyRepo;
     private final HistoryQueryRepo historyQueryRepo;
     private final MemberQueryRepo memberQueryRepo;
+    private final BudgetService budgetService;
 
     public HistoryListResponse getThisMonthHistoryList(Long loginMemberId) {
         YearMonth thisMonth = YearMonth.now();
@@ -86,34 +89,56 @@ public class HistoryService {
         List<CalendarResponse> calendarResponseList = new ArrayList<>();
 
         LocalDate firstDayOfMonth = yearMonth.atDay(1);
-        LocalDate lastDayOfMonth;
-        if (yearMonth.getYear() == LocalDate.now().getYear()
-                && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
-            lastDayOfMonth = LocalDate.now();
-        } else {
-            lastDayOfMonth = yearMonth.atEndOfMonth();
-        }
-
-        BigDecimal dailyUsedCost;
-        BigDecimal dailyEarnedCost;
+        LocalDate lastDayOfMonth = getLastDayOfMonth(yearMonth);
 
         for (LocalDate date = firstDayOfMonth;
              date.isBefore(lastDayOfMonth) || date.isEqual(lastDayOfMonth);
              date = date.plusDays(1)) {
-            dailyUsedCost = historyQueryRepo.calcDailyUsedCost(date, memberId)
-                    .orElse(BigDecimal.ZERO)
-                    .stripTrailingZeros();
-            dailyEarnedCost = historyQueryRepo.calcDailyEarnedCost(date, memberId)
-                    .orElse(BigDecimal.ZERO)
-                    .stripTrailingZeros();
+
+            BigDecimal dailyUsedCost = calcDailyUsedCost(date, memberId);
+            BigDecimal dailyEarnedCost = calcDailyEarnedCost(date, memberId);
+            BigDecimal dailyUsedRate = calcDailyUsedRate(date, memberId, dailyUsedCost);
 
             calendarResponseList.add(CalendarResponse.of(
                     date,
                     dailyUsedCost,
                     dailyEarnedCost,
-                    Weather.getWeatherByDailyUsed(dailyUsedCost).weatherImageNo));
+                    Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo));
         }
 
         return calendarResponseList;
+    }
+
+    private LocalDate getLastDayOfMonth(YearMonth yearMonth) {
+        if (yearMonth.getYear() == LocalDate.now().getYear()
+                && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
+            return LocalDate.now();
+        } else {
+            return yearMonth.atEndOfMonth();
+        }
+    }
+
+    private BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
+        return historyQueryRepo.calcDailyUsedCost(date, memberId)
+                .orElse(BigDecimal.ZERO)
+                .stripTrailingZeros();
+    }
+
+    private BigDecimal calcDailyEarnedCost(LocalDate date, Long memberId) {
+        return historyQueryRepo.calcDailyEarnedCost(date, memberId)
+                .orElse(BigDecimal.ZERO)
+                .stripTrailingZeros();
+    }
+
+    private BigDecimal calcDailyUsedRate(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
+        BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
+        if (dailyBudget.equals(BigDecimal.ZERO)) {
+            return BigDecimal.ZERO;
+        } else {
+            return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
+                    .abs()
+                    .multiply(BigDecimal.valueOf(100))
+                    .stripTrailingZeros();
+        }
     }
 }
