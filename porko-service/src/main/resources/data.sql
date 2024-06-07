@@ -2,7 +2,6 @@ insert into member(detail, road_name, created_at, email, gender, name, password,
 values ('반포동', '서울시 서초구', '2024-05-21T03:29:30.044', 'project.log.062@gmail.com', 'MALE', '최용석',
         '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01011112222', null, '/images/default-profile/profile_2.jpg');
 
----
 -- widget
 insert into widget (widget_code) values
        ('REMAINING_BUDGET'),
@@ -14,7 +13,17 @@ insert into widget (widget_code) values
        ('CREDIT_SCORE'),
        ('DAILY_EXPENSES');
 
----
+-- member_widget
+insert into member_widget (widget_id, member_id, sequence, created_at, created_by, updated_at, updated_by) values
+    (1, 1,  1, '2024-06-07T19:43:25.357', 1, null, null),
+    (2, 1,  2, '2024-06-07T19:43:25.368', 1, null, null),
+    (3, 1,  3, '2024-06-07T19:43:25.371', 1, null, null),
+    (4, 1,  4, '2024-06-07T19:43:25.376', 1, null, null),
+    (5, 1,  5, '2024-06-07T19:43:25.379', 1, null, null),
+    (6, 1,  6, '2024-06-07T19:43:25.385', 1, null, null),
+    (7, 1, -1, '2024-06-07T19:43:25.390', 1, null, null),
+    (8, 1, -1, '2024-06-07T19:43:25.394', 1, null, null);
+
 -- history
 insert into history (cost, is_regret, place, pay_type, used_at, image_url_type_no, type, name, memo, member_id)
 values (-10000, true, '올리브영', '신용카드', '2024-04-28T16:46:30.033', 1, '지출', '화장품', '아이브로우', 1),
