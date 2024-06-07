@@ -111,7 +111,7 @@ public class HistoryService {
                     date,
                     dailyUsedCost,
                     dailyEarnedCost,
-                    Weather.getWeatherByDailyUsed(dailyUsedCost).imageURL));
+                    Weather.getWeatherByDailyUsed(dailyUsedCost).weatherId));
         }
 
         return calendarResponseList;
