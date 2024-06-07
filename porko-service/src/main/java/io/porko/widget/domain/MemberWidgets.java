@@ -10,8 +10,7 @@ public record MemberWidgets(List<MemberWidget> elements) {
         return new MemberWidgets(elements);
     }
 
-    public static MemberWidgets initialOf(Member member) {
-        Widgets widgets = Widgets.initialWidgets();
+    public static MemberWidgets initialOf(Member member, Widgets widgets) {
         List<MemberWidget> list = widgets.elements()
             .stream()
             .map(it -> createMemberWidgetByType(member, it))
