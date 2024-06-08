@@ -35,6 +35,8 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
+    implementation("com.opencsv:opencsv:5.9")
+
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(testSourceSet)
 }

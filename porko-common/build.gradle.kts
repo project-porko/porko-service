@@ -24,6 +24,10 @@ tasks.register("copyProperties") {
             from("../porko-properties/docker")
             into("../")
         }
+        copy {
+            from("../porko-properties/data")
+            into("../porko-service/src/main/resources/data")
+        }
     }
 }
 
@@ -34,6 +38,7 @@ tasks.withType<JavaCompile> {
 tasks {
     getByName<Delete>("clean") {
         delete.add("src/main/resources")
+        delete.add("../porko-service/src/main/resources/data")
         delete.add("../.env")
         delete.add("../docker-compose.yml")
     }
