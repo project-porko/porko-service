@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum TransactionType {
     SPENT("지출"), EARNED("수입"), TRANSFER("이체");
 
-    private String description;
+    private final String description;
 
     public static TransactionType valueOfName(String transactionType) {
         return Stream.of(values())
