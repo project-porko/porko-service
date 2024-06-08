@@ -28,6 +28,6 @@ public class ConsumptionController {
             memberId = id;
         }
 
-        return ResponseEntity.ok(consumptionService.makeRegretResponse(memberId));
+        return ResponseEntity.ok(consumptionService.makeRegretResponse(year, month, memberId));
     }
 }
