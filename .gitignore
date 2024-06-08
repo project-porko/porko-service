@@ -241,4 +241,7 @@ porko-common/src/main/resources/**
 docker-compose.yml
 Dockerfile
 
+### Copied data from vault
+porko-service/src/main/resources/data/**
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,windows,macos,visualstudiocode
