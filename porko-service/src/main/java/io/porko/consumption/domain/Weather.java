@@ -44,7 +44,7 @@ public enum Weather {
     public final String weatherName;
     final int startRange;
     int endRange;
-    public final int weatherImageNo;
+    public final Integer weatherImageNo;
 
     abstract boolean isMatched(BigDecimal cost);
 
@@ -64,11 +64,9 @@ public enum Weather {
     }
 
     public static Weather getWeatherByDailyUsed(BigDecimal dailyUsed) {
-        return Optional.ofNullable(dailyUsed)
-                .map(value -> Arrays.stream(values())
-                        .filter(it -> it.isMatched(value))
-                        .findFirst()
-                        .orElse(THUNDER))
-                .orElse(null);
+        return Arrays.stream(values())
+                .filter(it -> it.isMatched(dailyUsed))
+                .findFirst()
+                .orElse(THUNDER);
     }
 }

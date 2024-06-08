@@ -98,14 +98,16 @@ public class HistoryService {
 
             BigDecimal dailyUsedCost = calcDailyUsedCost(date, memberId);
             BigDecimal dailyEarnedCost = calcDailyEarnedCost(date, memberId);
-            BigDecimal dailyUsedRate = Optional.ofNullable(calcDailyUsedRate(date, memberId, dailyUsedCost))
-                    .orElse(null);
+            BigDecimal dailyUsedRate = calcDailyUsedRate(date, memberId, dailyUsedCost);
 
-            calendarResponseList.add(CalendarResponse.of(
-                    date,
-                    dailyUsedCost,
-                    dailyEarnedCost,
-                    Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo));
+            calendarResponseList.add(
+                    CalendarResponse.of(
+                            date,
+                            dailyUsedCost,
+                            dailyEarnedCost,
+                            dailyUsedRate != null ? Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo : null
+                    )
+            );
         }
 
         return calendarResponseList;
