@@ -15,9 +15,11 @@ public class Friend {
 
     @ManyToOne
     @MapsId("memberId")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne
     @MapsId("friendId")
+    @JoinColumn(name = "friend_id", nullable = false)
     private Member friend;
 }
