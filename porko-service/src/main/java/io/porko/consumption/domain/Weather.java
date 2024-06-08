@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -63,9 +64,11 @@ public enum Weather {
     }
 
     public static Weather getWeatherByDailyUsed(BigDecimal dailyUsed) {
-        return Arrays.stream(values())
-                .filter(it -> it.isMatched(dailyUsed))
-                .findFirst()
-                .orElse(THUNDER);
+        return Optional.ofNullable(dailyUsed)
+                .map(value -> Arrays.stream(values())
+                        .filter(it -> it.isMatched(value))
+                        .findFirst()
+                        .orElse(THUNDER))
+                .orElse(null);
     }
 }

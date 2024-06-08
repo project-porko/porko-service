@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,7 +98,8 @@ public class HistoryService {
 
             BigDecimal dailyUsedCost = calcDailyUsedCost(date, memberId);
             BigDecimal dailyEarnedCost = calcDailyEarnedCost(date, memberId);
-            BigDecimal dailyUsedRate = calcDailyUsedRate(date, memberId, dailyUsedCost);
+            BigDecimal dailyUsedRate = Optional.ofNullable(calcDailyUsedRate(date, memberId, dailyUsedCost))
+                    .orElse(null);
 
             calendarResponseList.add(CalendarResponse.of(
                     date,
@@ -131,14 +133,17 @@ public class HistoryService {
     }
 
     private BigDecimal calcDailyUsedRate(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
-        BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
-        if (dailyBudget.equals(BigDecimal.ZERO)) {
-            return dailyBudget;
-        } else {
-            return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
-                    .abs()
-                    .multiply(BigDecimal.valueOf(100))
-                    .stripTrailingZeros();
-        }
+        return Optional.ofNullable(budgetService.calcDailyBudget(date, memberId))
+                .map(dailyBudget -> {
+                    if (dailyBudget.equals(BigDecimal.ZERO)) {
+                        return dailyBudget;
+                    } else {
+                        return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
+                                .abs()
+                                .multiply(BigDecimal.valueOf(100))
+                                .stripTrailingZeros();
+                    }
+                })
+                .orElse(null);
     }
 }

@@ -113,6 +113,6 @@ public class BudgetService {
                         RoundingMode.DOWN
                 )
                 .stripTrailingZeros()
-        ).orElse(BigDecimal.ZERO);
+        ).orElse(null);
     }
 }
