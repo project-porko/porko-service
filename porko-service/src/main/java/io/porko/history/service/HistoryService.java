@@ -133,7 +133,7 @@ public class HistoryService {
     private BigDecimal calcDailyUsedRate(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
         BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
         if (dailyBudget.equals(BigDecimal.ZERO)) {
-            return BigDecimal.ZERO;
+            return dailyBudget;
         } else {
             return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
                     .abs()
