@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepo friendRepo;
-    public List<FriendResponse> getFriendId(Long id) {
+    public List<FriendResponse> getFriendList(Long id) {
         List<FriendResponse> list = new ArrayList<>();
 
         Optional<List<FriendResponse>> friendList = getFriendListByMemberId(id);

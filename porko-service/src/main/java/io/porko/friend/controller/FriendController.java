@@ -18,7 +18,7 @@ public class FriendController {
     private final FriendService friendService;
 
     @GetMapping
-    public ResponseEntity<List<FriendResponse>> getFriendId(@LoginMember Long id) {
-        return ResponseEntity.ok(friendService.getFriendId(id));
+    public ResponseEntity<List<FriendResponse>> getFriendList(@LoginMember Long id) {
+        return ResponseEntity.ok(friendService.getFriendList(id));
     }
 }
