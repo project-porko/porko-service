@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import java.time.LocalDateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,7 +29,7 @@ public class SwaggerConfig {
         return new Info()
             .title("Porko dev API Docs")
             .description("with url api-dev.porko.store")
-            .version("cors test-v3");
+            .version("deployed at : " + LocalDateTime.now());
     }
 
     private Components components() {
