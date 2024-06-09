@@ -4,6 +4,8 @@ import io.porko.friend.controller.model.FriendList;
 import io.porko.friend.controller.model.FriendResponse;
 import io.porko.friend.domain.Friend;
 import io.porko.friend.repo.FriendRepo;
+import io.porko.member.domain.Member;
+import io.porko.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepo friendRepo;
-
+    private final MemberService memberService;
     public FriendResponse getFriendResponse(Long id) {
-        List<FriendList> list = getFriendList(id);
+        List<FriendList> list = new ArrayList<>();
+
+        list.add(getCurrentMember(id));
+        list.addAll(getFriendList(id));
 
         return FriendResponse.of(list.size(), list);
     }
@@ -51,5 +56,14 @@ public class FriendService {
                         friend.getMember().getName(),
                         friend.getMember().getProfileImageUrl()))
                 .collect(Collectors.toList());
+    }
+
+    public FriendList getCurrentMember(Long currentMemberId) {
+        Member member = memberService.findMemberById(currentMemberId);
+
+        return FriendList.of(
+                member.getId(),
+                member.getName(),
+                member.getProfileImageUrl());
     }
 }
