@@ -1,4 +1,4 @@
-package io.porko.event;
+package io.porko.config.event;
 
 import lombok.AccessLevel;
 import lombok.Getter;

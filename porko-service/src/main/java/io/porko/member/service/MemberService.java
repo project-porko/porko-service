@@ -1,6 +1,6 @@
 package io.porko.member.service;
 
-import static io.porko.event.DomainEventPublisher.registerEvent;
+import static io.porko.config.event.DomainEventPublisher.registerEvent;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_EMAIL;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_PHONE_NUMBER;
 
