@@ -1,15 +1,15 @@
 package io.porko.friend.controller.model;
 
-public record FriendListResponse(
+public record FriendList(
         Long memberId,
         String name,
         String profileImageUrl
 ) {
-    public static FriendListResponse of (
+    public static FriendList of (
             Long memberId,
             String name,
             String profileImageUrl) {
-        return new FriendListResponse(
+        return new FriendList(
                 memberId,
                 name,
                 profileImageUrl);

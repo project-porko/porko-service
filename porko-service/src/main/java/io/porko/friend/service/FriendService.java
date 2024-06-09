@@ -1,6 +1,6 @@
 package io.porko.friend.service;
 
-import io.porko.friend.controller.model.FriendListResponse;
+import io.porko.friend.controller.model.FriendList;
 import io.porko.friend.controller.model.FriendResponse;
 import io.porko.friend.domain.Friend;
 import io.porko.friend.repo.FriendRepo;
@@ -17,13 +17,13 @@ public class FriendService {
     private final FriendRepo friendRepo;
 
     public FriendResponse getFriendResponse(Long id) {
-        List<FriendListResponse> list = getFriendList(id);
+        List<FriendList> list = getFriendList(id);
 
         return FriendResponse.of(list.size(), list);
     }
 
-    public List<FriendListResponse> getFriendList(Long id) {
-        List<FriendListResponse> list = new ArrayList<>();
+    public List<FriendList> getFriendList(Long id) {
+        List<FriendList> list = new ArrayList<>();
 
         list.addAll(getFriendListByMemberId(id));
         list.addAll(getMemberListByFriendId(id));
@@ -31,22 +31,22 @@ public class FriendService {
         return list;
     }
 
-    public List<FriendListResponse> getFriendListByMemberId(Long id) {
+    public List<FriendList> getFriendListByMemberId(Long id) {
         List<Friend> friendList = friendRepo.findAllByIdMemberId(id);
 
         return friendList.stream()
-                .map(friend -> FriendListResponse.of(
+                .map(friend -> FriendList.of(
                         friend.getFriend().getId(),
                         friend.getFriend().getName(),
                         friend.getFriend().getProfileImageUrl()))
                 .collect(Collectors.toList());
     }
 
-    public List<FriendListResponse> getMemberListByFriendId(Long id) {
+    public List<FriendList> getMemberListByFriendId(Long id) {
         List<Friend> memberList = friendRepo.findAllByIdFriendId(id);
 
         return memberList.stream()
-                .map(friend -> FriendListResponse.of(
+                .map(friend -> FriendList.of(
                         friend.getMember().getId(),
                         friend.getMember().getName(),
                         friend.getMember().getProfileImageUrl()))

@@ -4,9 +4,9 @@ import java.util.List;
 
 public record FriendResponse(
     int friendCount,
-    List<FriendListResponse> friendListResponse
+    List<FriendList> friendList
 ) {
-    public static FriendResponse of (int friendCount, List<FriendListResponse> friendListResponse) {
-        return new FriendResponse(friendCount, friendListResponse);
+    public static FriendResponse of (int friendCount, List<FriendList> friendList) {
+        return new FriendResponse(friendCount, friendList);
     }
 }
