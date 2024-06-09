@@ -1,19 +1,12 @@
 package io.porko.friend.controller.model;
 
-import com.querydsl.core.annotations.QueryProjection;
+import java.util.List;
 
 public record FriendResponse(
-        Long memberId,
-        String name,
-        String profileImageUrl
+    int friendCount,
+    List<FriendListResponse> friendListResponse
 ) {
-    public static FriendResponse of (
-            Long memberId,
-            String name,
-            String profileImageUrl) {
-        return new FriendResponse(
-                memberId,
-                name,
-                profileImageUrl);
+    public static FriendResponse of (int friendCount, List<FriendListResponse> friendListResponse) {
+        return new FriendResponse(friendCount, friendListResponse);
     }
 }
