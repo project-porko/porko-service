@@ -1,6 +1,6 @@
 package io.porko.member.event;
 
-import io.porko.event.DomainEvent;
+import io.porko.config.event.DomainEvent;
 import java.time.LocalDateTime;
 import lombok.Getter;
 

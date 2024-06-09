@@ -1,12 +1,13 @@
 package io.porko.member.service;
 
-import static io.porko.event.DomainEventPublisher.registerEvent;
+import static io.porko.config.event.DomainEventPublisher.registerEvent;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_EMAIL;
 import static io.porko.member.exception.MemberErrorCode.DUPLICATED_PHONE_NUMBER;
 
 import io.porko.member.controller.model.MemberResponse;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.domain.Member;
+import io.porko.member.event.CreateHistoriesEvent;
 import io.porko.member.event.CreateInitialMemberWidgetsEvent;
 import io.porko.member.exception.MemberErrorCode;
 import io.porko.member.exception.MemberException;
@@ -38,10 +39,12 @@ public class MemberService {
         checkDuplicatedEmail(signUpRequest.email());
         checkDuplicatePhoneNumber(signUpRequest.phoneNumber());
         String encryptedPassword = encryptPassword(signUpRequest.password());
-        Long savedMemberId = memberRepo.save(signUpRequest.toEntity(encryptedPassword)).getId();
+        Member savedMember = memberRepo.save(signUpRequest.toEntity(encryptedPassword));
 
-        registerEvent(CreateInitialMemberWidgetsEvent.from(savedMemberId));
-        return savedMemberId;
+        registerEvent(CreateInitialMemberWidgetsEvent.from(savedMember.getId()));
+        registerEvent(CreateHistoriesEvent.from(savedMember));
+
+        return savedMember.getId();
     }
 
     private void checkDuplicatedEmail(String email) {

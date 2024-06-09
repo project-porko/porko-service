@@ -1,4 +1,4 @@
-package io.porko.event;
+package io.porko.config.event;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.ObjectUtils;

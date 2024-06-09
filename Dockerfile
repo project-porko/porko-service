@@ -33,4 +33,4 @@ ENV PROFILE=${ACTIVE}
 ARG JAR_FILE=/app/porko-service/build/libs/*jar
 COPY --chown=1000:1000 --from=JAR_BUILDER ${JAR_FILE} app.jar
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "app.jar"]
