@@ -30,15 +30,7 @@ public class BudgetService {
     private final HistoryQueryRepo historyQueryRepo;
 
     public BudgetResponse getBudget(Integer goalYear, Integer goalMonth, Long memberId) {
-        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(goalYear, goalMonth, memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalYear, goalMonth, memberId));
-
-        BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalYear, goalMonth, memberId).orElse(BigDecimal.ZERO);
-
-        return BudgetResponse.of(totalCost.divide(budget.getGoalCost())
-                            .multiply(BigDecimal.valueOf(100))
-                            .abs()
-                            .setScale(1, RoundingMode.DOWN)
-                            .stripTrailingZeros());
+        return BudgetResponse.of(calcUsedBudget(goalYear, goalMonth, memberId));
     }
 
     @Transactional
@@ -114,5 +106,17 @@ public class BudgetService {
                 )
                 .stripTrailingZeros()
         ).orElse(null);
+    }
+
+    public BigDecimal calcUsedBudget (Integer goalYear, Integer goalMonth, Long memberId) {
+        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(goalYear, goalMonth, memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalYear, goalMonth, memberId));
+
+        BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalYear, goalMonth, memberId).orElse(BigDecimal.ZERO);
+
+        return totalCost.divide(budget.getGoalCost())
+                .multiply(BigDecimal.valueOf(100))
+                .abs()
+                .setScale(1, RoundingMode.DOWN)
+                .stripTrailingZeros();
     }
 }
