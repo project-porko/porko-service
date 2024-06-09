@@ -1,5 +1,11 @@
 package io.porko.account.domain;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
+import io.porko.history.domain.ExpenseCategory;
+import io.porko.history.domain.History;
+import io.porko.history.domain.HistoryCategory;
+import io.porko.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -13,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;
@@ -48,13 +55,13 @@ public class TransactionRecord {
     private TransactionCategory category;
 
     @Column(nullable = false)
-    private String description;
+    private String place; // 결제처
 
     @Column(nullable = false)
     private String currency;
 
     @Column(nullable = false)
-    private String payType;
+    private String payType; // 결제 방식
 
     @Column(nullable = false)
     private boolean isRegret;
@@ -70,7 +77,7 @@ public class TransactionRecord {
         BigDecimal amount,
         TransactionType type,
         TransactionCategory category,
-        String description,
+        String place,
         String currency,
         String payType,
         boolean isRegret,
@@ -81,7 +88,7 @@ public class TransactionRecord {
         this.amount = amount;
         this.type = type;
         this.category = category;
-        this.description = description;
+        this.place = place;
         this.currency = currency;
         this.payType = payType;
         this.isRegret = isRegret;
@@ -117,11 +124,34 @@ public class TransactionRecord {
     }
 
     private static LocalTime getFormattedTransactionTime(String transactionTime) {
-        if (transactionTime.length() == 4) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("H:mm");
-            return LocalTime.parse(transactionTime, dateTimeFormatter);
+        if (isNotIsoTimeFormat(transactionTime)) {
+            return LocalTime.parse(transactionTime, ofPattern("H:mm"));
         } else {
             return LocalTime.parse(transactionTime, DateTimeFormatter.ISO_TIME);
         }
+    }
+
+    private static boolean isNotIsoTimeFormat(String transactionTime) {
+        return transactionTime.length() == 4;
+    }
+
+    public History toHistory(Member member) {
+        return History.of(
+            amount,
+            isRegret,
+            place,
+            payType,
+            LocalDateTime.of(transactionDate, transactionTime),
+            mapToHistoryCategory(type, category),
+            member
+        );
+    }
+
+    private HistoryCategory mapToHistoryCategory(TransactionType type, TransactionCategory category) {
+        if (type.isNotSpend()) {
+            return HistoryCategory.of(ExpenseCategory.UNCATEGORIZED.getImageNo(), type.getDescription(), category.getCategory());
+        }
+        ExpenseCategory expenseCategory = ExpenseCategory.valueOfCategoryDetail(category.getCategory());
+        return HistoryCategory.of(expenseCategory.getImageNo(), type.getDescription(), category.getCategory());
     }
 }

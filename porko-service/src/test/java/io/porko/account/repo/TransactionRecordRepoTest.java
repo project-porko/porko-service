@@ -41,9 +41,11 @@ class TransactionRecordRepoTest extends JpaTestBase {
 
         // When
         List<TransactionRecord> actual = transactionRecordRepo.saveAllAndFlush(givenEntity);
+        List<TransactionRecord> byAccountHolderPhoneNumber = transactionRecordRepo.findByAccountHolder_PhoneNumber(accountHolder.getPhoneNumber());
 
         // Then
         assertThat(actual.size()).isEqualTo(givenCsvBeans.size());
+        assertThat(actual.size()).isEqualTo(byAccountHolderPhoneNumber.size());
     }
 
     private static Stream<Arguments> mapTo() {

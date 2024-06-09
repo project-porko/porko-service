@@ -21,4 +21,12 @@ public enum TransactionType {
     private static boolean isEqualsTypeName(String description, String transactionType) {
         return description.equals(transactionType);
     }
+
+    private boolean isSpend() {
+        return this == SPENT;
+    }
+
+    public boolean isNotSpend() {
+        return !isSpend();
+    }
 }

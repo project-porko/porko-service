@@ -1,13 +1,21 @@
 package io.porko.history.domain;
 
 import io.porko.member.domain.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -46,67 +54,42 @@ public class History {
     )
     private Member member;
 
-    public History(
-            Long id,
-            BigDecimal cost,
-            boolean isRegret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            HistoryCategory historyCategoryId,
-            String memo,
-            Member member
+    private History(
+        BigDecimal cost,
+        boolean isRegret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        HistoryCategory historyCategoryId,
+        Member member
     ) {
-        this.id = id;
         this.cost = cost;
         this.isRegret = isRegret;
         this.place = place;
         this.payType = payType;
         this.usedAt = usedAt;
         this.historyCategoryId = historyCategoryId;
-        this.memo = memo;
         this.member = member;
     }
 
-    public History(
-            BigDecimal cost,
-            boolean isRegret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            HistoryCategory historyCategoryId
-    ) {
-        this.cost = cost;
-        this.isRegret = isRegret;
-        this.place = place;
-        this.payType = payType;
-        this.usedAt = usedAt;
-        this.historyCategoryId = historyCategoryId;
-    }
-
     public static History of(
-            Long id,
-            BigDecimal cost,
-            boolean isRegret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            HistoryCategory historyCategoryId,
-            String memo,
-            Member member
+        BigDecimal cost,
+        boolean isRegret,
+        String place,
+        String payType,
+        LocalDateTime usedAt,
+        HistoryCategory historyCategoryId,
+        Member member
     ) {
-        return new History(id, cost, isRegret, place, payType, usedAt, historyCategoryId, memo, member);
-    }
-
-    public static History of(
-            BigDecimal cost,
-            boolean isRegret,
-            String place,
-            String payType,
-            LocalDateTime usedAt,
-            HistoryCategory historyCategoryId
-    ) {
-        return new History(cost, isRegret, place, payType, usedAt, historyCategoryId);
+        return new History(
+            cost,
+            isRegret,
+            place,
+            payType,
+            usedAt,
+            historyCategoryId,
+            member
+        );
     }
 
     public void updateRegret(boolean isRegret) {

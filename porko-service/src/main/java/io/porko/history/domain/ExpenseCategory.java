@@ -1,7 +1,5 @@
 package io.porko.history.domain;
 
-import io.porko.history.exception.HistoryErrorCode;
-import io.porko.history.exception.HistoryException;
 import java.util.Arrays;
 import lombok.Getter;
 
@@ -39,7 +37,7 @@ public enum ExpenseCategory {
         return Arrays.stream(values())
             .filter(category -> category.description.equals(targetCategory))
             .findFirst()
-            .orElseThrow(() -> new HistoryException(HistoryErrorCode.NOT_MATCHED_EXPENSE_CATEGORY, targetCategory))
+            .orElse(ExpenseCategory.UNCATEGORIZED)
             ;
     }
 }
