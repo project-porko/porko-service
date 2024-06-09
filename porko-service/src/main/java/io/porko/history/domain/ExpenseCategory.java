@@ -1,5 +1,11 @@
 package io.porko.history.domain;
 
+import io.porko.history.exception.HistoryErrorCode;
+import io.porko.history.exception.HistoryException;
+import java.util.Arrays;
+import lombok.Getter;
+
+@Getter
 public enum ExpenseCategory {
     FOOD(1, "식비"),
     CAFE_SNACKS(1, "카페/간식"),
@@ -21,28 +27,19 @@ public enum ExpenseCategory {
     UNCATEGORIZED(14, "미분류"),
     TRANSFER_CARD_PAYMENT(15, "이체/카드 대금");
 
-    private final int code;
+    private final int imageNo;
     private final String description;
 
-    ExpenseCategory(int code, String description) {
-        this.code = code;
+    ExpenseCategory(int imageNo, String description) {
+        this.imageNo = imageNo;
         this.description = description;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public static ExpenseCategory fromCode(String targetCategory) {
-        for (ExpenseCategory category : ExpenseCategory.values()) {
-            if (category.description.equals(targetCategory)) {
-                return category;
-            }
-        }
-        throw new IllegalArgumentException("Invalid code: " + targetCategory);
+    public static ExpenseCategory valueOfCategoryDetail(String targetCategory) {
+        return Arrays.stream(values())
+            .filter(category -> category.description.equals(targetCategory))
+            .findFirst()
+            .orElseThrow(() -> new HistoryException(HistoryErrorCode.NOT_MATCHED_EXPENSE_CATEGORY, targetCategory))
+            ;
     }
 }

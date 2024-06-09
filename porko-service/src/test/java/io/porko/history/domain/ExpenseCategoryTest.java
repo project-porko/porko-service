@@ -15,7 +15,7 @@ class ExpenseCategoryTest {
     @DisplayName("금융 거래 기록의 소분류를 ExpenseCategory로 변환")
     void valueOf(final String given, final ExpenseCategory expected) {
         // When
-        ExpenseCategory actual = ExpenseCategory.fromCode(given);
+        ExpenseCategory actual = ExpenseCategory.valueOfCategoryDetail(given);
 
         // Then
         assertThat(actual).isEqualTo(expected);
