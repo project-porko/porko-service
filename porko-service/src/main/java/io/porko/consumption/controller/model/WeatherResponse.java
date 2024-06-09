@@ -8,7 +8,7 @@ public record WeatherResponse(
         BigDecimal used,
         List<WeatherListResponse> weather
 ) {
-    public WeatherResponse of (
+    public static WeatherResponse of (
             String name,
             BigDecimal used,
             List<WeatherListResponse> weather) {
