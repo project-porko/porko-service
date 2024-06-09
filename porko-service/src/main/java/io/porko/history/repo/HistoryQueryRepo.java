@@ -115,15 +115,15 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public BigDecimal calcRegretCost(LocalDateTime startDateTime,
+    public Optional<BigDecimal> calcRegretCost(LocalDateTime startDateTime,
                                      LocalDateTime endDateTime,
                                      Long memberId) {
-        return queryFactory.select(history.cost.sum())
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
                 .from(history)
                 .where(history.member.id.eq(memberId)
                         .and(history.cost.lt(0))
                         .and(history.usedAt.between(startDateTime, endDateTime))
                         .and(history.isRegret.isTrue()))
-                        .fetchOne();
+                        .fetchOne());
     }
 }
