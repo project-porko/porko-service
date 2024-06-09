@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public enum Weather {
     public final String weatherName;
     final int startRange;
     int endRange;
-    public final int weatherImageNo;
+    public final Integer weatherImageNo;
 
     abstract boolean isMatched(BigDecimal cost);
 

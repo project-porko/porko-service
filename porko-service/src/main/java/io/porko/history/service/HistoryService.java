@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,13 +98,17 @@ public class HistoryService {
 
             BigDecimal dailyUsedCost = calcDailyUsedCost(date, memberId);
             BigDecimal dailyEarnedCost = calcDailyEarnedCost(date, memberId);
-            BigDecimal dailyUsedRate = calcDailyUsedRate(date, memberId, dailyUsedCost);
 
-            calendarResponseList.add(CalendarResponse.of(
-                    date,
-                    dailyUsedCost,
-                    dailyEarnedCost,
-                    Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo));
+            calendarResponseList.add(
+                    CalendarResponse.of(
+                            date,
+                            dailyUsedCost,
+                            dailyEarnedCost,
+                            Optional.ofNullable(calcDailyUsedRate(date, memberId, dailyUsedCost))
+                                    .map(dailyUsedRate -> Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo)
+                                    .orElse(null)
+                    )
+            );
         }
 
         return calendarResponseList;
@@ -131,14 +136,17 @@ public class HistoryService {
     }
 
     private BigDecimal calcDailyUsedRate(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
-        BigDecimal dailyBudget = budgetService.calcDailyBudget(date, memberId);
-        if (dailyBudget.equals(BigDecimal.ZERO)) {
-            return BigDecimal.ZERO;
-        } else {
-            return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
-                    .abs()
-                    .multiply(BigDecimal.valueOf(100))
-                    .stripTrailingZeros();
-        }
+        return Optional.ofNullable(budgetService.calcDailyBudget(date, memberId))
+                .map(dailyBudget -> {
+                    if (dailyBudget.equals(BigDecimal.ZERO)) {
+                        return dailyBudget;
+                    } else {
+                        return dailyUsedCost.divide(dailyBudget, 2, RoundingMode.HALF_UP)
+                                .abs()
+                                .multiply(BigDecimal.valueOf(100))
+                                .stripTrailingZeros();
+                    }
+                })
+                .orElse(null);
     }
 }
