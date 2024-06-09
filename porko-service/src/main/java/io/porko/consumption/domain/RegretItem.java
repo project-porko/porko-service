@@ -67,7 +67,7 @@ public enum RegretItem {
     public final String item;
     final int startRange;
     int endRange;
-    final int regretItemImageNo;
+    public final int regretItemImageNo;
 
     abstract boolean isMatched(BigDecimal cost);
 

@@ -114,7 +114,7 @@ public class HistoryService {
         return calendarResponseList;
     }
 
-    private LocalDate getLastDayOfMonth(YearMonth yearMonth) {
+    public LocalDate getLastDayOfMonth(YearMonth yearMonth) {
         if (yearMonth.getYear() == LocalDate.now().getYear()
                 && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
             return LocalDate.now();

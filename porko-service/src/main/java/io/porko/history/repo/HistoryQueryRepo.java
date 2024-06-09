@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.Optional;
 
 import static io.porko.history.domain.QHistory.history;
@@ -112,5 +113,17 @@ public class HistoryQueryRepo {
                         .and(history.cost.gt(0))
                         .and(history.usedAt.between(startDateTime, endDateTime)))
                 .fetchOne());
+    }
+
+    public Optional<BigDecimal> calcRegretCost(LocalDateTime startDateTime,
+                                     LocalDateTime endDateTime,
+                                     Long memberId) {
+        return Optional.ofNullable(queryFactory.select(history.cost.sum())
+                .from(history)
+                .where(history.member.id.eq(memberId)
+                        .and(history.cost.lt(0))
+                        .and(history.usedAt.between(startDateTime, endDateTime))
+                        .and(history.isRegret.isTrue()))
+                        .fetchOne());
     }
 }
