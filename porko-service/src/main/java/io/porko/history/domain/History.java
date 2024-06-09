@@ -35,7 +35,7 @@ public class History {
     @Embedded
     private HistoryCategory historyCategoryId;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String memo;
 
     @ManyToOne(fetch = FetchType.LAZY)
