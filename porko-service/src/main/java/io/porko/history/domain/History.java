@@ -39,7 +39,11 @@ public class History {
     private String memo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(
+        name = "member_id",
+        nullable = false,
+        foreignKey = @ForeignKey(name = "FK_HISTORY_TO_MEMBER")
+    )
     private Member member;
 
     public History(
