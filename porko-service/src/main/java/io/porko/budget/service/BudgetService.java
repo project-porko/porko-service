@@ -115,4 +115,20 @@ public class BudgetService {
                 .stripTrailingZeros()
         ).orElse(null);
     }
+
+    @Transactional
+    public void updateBudget (BudgetRequest budgetRequest, Long id) {
+        Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(
+                        LocalDate.now().getYear(),
+                        LocalDate.now().getMonthValue(),
+                        id)
+                .orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET,
+                        LocalDate.now().getYear(),
+                        LocalDate.now().getMonthValue(),
+                        id));
+
+        budget.setGoalCost(budgetRequest.cost());
+
+        budgetRepo.save(budget);
+    }
 }
