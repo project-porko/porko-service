@@ -46,4 +46,10 @@ public class BudgetController {
     ResponseEntity<ManageBudgetResponse> manageBudget (@LoginMember Long id) {
         return ResponseEntity.ok(budgetService.manageBudget(id));
     }
+
+    @PatchMapping
+    ResponseEntity<Void> updateBudget (@RequestBody BudgetRequest budgetRequest, @LoginMember Long id) {
+        budgetService.updateBudget(budgetRequest, id);
+        return ResponseEntity.ok().build();
+    }
 }

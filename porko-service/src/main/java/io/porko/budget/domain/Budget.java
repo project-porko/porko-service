@@ -1,20 +1,17 @@
 package io.porko.budget.domain;
 
 import io.porko.member.domain.Member;
-import io.porko.utils.ConvertUtils;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
