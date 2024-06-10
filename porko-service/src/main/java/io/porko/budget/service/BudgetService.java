@@ -32,9 +32,18 @@ public class BudgetService {
     public BudgetResponse getBudget(Integer goalYear, Integer goalMonth, Long memberId) {
         Budget budget = budgetRepo.findByGoalYearAndGoalMonthAndMemberId(goalYear, goalMonth, memberId).orElseThrow(() -> new BudgetException(BudgetErrorCode.BUDGET_NOT_SET, goalYear, goalMonth, memberId));
 
-        BigDecimal totalCost = historyQueryRepo.calcTotalCost(goalYear, goalMonth, memberId).orElse(BigDecimal.ZERO);
+        YearMonth yearMonth = YearMonth.of(goalYear, goalMonth);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
 
-        return BudgetResponse.of(totalCost.divide(budget.getGoalCost())
+        if (yearMonth.getYear() == LocalDate.now().getYear()
+                && yearMonth.getMonthValue() == LocalDate.now().getMonthValue()) {
+            endDate = LocalDate.now();
+        }
+
+        BigDecimal totalCost = historyQueryRepo.calcUsedCostForPeriod(startDate, endDate, memberId).orElse(BigDecimal.ZERO);
+
+        return BudgetResponse.of(totalCost.divide(budget.getGoalCost(), 3, RoundingMode.DOWN)
                             .multiply(BigDecimal.valueOf(100))
                             .abs()
                             .setScale(1, RoundingMode.DOWN)
