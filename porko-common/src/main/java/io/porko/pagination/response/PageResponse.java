@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PageResponse<T> {
+public class PageResponse<T, E> {
     private Integer totalPages;
     private Long totalElementCount;
     private Integer currentPage;
@@ -20,7 +20,7 @@ public class PageResponse<T> {
     private Boolean hasNextPage;
     private Boolean hasPrevious;
 
-    private List<T> elements;
+    private List<E> elements;
 
     private PageResponse(
         Integer totalPages,
@@ -32,7 +32,7 @@ public class PageResponse<T> {
         Boolean lastPage,
         Boolean hasNextPage,
         Boolean hasPrevious,
-        List<T> elements
+        List<E> elements
     ) {
         this.totalPages = totalPages;
         this.totalElementCount = totalElementCount;
@@ -46,7 +46,8 @@ public class PageResponse<T> {
         this.elements = elements;
     }
 
-    public static <T> PageResponse<T> mapTo(Page<T> page) {
+    // with QueryDsl
+    public static <T, E> PageResponse<T, E> of(Page<E> page) {
         return new PageResponse<>(
             page.getTotalPages(),
             page.getTotalElements(),
@@ -58,6 +59,22 @@ public class PageResponse<T> {
             page.hasNext(),
             page.hasPrevious(),
             page.getContent()
+        );
+    }
+
+    // withJPA
+    public static <T, E> PageResponse<T, E> of(Page<T> page, List<E> elements) {
+        return new PageResponse<>(
+            page.getTotalPages(),
+            page.getTotalElements(),
+            getCurrentPage(page),
+            page.getNumberOfElements(),
+            page.getSize(),
+            page.isFirst(),
+            page.isLast(),
+            page.hasNext(),
+            page.hasPrevious(),
+            elements
         );
     }
 

@@ -1,18 +1,24 @@
 package io.porko.history.controller.model;
 
+import io.porko.history.domain.History;
+import io.porko.pagination.response.PageResponse;
 import java.math.BigDecimal;
-import java.util.List;
 
-public record HistoryListResponse(
-        BigDecimal totalSpent,
-        BigDecimal totalEarned,
-        List<HistoryResponse> historyList
+public record HistoryListResponse<T, E>(
+    BigDecimal totalSpent,
+    BigDecimal totalEarned,
+    PageResponse<T, E> historyList
 ) {
 
-    public static HistoryListResponse of(List<HistoryResponse> historyResponses, BigDecimal totalSpent, BigDecimal totalEarned) {
-        return new HistoryListResponse(
-                totalSpent,
-                totalEarned,
-                historyResponses);
+    public static HistoryListResponse<History, HistoryResponse> of(
+        BigDecimal totalSpent,
+        BigDecimal totalEarned,
+        PageResponse<History, HistoryResponse> pageResponse
+    ) {
+        return new HistoryListResponse<>(
+            totalSpent,
+            totalEarned,
+            pageResponse
+        );
     }
 }

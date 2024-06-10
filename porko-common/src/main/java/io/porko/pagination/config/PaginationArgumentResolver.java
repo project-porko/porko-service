@@ -55,7 +55,14 @@ public class PaginationArgumentResolver extends PageableHandlerMethodArgumentRes
         if (sort.isSorted()) {
             return createPageRequestWithSort(pageable, sort);
         }
-        return pageable;
+        return createPageRequestWithoutSort(pageable);
+    }
+
+    private Pageable createPageRequestWithoutSort(Pageable pageable) {
+        return PageRequest.of(
+            adjustPageNumber(pageable.getPageNumber()),
+            pageable.getPageSize()
+        );
     }
 
     private boolean hasNoPageRequestParameterValues(String page, String pageSize) {
