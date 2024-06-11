@@ -1,14 +1,14 @@
 insert into member(detail, road_name, created_at, email, gender, name, password, phone_number, updated_at, profile_image_url)
 values ('반포동', '서울시 서초구', '2024-05-21T03:29:30.044', 'project.log.062@gmail.com', 'MALE', '최용석',
-        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01011112222', null, '/images/default-profile/profile_1.jpg'),
+        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01011112222', null, '/images/default-profile/profile_1.webp'),
        ('행운동', '서울시 관악구', '2024-05-22T04:29:30.044', 'ratcomp9992@gmail.com', 'MALE', '나도윤',
-        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01033334444', null, '/images/default-profile/profile_2.jpg'),
+        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01033334444', null, '/images/default-profile/profile_2.webp'),
        ('신림동', '서울시 관악구', '2024-05-23T05:29:30.044', 'temp1234@gmail.com', 'MALE', '홍길동',
-        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01055556666', null, '/images/default-profile/profile_3.jpg'),
+        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01055556666', null, '/images/default-profile/profile_3.webp'),
        ('상도동', '서울시 동작구', '2024-05-25T06:29:30.044', 'testtest@gmail.com', 'MALE', '가나다',
-        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01077778888', null, '/images/default-profile/profile_1.jpg'),
+        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01077778888', null, '/images/default-profile/profile_1.webp'),
        ('사당동', '서울시 동작구', '2024-05-21T04:29:30.044', 'thisistest@gmail.com', 'MALE', '라마바',
-        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01099990000', null, '/images/default-profile/profile_2.jpg');
+        '{bcrypt}$2a$10$8VSoF7WnqGiFDp0XPA93IuKtMLR17Tte6ROVBS8ORVX8nQnJjbJYS', '01099990000', null, '/images/default-profile/profile_2.webp');
 
 
 
