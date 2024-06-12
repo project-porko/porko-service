@@ -1,2 +1,2 @@
 rootProject.name = "porko"
-include("porko-common", "porko-service")
+include("porko-common", "porko-service", "spring-boot-admin")
