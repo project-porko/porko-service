@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 
@@ -18,7 +18,7 @@ class InitializeDataEventListenerTest extends TestBase {
     @Autowired
     private ApplicationEvents events;
 
-    @SpyBean
+    @MockBean
     private InitializeDataEventListener initializeDataEventListener;
 
     // TODO ApplicationReadyEvent -> 데이터 초기화에 대한 Event를 발행하고 발행 여부 및 EventListener에 대한 호출 여부 검증
