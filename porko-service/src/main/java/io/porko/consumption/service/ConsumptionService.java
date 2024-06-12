@@ -1,22 +1,34 @@
 package io.porko.consumption.service;
 
+import io.porko.budget.service.BudgetService;
 import io.porko.consumption.controller.model.RegretResponse;
+import io.porko.consumption.controller.model.WeatherListResponse;
+import io.porko.consumption.controller.model.WeatherResponse;
 import io.porko.consumption.domain.RegretItem;
+import io.porko.consumption.domain.Weather;
 import io.porko.history.repo.HistoryQueryRepo;
 import io.porko.history.service.HistoryService;
+import io.porko.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ConsumptionService {
     private final HistoryQueryRepo historyQueryRepo;
     private final HistoryService historyService;
+    private final MemberService memberService;
+    private final BudgetService budgetService;
 
     public RegretResponse makeRegretResponse(int year, int month, Long id) {
         YearMonth yearMonth = YearMonth.of(year, month);
@@ -36,5 +48,54 @@ public class ConsumptionService {
                 .orElse(BigDecimal.ZERO)
                 .abs()
                 .stripTrailingZeros();
+    }
+
+    public WeatherResponse makeWeatherResponse(int year, int month, Long id) {
+        return WeatherResponse.of(
+                memberService.findMemberById(id).getName(),
+                budgetService.getBudget(year, month, id).used(),
+                makeWeatherListResponse(
+                        YearMonth.of(year, month),
+                        id));
+    }
+
+    private List<WeatherListResponse> makeWeatherListResponse(YearMonth yearMonth, Long id) {
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
+        LocalDate lastDayOfMonth = historyService.getLastDayOfMonth(yearMonth);
+
+        List<WeatherListResponse> weatherList = new ArrayList<>();
+        List<Integer> dailyWeather = new ArrayList<>();
+
+        for (LocalDate date = firstDayOfMonth;
+             date.isBefore(lastDayOfMonth) || date.isEqual(lastDayOfMonth);
+             date = date.plusDays(1)) {
+             dailyWeather.add(historyService.selectWeatherImage(
+                    date, id, historyService.calcDailyUsedCost(
+                    date, id)));
+        }
+        for (Weather weather : Weather.values()) {
+            weatherList.add(
+                    WeatherListResponse.of(
+                            weather.weatherImageNo,
+                            weather.weatherName,
+                            countWeather(dailyWeather, weather.weatherImageNo)
+                    ));
+        }
+
+        weatherList.sort(Comparator.comparing(WeatherListResponse::count).reversed());
+
+        return weatherList;
+    }
+
+    private Integer countWeather(List<Integer> dailyWeather, Integer weather) {
+        int count = 0;
+
+        for (Integer day : dailyWeather) {
+            if (day.equals(weather)) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

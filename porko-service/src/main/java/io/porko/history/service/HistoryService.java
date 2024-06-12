@@ -103,7 +103,7 @@ public class HistoryService {
                     date,
                     dailyUsedCost,
                     dailyEarnedCost,
-                        selectWeatherImage(date, memberId, calcDailyUsedCost(
+                    selectWeatherImage(date, memberId, calcDailyUsedCost(
                                 date, memberId))
                 )
             );
@@ -121,7 +121,7 @@ public class HistoryService {
         }
     }
 
-    private BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
+    public BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
         return historyQueryRepo.calcDailyUsedCost(date, memberId)
             .orElse(BigDecimal.ZERO)
             .stripTrailingZeros();
