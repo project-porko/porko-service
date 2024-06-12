@@ -39,6 +39,8 @@ dependencies {
 
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(testSourceSet)
+
+    implementation("de.codecentric:spring-boot-admin-starter-client:3.2.3")
 }
 
 tasks.withType<Test> {

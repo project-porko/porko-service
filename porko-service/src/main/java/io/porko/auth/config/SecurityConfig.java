@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/member/validate", "/member/validate/types").permitAll()
                 .requestMatchers(HttpMethod.GET, "/widget").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated()
             )
             // [TODO:Feature] : 403 권한 없음 예외 처리를 위한 AccessDeniedHandler 구현 및 등록
