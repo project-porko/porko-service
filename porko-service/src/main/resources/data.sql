@@ -22,7 +22,7 @@ insert into widget (widget_code) values
        ('CURRENT_MONTH_CARD_USAGE'),
        ('MY_CHALLENGE'),
        ('CREDIT_SCORE'),
-       ('DAILY_EXPENSES');
+       ('MONTHLY_EXPENSES');
 
 -- member_widget
 insert into member_widget (widget_id, member_id, sequence, created_at, created_by, updated_at, updated_by) values
