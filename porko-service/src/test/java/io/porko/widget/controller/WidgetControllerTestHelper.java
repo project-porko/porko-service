@@ -17,7 +17,7 @@ public class WidgetControllerTestHelper extends WebLayerTestBase {
             Widget.of(4L, WidgetCode.CURRENT_MONTH_EXPENSES),
             Widget.of(5L, WidgetCode.CURRENT_MONTH_CARD_USAGE),
             Widget.of(6L, WidgetCode.MY_CHALLENGE),
-            Widget.of(7L, WidgetCode.DAILY_EXPENSES),
+            Widget.of(7L, WidgetCode.MONTHLY_EXPENSES),
             Widget.of(8L, WidgetCode.CREDIT_SCORE)
         );
     }
