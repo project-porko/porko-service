@@ -15,7 +15,7 @@ public enum WidgetCode {
     MY_CHALLENGE(DEFAULT, "나의 챌린지", 6),
 
     CREDIT_SCORE(OPTIONAL, "나의 신용 점수", -1),
-    DAILY_EXPENSES(OPTIONAL, "매일 나가는 돈", -1);
+    MONTHLY_EXPENSES(OPTIONAL, "매월 나가는 돈", -1);
 
     private final WidgetType type;
     private final String description;
