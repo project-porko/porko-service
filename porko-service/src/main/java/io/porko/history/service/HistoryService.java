@@ -103,9 +103,8 @@ public class HistoryService {
                     date,
                     dailyUsedCost,
                     dailyEarnedCost,
-                    Optional.ofNullable(calcDailyUsedRate(date, memberId, dailyUsedCost))
-                        .map(dailyUsedRate -> Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo)
-                        .orElse(null)
+                    selectWeatherImage(date, memberId, calcDailyUsedCost(
+                                date, memberId))
                 )
             );
         }
@@ -122,7 +121,7 @@ public class HistoryService {
         }
     }
 
-    private BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
+    public BigDecimal calcDailyUsedCost(LocalDate date, Long memberId) {
         return historyQueryRepo.calcDailyUsedCost(date, memberId)
             .orElse(BigDecimal.ZERO)
             .stripTrailingZeros();
@@ -147,5 +146,11 @@ public class HistoryService {
                 }
             })
             .orElse(null);
+    }
+
+    public Integer selectWeatherImage(LocalDate date, Long memberId, BigDecimal dailyUsedCost) {
+        return Optional.ofNullable(calcDailyUsedRate(date, memberId, dailyUsedCost))
+                .map(dailyUsedRate -> Weather.getWeatherByDailyUsed(dailyUsedRate).weatherImageNo)
+                .orElse(null);
     }
 }

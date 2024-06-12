@@ -2,6 +2,7 @@ package io.porko.consumption.controller;
 
 import io.porko.auth.controller.model.LoginMember;
 import io.porko.consumption.controller.model.RegretResponse;
+import io.porko.consumption.controller.model.WeatherResponse;
 import io.porko.consumption.service.ConsumptionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -29,5 +30,17 @@ public class ConsumptionController {
         }
 
         return ResponseEntity.ok(consumptionService.makeRegretResponse(year, month, memberId));
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<WeatherResponse> countWeather(@Valid @RequestParam int year,
+                                                        @Valid @RequestParam @Min(1) @Max(12) int month,
+                                                        @RequestParam(required = false) Long memberId,
+                                                        @LoginMember Long id) {
+        if (memberId == null) {
+            memberId = id;
+        }
+
+        return ResponseEntity.ok(consumptionService.makeWeatherResponse(year, month, memberId));
     }
 }
