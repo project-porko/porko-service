@@ -72,4 +72,9 @@ public class MemberService {
         return memberQueryRepo.findMemberById(id)
             .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND, id));
     }
+
+    public Member findByPhoneNumber(String phoneNumber) {
+        return memberRepo.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND, phoneNumber));
+    }
 }

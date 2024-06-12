@@ -22,4 +22,14 @@ public class Friend {
     @MapsId("friendId")
     @JoinColumn(name = "friend_id", nullable = false)
     private Member friend;
+
+    private Friend (Member member, Member friend){
+        this.id = new FriendId(member.getId(), friend.getId());
+        this.member = member;
+        this.friend = friend;
+    }
+
+    public static Friend of(Member member, Member friend) {
+        return new Friend(member, friend);
+    }
 }

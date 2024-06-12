@@ -1,15 +1,13 @@
 package io.porko.friend.controller;
 
 import io.porko.auth.controller.model.LoginMember;
+import io.porko.consumption.controller.model.FriendRequest;
 import io.porko.friend.controller.model.FriendResponse;
 import io.porko.friend.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/friend")
@@ -20,5 +18,12 @@ public class FriendController {
     @GetMapping
     public ResponseEntity<FriendResponse> getFriendResponse(@LoginMember Long id) {
         return ResponseEntity.ok(friendService.getFriendResponse(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addFriend(@RequestBody FriendRequest friendRequest, @LoginMember Long id) {
+        friendService.addFriend(friendRequest.phoneNumber(), id);
+
+        return ResponseEntity.ok().build();
     }
 }

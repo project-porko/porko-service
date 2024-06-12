@@ -1,5 +1,6 @@
 package io.porko.friend.service;
 
+import io.porko.consumption.controller.model.FriendRequest;
 import io.porko.friend.controller.model.FriendList;
 import io.porko.friend.controller.model.FriendResponse;
 import io.porko.friend.domain.Friend;
@@ -65,5 +66,12 @@ public class FriendService {
                 member.getId(),
                 member.getName(),
                 member.getProfileImageUrl());
+    }
+
+    public void addFriend(String phonenumber, Long id) {
+        Member member = memberService.findMemberById(id);
+        Member friend = memberService.findByPhoneNumber(phonenumber);
+
+        friendRepo.save(Friend.of(member, friend));
     }
 }
