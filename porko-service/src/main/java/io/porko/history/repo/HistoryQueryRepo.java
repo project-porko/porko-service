@@ -29,7 +29,7 @@ public class HistoryQueryRepo {
                 .fetchOne());
     }
 
-    public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyCost) {
+    public Long countOverSpend(Integer goalYear, Integer goalMonth, Long memberId, BigDecimal dailyBudget) {
         return Long.valueOf(queryFactory.select()
                 .from(history)
                 .where(history.member.id.eq(memberId)
@@ -37,7 +37,7 @@ public class HistoryQueryRepo {
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
                         .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth()))
-                        .and(history.cost.gt(dailyCost)))
+                        .and(history.cost.abs().gt(dailyBudget)))
                 .fetchCount());
     }
 
