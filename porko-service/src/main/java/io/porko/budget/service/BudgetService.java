@@ -89,7 +89,7 @@ public class BudgetService {
                         today.getYear(),
                         today.getMonthValue(),
                         memberId,
-                        dailyCost),
+                        budget.getGoalCost().divide(BigDecimal.valueOf(lastDayOfMonth), 0, RoundingMode.DOWN)),
                 today.getDayOfMonth() - historyQueryRepo.countSpendingDate(
                         today.getYear(),
                         today.getMonthValue(),
