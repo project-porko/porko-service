@@ -31,7 +31,7 @@ public class History {
     @Column(nullable = false)
     private boolean isRegret;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String place;
 
     @Column(nullable = false, length = 30)
