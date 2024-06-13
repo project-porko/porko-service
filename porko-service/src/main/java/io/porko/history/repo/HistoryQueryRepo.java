@@ -48,7 +48,7 @@ public class HistoryQueryRepo {
                         .and(history.cost.lt(0))
                         .and(history.usedAt.year().eq(goalYear))
                         .and(history.usedAt.month().eq(goalMonth))
-                        .and(history.usedAt.dayOfMonth().lt(LocalDate.now().getDayOfMonth())))
+                        .and(history.usedAt.dayOfMonth().loe(LocalDate.now().getDayOfMonth())))
                 .fetchCount();
     }
 
