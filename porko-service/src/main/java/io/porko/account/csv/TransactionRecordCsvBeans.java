@@ -8,26 +8,9 @@ import java.util.stream.Collectors;
 public record TransactionRecordCsvBeans(
     List<TransactionRecord> elements
 ) {
-
     public static List<TransactionRecord> toEntity(AccountHolder accountHolder, List<TransactionRecordCsvBean> transactionRecordCsvBeans) {
         return transactionRecordCsvBeans.stream()
-            .map(it -> tt(accountHolder, it))
+            .map(it -> it.toEntity(accountHolder))
             .collect(Collectors.toList());
-    }
-
-    private static TransactionRecord tt(AccountHolder accountHolder, TransactionRecordCsvBean transactionRecordCsvBean) {
-        return TransactionRecord.of(
-            accountHolder,
-            transactionRecordCsvBean.getAmount(),
-            transactionRecordCsvBean.getTransactionType(),
-            transactionRecordCsvBean.getCategory(),
-            transactionRecordCsvBean.getCategoryDetail(),
-            transactionRecordCsvBean.getDescription(),
-            transactionRecordCsvBean.getCurrency(),
-            transactionRecordCsvBean.getPayType(),
-            transactionRecordCsvBean.getIsRegret(),
-            transactionRecordCsvBean.getTransactionDate(),
-            transactionRecordCsvBean.getTransactionTime()
-        );
     }
 }

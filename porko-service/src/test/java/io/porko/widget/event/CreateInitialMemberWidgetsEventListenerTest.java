@@ -3,7 +3,7 @@ package io.porko.widget.event;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-import io.porko.config.base.TestBase;
+import io.porko.config.base.EventListenerTestBase;
 import io.porko.config.fixture.FixtureCommon;
 import io.porko.member.controller.model.signup.SignUpRequest;
 import io.porko.member.event.CreateInitialMemberWidgetsEvent;
@@ -11,23 +11,10 @@ import io.porko.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.event.ApplicationEvents;
-import org.springframework.test.context.event.RecordApplicationEvents;
 
-@SpringBootTest
-@RecordApplicationEvents
 @DisplayName("Event:CreateInitialMemberWidgetsEvent")
-class CreateInitialMemberWidgetsEventListenerTest extends TestBase {
+class CreateInitialMemberWidgetsEventListenerTest extends EventListenerTestBase {
     private final MemberService memberService;
-
-    @Autowired
-    private ApplicationEvents events;
-
-    @MockBean
-    private CreateInitialMemberWidgetsEventListener createInitialMemberWidgetsEventListener;
 
     public CreateInitialMemberWidgetsEventListenerTest(MemberService memberService) {
         this.memberService = memberService;
