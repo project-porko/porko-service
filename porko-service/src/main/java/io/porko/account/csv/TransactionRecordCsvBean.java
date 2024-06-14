@@ -2,6 +2,8 @@ package io.porko.account.csv;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
+import io.porko.account.domain.AccountHolder;
+import io.porko.account.domain.TransactionRecord;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -38,4 +40,20 @@ public class TransactionRecordCsvBean {
 
     @CsvBindByName(required = true, column = "시간")
     private String transactionTime;
+
+    TransactionRecord toEntity(AccountHolder accountHolder) {
+        return TransactionRecord.of(
+            accountHolder,
+            amount,
+            transactionType,
+            category,
+            categoryDetail,
+            description,
+            currency,
+            payType,
+            isRegret,
+            transactionDate,
+            transactionTime
+        );
+    }
 }
