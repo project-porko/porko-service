@@ -1,14 +1,11 @@
 package io.porko.domain.member.controller;
 
-import io.porko.global.config.base.WebLayerTestBase;
 import io.porko.config.base.presentation.RequestBuilder.Expect;
-import io.porko.domain.member.controller.MemberController;
 import io.porko.domain.member.controller.model.signup.AddressDto;
 import io.porko.domain.member.controller.model.signup.SignUpRequest;
 import io.porko.domain.member.controller.model.validateduplicate.ValidateDuplicateType;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import io.porko.global.config.base.WebLayerTestBase;
 
-@WebMvcTest(MemberController.class)
 class MemberControllerTestHelper extends WebLayerTestBase {
     private static final String MEMBER_SIGN_UP_URI = "/member/sign-up";
     private static final String MEMBER_SIGN_UP_VALIDATE_DUPLICATE_URL = "/member/validate?type={type}&value={value}";
