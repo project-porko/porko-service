@@ -3,7 +3,6 @@ package io.porko.domain.account.event;
 import static org.mockito.Mockito.verify;
 
 import io.porko.global.config.base.EventListenerTestBase;
-import io.porko.domain.account.event.InitializeTransactionDataEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

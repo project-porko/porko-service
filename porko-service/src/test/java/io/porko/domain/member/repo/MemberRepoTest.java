@@ -7,7 +7,6 @@ import io.porko.config.base.persistence.JpaTestBase;
 import io.porko.domain.member.domain.Address;
 import io.porko.domain.member.domain.Gender;
 import io.porko.domain.member.domain.Member;
-import io.porko.domain.member.repo.MemberRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

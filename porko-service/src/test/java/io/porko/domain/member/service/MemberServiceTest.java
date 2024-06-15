@@ -13,7 +13,6 @@ import io.porko.domain.member.domain.Member;
 import io.porko.domain.member.exception.MemberErrorCode;
 import io.porko.domain.member.exception.MemberException;
 import io.porko.domain.member.repo.MemberRepo;
-import io.porko.domain.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;

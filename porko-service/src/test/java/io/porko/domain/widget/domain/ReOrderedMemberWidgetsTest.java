@@ -1,11 +1,11 @@
 package io.porko.domain.widget.domain;
 
 import static io.porko.config.fixture.FixtureCommon.dtoType;
-import static io.porko.global.config.security.TestSecurityConfig.testMember;
 import static io.porko.domain.widget.controller.WidgetControllerTestHelper.allWidgets;
 import static io.porko.domain.widget.domain.ReOrderedMemberWidgets.ORDERED_WIDGET_COUNT;
 import static io.porko.domain.widget.fixture.MemberWidgetFixture.givenBuilder;
 import static io.porko.domain.widget.fixture.MemberWidgetFixture.validReorderWidgetRequest;
+import static io.porko.global.config.security.TestSecurityConfig.testMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -16,7 +16,6 @@ import io.porko.domain.widget.exception.WidgetErrorCode;
 import io.porko.domain.widget.exception.WidgetException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
