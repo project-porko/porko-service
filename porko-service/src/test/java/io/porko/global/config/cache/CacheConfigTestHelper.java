@@ -2,11 +2,11 @@ package io.porko.global.config.cache;
 
 import static io.porko.domain.widget.controller.WidgetControllerTestHelper.widgets;
 
-import io.porko.global.config.base.WebLayerTestBase;
+import io.porko.global.config.base.ServiceBeanTestBase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-class CacheConfigTestHelper extends WebLayerTestBase {
+class CacheConfigTestHelper extends ServiceBeanTestBase {
     protected final static String cacheName = CacheType.WIDGETS.getName();
     protected final static String testKey = "test::key";
     protected final static String testValue = "test-value";
