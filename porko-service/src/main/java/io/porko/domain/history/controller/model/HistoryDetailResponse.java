@@ -10,7 +10,7 @@ public record HistoryDetailResponse(
         LocalDateTime usedAt,
         BigDecimal cost,
         String place,
-        HistoryCategory historyCategoryId,
+        HistoryCategory historyCategory,
         String payType,
         boolean isRegret,
         String memo
@@ -21,7 +21,7 @@ public record HistoryDetailResponse(
                 history.getUsedAt(),
                 history.getCost(),
                 history.getPlace(),
-                history.getHistoryCategoryId(),
+                history.getHistoryCategory(),
                 history.getPayType(),
                 history.isRegret(),
                 history.getMemo()
