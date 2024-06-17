@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface HistoryRepo extends JpaRepository<History, Long> {
-    Page<History> findByMemberIdAndUsedAtBetweenOrderByUsedAtDesc(
+    Page<History> findByMemberIdAndUsedAtBetween(
         Long memberId,
         LocalDateTime startDate,
         LocalDateTime endDate,
