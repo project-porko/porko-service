@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,9 @@ public class HistoryController {
         @LoginMember Long loginMemberId,
         @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
         @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-        @Pagination Pageable pagination
+        @Pagination
+        @SortDefault(sort ="usedAt", direction = Sort.Direction.DESC)
+        Pageable pagination
     ) {
         if (startDate == null || endDate == null) {
             return ResponseEntity.ok(historyService.getThisMonthHistoryList(loginMemberId, pagination));
