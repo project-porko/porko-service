@@ -41,7 +41,7 @@ public class History {
     private LocalDateTime usedAt;
 
     @Embedded
-    private HistoryCategory historyCategoryId;
+    private HistoryCategory historyCategory;
 
     @Column(length = 100)
     private String memo;
@@ -60,7 +60,7 @@ public class History {
         String place,
         String payType,
         LocalDateTime usedAt,
-        HistoryCategory historyCategoryId,
+        HistoryCategory historyCategory,
         Member member
     ) {
         this.cost = cost;
@@ -68,7 +68,7 @@ public class History {
         this.place = place;
         this.payType = payType;
         this.usedAt = usedAt;
-        this.historyCategoryId = historyCategoryId;
+        this.historyCategory = historyCategory;
         this.member = member;
     }
 
@@ -78,7 +78,7 @@ public class History {
         String place,
         String payType,
         LocalDateTime usedAt,
-        HistoryCategory historyCategoryId,
+        HistoryCategory historyCategory,
         Member member
     ) {
         return new History(
@@ -87,7 +87,7 @@ public class History {
             place,
             payType,
             usedAt,
-            historyCategoryId,
+            historyCategory,
             member
         );
     }
