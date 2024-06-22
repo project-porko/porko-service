@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 
+// TODO https://ksh-coding.tistory.com/53
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 @RecordApplicationEvents
 public abstract class EventTestBase extends TestBase {
