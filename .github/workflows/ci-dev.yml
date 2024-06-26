@@ -1,5 +1,10 @@
 name: dev CI
 
+env:
+  BUILD_ID : ${{ github.sha }}
+  HELM_VALUES: porko-service-chart/values-dev.yaml
+  HELM_BRANCH: dev
+
 on:
   push:
     branches: [ develop ]
@@ -52,7 +57,30 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ secrets.DEV_ECR_REPO_NAME }}
-          IMAGE_TAG: latest
+          IMAGE_TAG: ${{ env.BUILD_ID }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: 🍀checkout helm repo
+        uses: actions/checkout@v3
+        with:
+          repository: project-porko/porko-k8s-resources
+          path: helm-chart
+          ref: main
+
+      - name: 🍀renew image tag to helm values
+        uses: mikefarah/yq@4.44.2
+        with:
+          cmd: yq -i '(.image.tag) = "${{ env.BUILD_ID }}"' helm-chart/${{ env.HELM_VALUES }}
+
+      - name: 🍀 apply latest application image to helm repo
+        run: |
+          cd helm-chart
+          git config --local user.email "devops@porko.store"
+          git config --local user.name "devCi"
+          git add .
+          git commit -m "ci: apply latest HELM changes: ${{ secrets.DEV_ECR_REPO_NAME }}:${{ env.BUILD_ID }}"
+          current_branch=$(git branch --show-current)
+          git checkout -b ${{ env.HELM_BRANCH }} && git merge ${current_branch}
+          git push --force origin ${{ env.HELM_BRANCH }}
