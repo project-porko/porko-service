@@ -70,7 +70,7 @@ public class HistoryService {
         BigDecimal totalSpent = historyRepo.calcSpentCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
         BigDecimal totalEarned = historyRepo.calcEarnedCostForPeriod(loginMemberId, startDateTime, endDateTime).orElse(BigDecimal.ZERO);
 
-        Page<History> histories = historyRepo.findByMemberIdAndUsedAtBetweenOrderByUsedAtDesc(loginMemberId, startDateTime, endDateTime, pageable);
+        Page<History> histories = historyRepo.findByMemberIdAndUsedAtBetween(loginMemberId, startDateTime, endDateTime, pageable);
 
         List<HistoryResponse> historyResponses = histories.stream()
             .map(HistoryResponse::of)
