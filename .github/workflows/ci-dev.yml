@@ -70,7 +70,7 @@ jobs:
           ref: main
 
       - name: 🍀renew image tag to helm values
-        uses: mikefarah/yq@4.34.1
+        uses: mikefarah/yq@master
         with:
           cmd: yq -i '(.image.tag) = "${{ env.BUILD_ID }}"' helm-chart/${{ env.HELM_VALUES }}
 
